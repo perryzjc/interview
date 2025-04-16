@@ -37,7 +37,7 @@ LLM 是当前许多先进 AI 应用（包括 AI 聊天机器人、内容创作�
 
 ```mermaid
 graph LR
-    A["海量文本数据<br/>(互联网, 书籍等)"] --> B("文本->[[Core Technologies/嵌入 (Embedding)|Embedding]]") --> C(预训练 Pre-training<br/>(基于 [[Core Technologies/Transformer 模型|Transformer]])<br/>学习语言模式);
+    A["海量文本数据<br/>(互联网, 书籍等)"] --> B("文本->[[Core Technologies/嵌入 (Embedding)|Embedding]]") --> C("预训练 Pre-training<br/>(基于 [[Core Technologies/Transformer 模型|Transformer]])<br/>学习语言模式");
     C --> D["预训练 LLM<br/>(基础模型)"];
     F["特定任务数据<br/>(如电商问答)"] --> G(微调 Fine-tuning<br/>优化特定能力);
     D --> G;

@@ -16,598 +16,535 @@ def write_file(filepath, content):
     except IOError as e:
         print(f"Error writing file {filepath}: {e}")
 
-# --- Knowledge Base Content Definitions (Part 5 - AI Core Tech & Model Landscape) ---
+# --- Knowledge Base Content Definitions (Part 8 - Interview Priority: Models, Benchmarks, API, NLP) ---
 
-# Concepts/AI & ML/Core Technologies
-ai_ml_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML')
+# --- Concepts/AI & ML/Core Concepts & Technologies ---
+# (Using existing folder from previous runs, adding NLP here)
 ai_core_tech_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML', 'Core Technologies')
-llm_path = os.path.join(ai_ml_folder, '大型语言模型 (LLM).md')
 
-transformer_path = os.path.join(ai_core_tech_folder, 'Transformer 模型.md')
-transformer_content = textwrap.dedent("""\
+nlp_path = os.path.join(ai_core_tech_folder, '自然语言处理 (NLP).md')
+nlp_content = textwrap.dedent("""\
     ---
-    tags: [topic/ai_ml, concept/transformer, type/architecture, technology]
-    aliases: [Transformer Architecture, Transformer架构]
+    tags: [topic/ai_ml, concept/nlp, type/definition, field/computer_science]
+    aliases: [NLP, Natural Language Processing]
     ---
-    # Transformer 模型架构
-
-    [[../00 - AI 与机器学习概览|返回 AI 概览]] | [[../大型语言模型 (LLM)|LLM 基础]]
-
-    ## 概述
-
-    Transformer 是一种**深度学习模型架构**，由 Google 在 2017 年的论文《Attention Is All You Need》中提出。它最初用于机器翻译任务，但其核心机制——**自注意力 (Self-Attention)**——被证明在处理各种序列数据（尤其是自然语言文本）方面非常强大，从而**彻底改变了[[../大型语言模型 (LLM)|自然语言处理 (NLP)]]领域**。
-
-    **几乎所有现代的[[../大型语言模型 (LLM)|大型语言模型 (LLM)]]（如 GPT、BERT、LLaMA、Claude 等）都是基于 Transformer 架构构建的。** 理解 Transformer 的核心思想有助于理解 LLM 为何如此强大。
-
-    ## 核心思想：注意力机制 (Attention Mechanism)
-
-    在 Transformer 出现之前，处理序列数据（如句子）的主流模型是 RNN (循环神经网络) 和 LSTM/GRU (长短期记忆网络/门控循环单元)。这些模型按顺序处理单词，难以捕捉句子中**相距较远的词语之间的依赖关系**（例如，“法律” 和 “规定” 在长句中的关联），并且难以**并行计算**（必须处理完前一个词才能处理下一个）。
-
-    Transformer 架构通过**注意力机制 (Attention Mechanism)**，特别是**自注意力 (Self-Attention)**，解决了这些问题：
-
-    1.  **同时关注所有词**: 对于句子中的**每一个词**，自注意力机制会计算它与句子中**所有其他词**（包括它自己）的**相关性或“注意力权重”**。
-    2.  **加权表示**: 基于这些权重，模型为每个词生成一个新的表示 (Representation)，这个表示融合了句子中所有与之相关词语的信息。**相关性越强的词，其信息对当前词新表示的贡献越大。**
-    3.  **捕捉长距离依赖**: 由于模型可以直接计算任意两个词之间的相关性，无论它们在句子中相距多远，因此能够有效捕捉长距离依赖关系。
-    4.  **并行计算**: 每个词的新表示可以**独立并行计算**，大大提高了训练效率。
-
-    ```mermaid
-     graph LR
-        subgraph "传统 RNN/LSTM (顺序处理)"
-            direction LR
-            W1 --> W2 --> W3 --> W4 --> Output1
-        end
-
-        subgraph "Transformer (自注意力机制 - 并行处理)"
-            direction TB
-            Input["输入句子<br/>(Word1, Word2, Word3, Word4)"] --> Attention{"自注意力层<br/>(计算所有词之间的相关性)"};
-            Attention -- "融合相关词信息" --> Repr["每个词的新表示<br/>(Rep1, Rep2, Rep3, Rep4)"];
-            Repr --> Output2["后续处理/输出"];
-
-            Word1_In[Word1] --> Attention;
-            Word2_In[Word2] --> Attention;
-            Word3_In[Word3] --> Attention;
-            Word4_In[Word4] --> Attention;
-
-            Attention --> Word1_Repr[Rep1];
-            Attention --> Word2_Repr[Rep2];
-            Attention --> Word3_Repr[Rep3];
-            Attention --> Word4_Repr[Rep4];
-
-            style Input fill:#eee,stroke:#333
-            style Repr fill:#ccf,stroke:#333
-        end
-
-        W1 --- Word1_In;
-        W2 --- Word2_In;
-        W3 --- Word3_In;
-        W4 --- Word4_In;
-
-        linkStyle default interpolate basis
-    ```
-    [!info] 直观理解
-    想象一下你在阅读一个长句子：“**苹果**公司昨天发布了新款 **iPhone**，它具有更强的**处理器**和改进的**摄像头**。” 当模型处理 “iPhone” 这个词时，自注意力机制能让它同时关注到 “苹果”（知道是谁发布的）、“处理器”和“摄像头”（知道是 iPhone 的特性），即使这些词语在句子中位置不同。
-
-    ## Transformer 的主要组成部分 (简化)
-
-    *   **[[../Core Technologies/嵌入 (Embedding)|词嵌入 (Embeddings)]]**: 将输入的单词转换为向量表示。
-    *   **位置编码 (Positional Encoding)**: 由于 Transformer 并行处理，本身没有顺序信息，需要加入位置编码来告诉模型单词在句子中的位置。
-    *   **多头自注意力 (Multi-Head Self-Attention)**: 同时从不同角度（不同的“头”）计算注意力权重，捕捉更丰富的依赖关系。
-    *   **前馈神经网络 (Feed-Forward Networks)**: 在注意力层之后对每个位置的表示进行进一步处理。
-    *   **层归一化 (Layer Normalization) & 残差连接 (Residual Connections)**: 帮助模型训练更稳定、更深入。
-    *   **编码器 (Encoder) & 解码器 (Decoder)**:
-        *   原始 Transformer 包含编码器（理解输入序列）和解码器（生成输出序列），适用于机器翻译等 Seq2Seq 任务。
-        *   许多 LLM（如 GPT 系列）主要使用**解码器**部分 (Decoder-only)，专注于根据前面的文本生成后续文本。
-        *   有些模型（如 BERT）主要使用**编码器**部分 (Encoder-only)，专注于理解文本，适用于文本分类、命名实体识别等任务。
-
-    ## 对产品经理的意义
-
-    *   **理解能力基础**: Transformer 的注意力机制是 LLM 能够理解上下文、把握语义关系、处理长文本的关键。
-    *   **生成能力基础**: 基于 Transformer 的解码器架构使得 LLM 能够流畅地生成连贯的文本。
-    *   **效率与规模**: Transformer 的并行计算能力使得训练更大规模的模型成为可能，从而带来了能力的涌现。
-    *   **局限性提示**: 理解其基于模式匹配和概率生成，有助于理解[[../模型幻觉 (Hallucination)|幻觉]]等局限性的来源（它不具备真正的逻辑推理或世界模型）。
-
-    ## 总结
-
-    Transformer 架构及其核心的自注意力机制是理解现代 [[../大型语言模型 (LLM)|LLM]] 工作原理的基础。产品经理不需要深入了解其数学细节，但理解其**核心思想（如何通过注意力捕捉依赖关系）**以及**它带来的优势（处理长距离依赖、并行计算）**，对于理解 LLM 的能力边界、评估相关技术方案非常有帮助。
-
-    ## 相关概念
-
-    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
-    *   [[注意力机制]]
-    *   [[自注意力]]
-    *   [[../Core Technologies/嵌入 (Embedding)|嵌入 (Embedding)]]
-    *   [[自然语言处理 (NLP)]]
-    *   [[深度学习]]
-    *   [[编码器-解码器架构]]
-""")
-
-embedding_path = os.path.join(ai_core_tech_folder, '嵌入 (Embedding).md')
-embedding_content = textwrap.dedent("""\
-    ---
-    tags: [topic/ai_ml, concept/embedding, type/technique, technology]
-    aliases: [Embedding, 词嵌入, 文本嵌入, 向量表示]
-    ---
-    # 嵌入 (Embedding)
+    # 自然语言处理 (Natural Language Processing - NLP)
 
     [[../00 - AI 与机器学习概览|返回 AI 概览]]
 
     ## 概述
 
-    嵌入 (Embedding) 是一种在机器学习（特别是自然语言处理 NLP 和推荐系统）中广泛使用的技术，指的是将**离散的、高维的输入（如单词、句子、用户、商品）表示为低维的、稠密的、连续的向量 (Vector)**。
+    自然语言处理 (NLP) 是人工智能 (AI) 和语言学的一个交叉领域，专注于**使计算机能够理解、解释、处理和生成人类自然语言（如中文、英文）**。其目标是弥合人类交流方式与计算机理解能力之间的鸿沟。
 
-    这个向量被称为**嵌入向量 (Embedding Vector)**，其核心思想是**捕捉输入的语义信息**。在向量空间中，**语义上相似的输入，其对应的嵌入向量在空间中的距离也更近**。
+    NLP 是许多现代 AI 应用的基础，尤其是那些涉及文本或语音交互的应用，例如：
+    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]] 本身就是 NLP 领域取得突破性进展的成果。
+    *   [[../应用案例 - AI 助手/00 - AI 购物助手案例分析 (Rufus 启发)|AI 助手]] / 聊天机器人
+    *   机器翻译
+    *   情感分析
+    *   文本摘要
+    *   信息抽取
+    *   语音识别 (通常与 NLP 结合)
 
-    [!info] 直观理解
-    想象一个巨大的多维空间（远超三维）。Embedding 技术就像给每个词（或句子、商品）在这个空间里找到一个坐标点。意思相近的词（比如“国王”和“女王”）它们的坐标点会很接近；而意思不同的词（比如“国王”和“香蕉”）坐标点会离得很远。甚至可以通过向量运算体现一些关系，比如 `Vector("国王") - Vector("男人") + Vector("女人")` 在空间中可能非常接近 `Vector("女王")`。
+    ## NLP 的主要任务
 
-    ## 为什么需要 Embedding？
+    NLP 涵盖了广泛的任务，可以大致分为两大类：
 
-    *   **让机器理解语义**: 计算机无法直接理解文本。通过将词语或句子转换为向量，机器学习模型（如 [[../大型语言模型 (LLM)|LLM]]）才能对其进行数学运算和处理，从而理解语义关系。
-    *   **降维**: 将原本高维稀疏的表示（例如 one-hot 编码，维度等于词表大小）转换为低维稠密的向量，减少计算复杂度，提高模型效率。
-    *   **捕捉相似性**: 可以方便地计算不同输入之间的语义相似度（例如通过计算向量之间的[[余弦相似度]]或[[欧氏距离]]）。这对于[[../检索增强生成 (RAG)|信息检索]]、[[推荐系统]]、[[聚类]]等任务至关重要。
-    *   **作为模型输入**: 嵌入向量通常作为[[../Core Technologies/Transformer 模型|Transformer]]等深度学习模型的初始输入层。
-
-    ## Embedding 的类型
-
-    *   **词嵌入 (Word Embedding)**: 为词汇表中的每个单词生成一个向量。经典算法包括 Word2Vec, GloVe, FastText。缺点是无法处理未登录词 (OOV)，且无法很好地表达一词多义。
-    *   **句子/文本嵌入 (Sentence/Text Embedding)**: 为整个句子或段落生成一个向量表示。常用的方法包括：
-        *   对词嵌入进行平均或加权平均。
-        *   使用 [[../Core Technologies/Transformer 模型|Transformer]] 的编码器（如 BERT, Sentence-BERT）直接生成句子级别的向量。这通常效果更好，能捕捉更复杂的语义。
-
-    ## Embedding 的应用
-
-    *   **[[../大型语言模型 (LLM)|LLM]] 的输入**: LLM 的第一步通常就是将输入的文本转换为嵌入向量。
-    *   **[[../检索增强生成 (RAG)|检索增强生成 (RAG)]]**: 将知识库中的文档块和用户查询都转换为嵌入向量，通过在[[../Core Technologies/向量数据库|向量数据库]]中进行相似度搜索，快速找到最相关的上下文信息。**这是 RAG 的核心机制之一。**
-    *   **语义搜索**: 用户输入查询，系统将其转换为向量，在索引好的文档向量库中查找最相似的文档。
-    *   **[[推荐系统]]**: 将用户和物品（如商品、电影）都嵌入到同一个向量空间，通过计算用户向量与物品向量的相似度来进行推荐。
-    *   **文本分类/聚类**: 将文本转换为嵌入向量后，再输入给分类或聚类模型。
-
-    ## 对产品经理的意义
-
-    *   **理解 AI 能力基础**: 了解 Embedding 是机器理解语言语义的关键一步。
-    *   **理解 RAG 核心**: 明白 Embedding 和[[../Core Technologies/向量数据库|向量数据库]]是实现高效[[../检索增强生成 (RAG)|语义检索]]以支持 RAG 的基础。
-    *   **评估技术方案**: 在讨论语义搜索、推荐系统、RAG 等方案时，能理解 Embedding 在其中的作用和重要性。
-    *   **数据考量**: 知道生成高质量 Embedding 需要大量的训练数据，并且可能需要针对特定领域进行微调。
-
-    ## 总结
-
-    Embedding 是将文本等离散输入转化为机器可理解的、包含语义信息的向量表示的关键技术。它是 [[../大型语言模型 (LLM)|LLM]]、[[../检索增强生成 (RAG)|RAG]]、语义搜索和推荐系统等众多 AI 应用的基石。产品经理理解其基本概念和应用价值，有助于更好地设计 AI 产品和评估相关技术方案。
-
-    ## 相关概念
-
-    *   [[向量 (Vector)]]
-    *   [[向量空间]]
-    *   [[语义相似度]]
-    *   [[余弦相似度]]
-    *   [[Word2Vec]], [[GloVe]] (词嵌入算法)
-    *   [[BERT]], [[Sentence-BERT]] (文本嵌入模型)
-    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
-    *   [[../检索增强生成 (RAG)|检索增强生成 (RAG)]]
-    *   [[../Core Technologies/向量数据库|向量数据库]]
-    *   [[自然语言处理 (NLP)]]
-""")
-
-vector_db_path = os.path.join(ai_core_tech_folder, '向量数据库.md')
-vector_db_content = textwrap.dedent("""\
-    ---
-    tags: [topic/ai_ml, concept/vector_database, type/database, technology]
-    aliases: [Vector Database, 向量库]
-    ---
-    # 向量数据库 (Vector Database)
-
-    [[../00 - AI 与机器学习概览|返回 AI 概览]] | [[../Core Technologies/嵌入 (Embedding)|相关: 嵌入 (Embedding)]] | [[../检索增强生成 (RAG)|相关: RAG]]
-
-    ## 概述
-
-    向量数据库是一种**专门设计用于存储、索引和高效查询高维[[../Core Technologies/嵌入 (Embedding)|嵌入向量 (Embedding Vectors)]]** 的数据库。
-
-    随着[[../Core Technologies/嵌入 (Embedding)|Embedding]]技术在 AI 领域的广泛应用（用于表示文本、图像、音频等的语义信息），如何快速地在海量向量中找到与给定查询向量**最相似**的向量（即[[近似最近邻搜索 (Approximate Nearest Neighbor, ANN)]]）成为了一个关键需求。传统的关系型数据库或文档数据库并不擅长处理这种高维向量的相似性搜索。向量数据库应运而生，填补了这一空白。
-
-    ## 核心功能：相似性搜索
-
-    向量数据库的核心能力是**高效的相似性搜索 (Similarity Search)**。当给定一个查询向量时（例如，用户问题的[[../Core Technologies/嵌入 (Embedding)|嵌入]]），向量数据库能够快速地从数百万甚至数十亿的向量中，找出在向量空间中与其**距离最近**（即语义最相似）的 K 个向量（K-Nearest Neighbors, KNN）。
-
-    常用的相似度/距离度量包括：
-    *   **[[余弦相似度 (Cosine Similarity)]]**: 衡量向量方向的相似性，常用于文本嵌入。
-    *   **[[欧氏距离 (Euclidean Distance)]]**: 衡量向量空间中的直线距离。
-    *   **点积 (Dot Product)**
-
-    为了实现**快速**搜索，向量数据库通常采用**[[近似最近邻搜索 (ANN)]]** 算法（如 HNSW, LSH, IVF 等），这些算法能在可接受的精度损失范围内，极大地提升搜索速度。
-
-    ## 为什么需要向量数据库？(尤其对于 RAG)
-
-    向量数据库是实现高效[[../检索增强生成 (RAG)|检索增强生成 (RAG)]]系统的**关键基础设施**：
-
-    1.  **存储知识库向量**: [[../检索增强生成 (RAG)|RAG]] 需要将外部知识库（文档、网页等）分割成块 (Chunks)，并将每个块转换为[[../Core Technologies/嵌入 (Embedding)|嵌入向量]]存储起来。向量数据库提供了存储这些海量向量的场所。
-    2.  **快速语义检索**: 当用户提问时，RAG 需要将用户问题也转换为[[../Core Technologies/嵌入 (Embedding)|嵌入向量]]，然后在知识库向量中快速找到语义最相关的几个文档块作为[[../检索增强生成 (RAG)|上下文]]。向量数据库的 ANN 搜索能力使得这一步非常高效。
-    3.  **可扩展性**: 能够处理不断增长的向量数据。
-    4.  **元数据过滤**: 通常支持在向量搜索的同时，根据元数据（如文档来源、时间戳、类别标签）进行过滤，提高检索的精确性。
+    1.  **自然语言理解 (Natural Language Understanding - NLU)**: 让计算机“读懂”人类语言。
+        *   **[[词法分析]]**: 分词 (将句子切分成单词)、词性标注 (识别名词、动词等)。
+        *   **[[句法分析]]**: 分析句子结构（主谓宾、依存关系）。
+        *   **[[语义分析]]**: 理解单词和句子的含义，包括消歧（如“苹果”指水果还是公司？）、[[实体识别]]（识别人名、地名、组织名）、[[关系抽取]]（识别实体间的关系）。
+        *   **[[意图识别]]**: 判断用户说话的意图（例如，是提问、抱怨还是下指令）。
+        *   **[[情感分析]]**: 判断文本的情感倾向（正面、负面、中性）。
+    2.  **自然语言生成 (Natural Language Generation - NLG)**: 让计算机“说出”或“写出”人类语言。
+        *   **文本规划**: 决定要表达哪些信息。
+        *   **句子规划**: 将信息组织成合乎语法的句子结构。
+        *   **文本实现**: 生成最终的自然语言文本。
+        *   [[../大型语言模型 (LLM)|LLM]] 在 NLG 方面表现尤为突出。
 
     ```mermaid
     graph TD
-        subgraph RAG 流程中的向量数据库
-            direction LR
-            A[知识库文档] --> B(文本分块);
-            B --> C{文本嵌入<br/>([[../Core Technologies/嵌入 (Embedding)|Embedding]]);
-            C --> D[(向量数据库<br/>存储文档向量)];
+        A["自然语言处理 (NLP)"] --> B["自然语言理解 (NLU)<br/>(让机器'懂')"];
+        A --> C["自然语言生成 (NLG)<br/>(让机器'说')"];
 
-            E[用户查询] --> F{查询嵌入<br/>([[../Core Technologies/嵌入 (Embedding)|Embedding]]);
-            F -- "查询向量" --> G{向量数据库<br/>(ANN 搜索)};
-            D -- "被搜索" --> G;
-            G -- "Top-K 相似向量<br/>(对应相关文档块)" --> H[检索到的上下文];
-            H --> I[[[../大型语言模型 (LLM)|LLM]] 生成];
+        subgraph NLU 任务示例
+            B --> B1["分词/词性标注"];
+            B --> B2["句法分析"];
+            B --> B3["语义分析 (消歧/实体/关系)"];
+            B --> B4["意图识别"];
+            B --> B5["情感分析"];
         end
-        style D fill:#f9f, stroke:#333
-        style G fill:#f9f, stroke:#333
+
+        subgraph NLG 任务示例
+            C --> C1["文本摘要"];
+            C --> C2["机器翻译"];
+            C --> C3["对话生成"];
+            C --> C4["内容创作"];
+        end
+
+        B & C <--> D("[[../大型语言模型 (LLM)|LLM]]<br/>(同时擅长 NLU 和 NLG)");
     ```
 
-    ## 常见的向量数据库
+    ## NLP 技术的发展
 
-    *   **专用向量数据库**: Pinecone, Weaviate, Milvus, Qdrant, Chroma DB 等。它们专门为向量存储和搜索而设计优化。
-    *   **现有数据库扩展**: PostgreSQL (通过 pgvector 扩展), Elasticsearch, Redis 等也增加了向量搜索功能，但可能在性能和功能上与专用库有差异。
+    *   **早期 (基于规则)**: 依赖语言学家手动编写大量语法规则和词典。效果有限，难以覆盖语言的复杂性和歧义性。
+    *   **统计 NLP**: 基于大规模语料库，使用[[机器学习]]（如 [[朴素贝叶斯]]、[[支持向量机 (SVM)]]、[[隐马尔可夫模型 (HMM)]]）学习语言的统计模式。比基于规则的方法效果更好，但仍依赖特征工程。
+    *   **[[深度学习]]时代**:
+        *   [[../Core Technologies/嵌入 (Embedding)|词嵌入 (Word Embeddings)]] (Word2Vec, GloVe) 解决了词语的向量表示问题。
+        *   RNN/LSTM 在序列建模上取得进展。
+        *   **[[../Core Technologies/Transformer 模型|Transformer]] 架构 (2017)**: 带来了革命性突破，其[[自注意力]]机制能有效捕捉长距离依赖并支持并行计算，成为现代 NLP 的基石。
+        *   **预训练语言模型 (Pre-trained Language Models, PLM)**: 如 BERT, GPT 等基于 [[../Core Technologies/Transformer 模型|Transformer]] 在海量数据上预训练的模型，只需少量[[../微调 (Fine-tuning)|微调]]即可在各种下游 NLP 任务上取得优异效果，极大降低了应用门槛。
+        *   **[[../大型语言模型 (LLM)|大型语言模型 (LLM)]]**: 参数规模更大、能力更强的 PLM，展现出强大的理解和生成能力。
 
     ## 对产品经理的意义
 
-    *   **理解 RAG 技术栈**: 知道向量数据库是实现高效 RAG 的关键组件。
-    *   **评估技术方案**: 在讨论需要语义搜索或 RAG 功能的产品时，能够理解引入向量数据库的必要性和相关考量（如选型、成本、性能）。
-    *   **数据管理考量**: 考虑知识库的构建、[[../Core Technologies/嵌入 (Embedding)|Embedding]] 生成、向量数据库的维护和更新策略。
-    *   **性能与成本权衡**: 不同的向量数据库或 ANN 算法在搜索速度、精度、内存消耗、成本等方面有不同的权衡。
+    *   **理解 AI 产品基础**: NLP 是理解许多 AI 产品（尤其是涉及文本交互的）工作原理的基础。
+    *   **定义产品需求**: 能够更准确地描述产品在理解用户输入（NLU）和生成响应（NLG）方面需要达到的能力水平。
+    *   **评估技术可行性**: 对 NLP 任务的难度有基本判断（例如，简单的意图识别 vs. 复杂的开放域对话）。
+    *   **沟通协作**: 能与 NLP 工程师使用共同语言交流。
 
     ## 总结
 
-    向量数据库是 AI 应用（特别是涉及[[../Core Technologies/嵌入 (Embedding)|Embedding]]和语义相似性搜索的应用，如[[../检索增强生成 (RAG)|RAG]]）的重要基础设施。它使得在大规模向量数据中进行快速、高效的相似性搜索成为可能。产品经理理解其作用和价值，有助于更好地规划和设计依赖语义理解和检索能力的 AI 产品。
+    NLP 是使计算机能够处理人类语言的关键技术领域。从早期的规则方法到统计学习，再到如今由 [[../Core Technologies/Transformer 模型|Transformer]] 和 [[../大型语言模型 (LLM)|LLM]] 引领的深度学习时代，NLP 取得了巨大进步。理解 NLP 的基本概念、主要任务和发展历程，有助于产品经理更好地设计和评估利用自然语言交互的 AI 产品。
 
     ## 相关概念
 
+    *   [[人工智能 (AI)]]
+    *   [[机器学习 (ML)]]
+    *   [[深度学习]]
+    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
+    *   [[../Core Technologies/Transformer 模型|Transformer 模型]]
     *   [[../Core Technologies/嵌入 (Embedding)|嵌入 (Embedding)]]
-    *   [[向量 (Vector)]]
-    *   [[相似性搜索]]
-    *   [[近似最近邻搜索 (ANN)]]
-    *   [[../检索增强生成 (RAG)|检索增强生成 (RAG)]]
-    *   [[信息检索]]
-    *   [[数据库]]
-    *   [[机器学习]]
+    *   [[自然语言理解 (NLU)]]
+    *   [[自然语言生成 (NLG)]]
+    *   [[../应用案例 - AI 助手/00 - AI 购物助手案例分析 (Rufus 启发)|AI 助手]]
 """)
 
-# Concepts/AI & ML/Models
-ai_models_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML', 'Models')
+# --- Concepts/AI & ML/Infrastructure ---
+# (Creating this new subfolder)
+ai_infra_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML', 'Infrastructure')
 
-llama_path = os.path.join(ai_models_folder, 'LLaMA 模型系列.md')
-llama_content = textwrap.dedent("""\
+api_path = os.path.join(ai_infra_folder, 'API (应用程序接口).md')
+api_content = textwrap.dedent("""\
     ---
-    tags: [topic/ai_ml, concept/llm, model/llama, type/open_source_model]
-    aliases: [LLaMA, Llama 2, Llama 3]
+    tags: [topic/technology, concept/api, type/definition, interface]
+    aliases: [API, Application Programming Interface]
     ---
-    # LLaMA 模型系列
+    # API (应用程序接口)
 
-    [[主流 LLM 模型概览|返回 模型概览]] | [[../开源 vs 闭源模型|开源模型]]
+    [[../00 - AI 与机器学习概览|返回 AI 概览]] | [[../开源 vs 闭源模型|相关: 开源 vs 闭源模型]]
 
     ## 概述
 
-    LLaMA (Large Language Model Meta AI) 是由 **Meta AI (Facebook 的 AI 研究部门)** 开发的一系列**[[../大型语言模型 (LLM)|大型语言模型]]**。LLaMA 系列以其**开源**的特性（特别是 Llama 2 和 Llama 3 对商业使用也相对友好）和**强大的性能**（在同等参数规模下通常表现优异）而备受关注，极大地推动了[[../开源 vs 闭源模型|开源 LLM]]生态的发展。
+    API (Application Programming Interface)，即应用程序接口，是一组**预定义的规则、协议和工具**，允许不同的软件应用程序之间相互**通信和交互**。你可以把它想象成是软件服务提供商（例如 OpenAI, Google Cloud）提供给开发者（例如你公司的工程师）的一个“菜单”或“遥控器”，开发者可以通过这个菜单/遥控器来请求服务或数据，而不需要知道服务内部复杂的实现细节。
 
-    ## 主要版本与特点
+    ## API 的工作方式 (简化)
 
-    *   **LLaMA (原始版本)**: 2023 年初发布，最初仅供研究用途，但权重意外泄露，引发了开源社区的热潮。展示了在相对较小参数规模（7B, 13B, 33B, 65B）下也能达到接近[[../Models/GPT 模型系列|GPT-3]]等更大闭源模型性能的可能性。
-    *   **Llama 2**: 2023 年中发布，是 LLaMA 的重大升级。
-        *   **性能提升**: 在更多数据上训练，性能显著提升。
-        *   **开源且可商用**: 允许商业使用（有一定限制条件，如月活用户超 7 亿需申请许可），极大地促进了其应用落地。
-        *   **不同规模**: 提供 7B, 13B, 70B 等参数规模的模型。
-        *   **Chat 版本**: 提供了经过指令微调和 RLHF (人类反馈强化学习) 优化的对话版本 (Llama 2-Chat)，更擅长遵循指令和进行对话。
-    *   **Llama 3**: 2024 年 4 月发布，是 Llama 系列的最新一代。
-        *   **性能再次飞跃**: 在多个基准测试上表现出色，被认为是当前最强的开源模型之一，尤其在 8B 和 70B 参数级别上，性能可与 [[../Models/GPT 模型系列|GPT-3.5]] 甚至 [[../Models/Gemini 模型系列|Gemini Pro]] 等闭源模型媲美。
-        *   **改进的预训练**: 使用了更大、更高质量的数据集（超过 15T token），并改进了训练方法。
-        *   **更长的上下文窗口**: 支持更长的输入文本。
-        *   **更好的指令遵循能力**: 对话版本 (Llama 3 Instruct) 在理解和遵循复杂指令方面有显著提升。
-        *   **多语言能力提升**: (未来版本会更强)
-        *   **开源可商用**: 延续了 Llama 2 的开放政策。
+    API 的交互通常遵循**请求-响应 (Request-Response)** 模式：
 
-    ## LLaMA 系列的影响
+    1.  **客户端 (Client)**: 需要使用某项服务的应用程序（例如，你的电商 App 后端）。
+    2.  **发起请求 (Request)**: 客户端按照 API 定义的**格式和协议**（通常是 HTTP/HTTPS），向指定的 **API 端点 (Endpoint)**（一个 URL 地址）发送请求。请求中通常包含：
+        *   **方法 (Method)**: 如 GET (获取数据), POST (提交数据), PUT (更新数据), DELETE (删除数据)。
+        *   **头部 (Headers)**: 包含元数据，如身份验证信息 (**API 密钥/令牌**)、内容类型等。
+        *   **参数 (Parameters)**: （可选）附加信息，可以在 URL 中（查询参数）或请求体中（Body）。
+        *   **请求体 (Body)**: （对于 POST/PUT 等）包含要发送的数据，通常是 JSON 格式。
+    3.  **服务器 (Server)**: 提供 API 服务的应用程序（例如，OpenAI 的服务器）。
+    4.  **处理请求**: 服务器接收到请求，验证身份，根据请求内容执行相应的操作（例如，调用 [[../大型语言模型 (LLM)|LLM]] 生成文本）。
+    5.  **返回响应 (Response)**: 服务器将处理结果按照 API 定义的格式（通常是 JSON）返回给客户端。响应中通常包含：
+        *   **状态码 (Status Code)**: 如 200 (成功), 400 (错误请求), 401 (未授权), 500 (服务器错误)。
+        *   **头部 (Headers)**: 响应的元数据。
+        *   **响应体 (Body)**: 包含请求的结果数据（例如，LLM 生成的文本、错误信息）。
 
-    *   **推动开源生态**: 为研究人员和开发者提供了强大的、可自由访问和修改的基础模型，催生了大量基于 LLaMA 的微调模型和应用。
-    *   **降低使用门槛**: 使得中小型企业和个人开发者也能用上高性能的 LLM，而无需完全依赖昂贵的闭源 API。
-    *   **促进竞争与创新**: 对闭源模型厂商构成了竞争压力，加速了整个 LLM 领域的发展。
-    *   **数据隐私优势**: [[../开源 vs 闭源模型|允许本地部署]]，满足了对数据隐私要求高的场景。
+    ```mermaid
+    sequenceDiagram
+        participant Client as 客户端 App (e.g., 电商后端)
+        participant Server as API 服务器 (e.g., OpenAI)
+
+        Client->>Server: 1. 发起 API 请求 (POST /v1/chat/completions)<br/>- Header: Authorization: Bearer YOUR_API_KEY<br/>- Body: {"model": "gpt-4o", "messages": [...]}
+        activate Server
+        Server-->>Server: 2. 验证身份, 处理请求 (调用 LLM)
+        Server-->>Client: 3. 返回 API 响应<br/>- Status: 200 OK<br/>- Body: {"choices": [{"message": {"content": "生成的文本"}}]}
+        deactivate Server
+    ```
+
+    ## API 在 LLM 领域的应用
+
+    API 是使用**[[../开源 vs 闭源模型|闭源 LLM]]** 的主要方式。公司如 OpenAI (GPT 系列), Anthropic (Claude 系列), Google (Gemini API) 等都提供了 API，允许开发者将这些强大的 LLM 集成到自己的应用程序中，而无需自己部署和维护庞大的模型。
+
+    **通过 LLM API 可以实现**:
+    *   文本生成
+    *   聊天对话
+    *   文本摘要
+    *   [[../Core Technologies/嵌入 (Embedding)|文本嵌入]] (将文本转换为向量)
+    *   ... 等等
+
+    **调用 LLM API 的关键考量**:
+    *   **成本**: 通常按输入和输出的 **Token 数量**（大致可理解为单词或字符块）收费，大规模使用成本可能很高。
+    *   **[[../大型语言模型 (LLM)|延迟 (Latency)]]**: API 调用需要网络传输和服务器处理时间，可能存在延迟。
+    *   **速率限制 (Rate Limits)**: API 提供商通常会限制单位时间内的请求次数。
+    *   **[[../技术相关/数据隐私|数据隐私]]**: 将用户数据发送给第三方 API，需要仔细评估提供商的隐私政策。
+    *   **可用性与稳定性**: 依赖第三方服务的稳定性。
+    *   **版本管理**: API 和底层模型会更新，需要关注版本兼容性。
 
     ## 对产品经理的意义
 
-    *   **技术选型考量**: 在进行 [[../技术选型|技术选型]] 时，LLaMA 系列是[[../开源 vs 闭源模型|开源路径]]上的重要选项。需要评估其性能、部署成本、维护难度与特定产品需求的匹配度。
-    *   **了解能力边界**: 关注 LLaMA 系列的最新进展和评测报告，了解当前顶级开源模型的真实能力和局限性。
-    *   **社区价值**: 认识到开源社区的存在可以提供丰富的微调模型、工具和解决方案，但也需要评估社区贡献的质量和可靠性。
-    *   **与闭源模型的权衡**: 能够清晰地阐述选择 LLaMA（开源）而非 GPT/Claude（闭源）的理由（或反之），参见 [[../开源 vs 闭源模型]]。
+    *   **理解技术实现方式**: 知道 API 是集成第三方服务（尤其是闭源 LLM）的主要方式。
+    *   **评估技术选型**: 参与讨论 [[../开源 vs 闭源模型|API vs. 开源模型]]的利弊，理解 API 模式的优缺点（易用性、成本、控制权、隐私等）。
+    *   **成本意识**: 理解 API 调用是按量付费的，需要在产品设计中考虑成本效益。
+    *   **关注非功能性需求**: 关注 API 的延迟、速率限制、稳定性对[[../产品设计/用户体验 (UX)|用户体验]]的影响。
+    *   **[[../沟通协作/沟通技巧|沟通]]**: 能与工程师讨论 API 选择、集成方式、错误处理等问题。
 
     ## 总结
 
-    LLaMA 系列是 Meta 推出的高性能开源 LLM，对 AI 领域产生了深远影响。了解 LLaMA 的基本情况、版本迭代和核心优势，对于需要进行 LLM 技术选型的 AI 产品经理来说非常重要。它代表了开源 LLM 的重要力量，是闭源 API 之外的一个关键选择。
+    API 是现代软件开发的粘合剂，使得不同系统能够方便地交互。对于 LLM 领域，API 是使用强大闭源模型的主要途径。产品经理需要理解 API 的基本工作原理及其在 LLM 应用中的关键考量（成本、延迟、隐私等），以便在产品规划和技术选型中做出明智的决策。
 
     ## 相关概念
 
-    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
     *   [[../开源 vs 闭源模型|开源 vs 闭源模型]]
-    *   [[Meta AI]]
-    *   [[微调 (Fine-tuning)]]
-    *   [[RLHF]] (人类反馈强化学习)
-    *   [[参数规模]]
-    *   [[基准测试 (Benchmark)]]
-    *   [[主流 LLM 模型概览]]
+    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
+    *   [[HTTP/HTTPS]]
+    *   [[JSON]]
+    *   [[身份验证]] (API Key/Token)
+    *   [[端点 (Endpoint)]]
+    *   [[请求-响应模式]]
+    *   [[延迟 (Latency)]]
+    *   [[速率限制]]
+    *   [[../技术相关/数据隐私|数据隐私]]
+    *   [[技术选型]]
 """)
 
-mainstream_llms_path = os.path.join(ai_models_folder, '主流 LLM 模型概览.md')
-mainstream_llms_content = textwrap.dedent("""\
-    ---
-    tags: [topic/ai_ml, concept/llm, type/overview, model/comparison]
-    aliases: [LLM Landscape, 主流大模型]
-    ---
-    # 主流 LLM 模型概览
+# --- Concepts/AI & ML/Evaluation ---
+# (Creating this new subfolder)
+ai_evaluation_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML', 'Evaluation')
 
-    [[../00 - AI 与机器学习概览|返回 AI 概览]] | [[../大型语言模型 (LLM)|LLM 基础]]
+benchmark_path = os.path.join(ai_evaluation_folder, '基准测试 (Benchmark).md')
+benchmark_content = textwrap.dedent("""\
+    ---
+    tags: [topic/ai_ml, concept/benchmark, type/evaluation, process/evaluation]
+    aliases: [Benchmark, LLM Benchmark, AI Benchmark, 模型评测基准]
+    ---
+    # 基准测试 (Benchmark)
+
+    [[../00 - AI 与机器学习概览|返回 AI 概览]] | [[../Models/主流 LLM 模型概览|相关: 主流模型]]
 
     ## 概述
 
-    当前[[../大型语言模型 (LLM)|大型语言模型 (LLM)]]领域发展迅速，涌现了众多来自不同公司和研究机构的模型。了解主流模型的名称、开发者、主要特点以及[[../开源 vs 闭源模型|开放性]]，对于 AI 产品经理进行技术选型和评估非常有帮助。
+    基准测试 (Benchmark) 在 AI 和机器学习领域，特别是 [[../大型语言模型 (LLM)|LLM]] 领域，指的是一套**标准化的、公开的数据集和评估指标**，用于**系统性地衡量和比较不同模型在特定任务或能力上的表现**。
 
-    以下列举一些当前（截至编写时，技术发展很快，请关注最新信息）比较知名和有影响力的 LLM 系列：
+    你可以把 Benchmark 想象成 AI 模型的“标准化考试”。通过让不同的模型在同一套“考题”上进行测试，并使用统一的“评分标准”，研究人员和开发者可以：
 
-    ## 主流模型系列简介
+    *   **客观评估模型能力**: 量化模型在特定任务（如阅读理解、常识推理、代码生成、数学问题）上的表现。
+    *   **比较不同模型**: 横向比较不同模型（例如 [[../Models/GPT 模型系列|GPT-4]] vs [[../Models/Claude 模型系列|Claude 3]] vs [[../Models/LLaMA 模型系列|Llama 3]]）在相同任务上的优劣。
+    *   **追踪技术进展**: 衡量新模型或新训练方法相对于先前模型的改进程度。
+    *   **识别模型强项与弱点**: 了解模型在哪些类型的任务上表现好，在哪些方面有待提高。
 
-    | 模型系列        | 主要开发者     | 主要特点/定位                                     | 开放性 ([[../开源 vs 闭源模型|Open/Closed]]) | 备注/知名版本举例                                    |
-    | :-------------- | :------------- | :------------------------------------------------ | :------------------------------------ | :--------------------------------------------------- |
-    | **[[GPT 模型系列|GPT 系列]]** | OpenAI         | **通用能力强**，引领多轮对话和指令遵循，API 易用 | **闭源 (API)**                      | GPT-3, GPT-3.5 (ChatGPT), GPT-4, GPT-4o              |
-    | **[[Claude 模型系列|Claude 系列]]** | Anthropic      | 强调**安全性、伦理**和“宪法 AI”，长文本处理能力强 | **闭源 (API)**                      | Claude, Claude 2, Claude 3 (Haiku, Sonnet, Opus) |
-    | **[[Gemini 模型系列|Gemini 系列]]** | Google DeepMind | **多模态能力** (原生支持文本、图像、音频、视频)，与 Google 生态集成 | **闭源 (API)** / 部分小模型[[../Models/Gemma 模型系列|开源 (Gemma)]] | Gemini Pro, Gemini Ultra, Gemini Flash             |
-    | **[[LLaMA 模型系列|Llama 系列]]** | Meta AI        | **高性能开源**，推动开源生态发展，允许商用      | **开源**                            | Llama 2 (7B, 13B, 70B), Llama 3 (8B, 70B)           |
-    | **[[Mistral 模型系列|Mistral 系列]]**| Mistral AI     | **高性能开源**，尤其在中等规模模型上表现优异，注重效率 | **开源** / 部分模型闭源 (API)       | Mistral 7B, Mixtral 8x7B (MoE), Mistral Large (API) |
-    | **Falcon 系列** | TII (阿联酋)   | 早期重要的高性能开源模型                          | **开源**                            | Falcon 40B, Falcon 180B                            |
-    | **(国内示例)**    | 如百度、阿里、智谱AI、月之暗面等 | 各具特色，中文能力通常较强，部分开源或提供 API | **混合** (部分开源，部分闭源 API) | 文心一言, 通义千问, ChatGLM, Kimi 等                 |
+    ## 常见的 LLM 基准测试示例
 
-    **说明:**
-    *   "B" 通常指 Billion (十亿) 参数。参数规模是衡量模型大小的一个指标，但不完全等同于性能。
-    *   模型的性能通常通过各种[[基准测试 (Benchmark)]]来评估，但实际应用效果还需结合具体场景测试。
-    *   [[开源 vs 闭源模型|开放性]]可能随时间变化，需关注官方发布。
-    *   MoE (Mixture of Experts) 是一种模型架构，可以在保持较低计算成本的同时实现大规模参数的效果。
+    存在许多不同的 LLM 基准测试，侧重于评估模型的不同方面：
 
-    ## 产品经理需要了解多深？
+    *   **通用语言理解与知识**:
+        *   **MMLU (Massive Multitask Language Understanding)**: 涵盖了 57 个不同学科（从高中到专业级别）的多项选择题，测试模型的广泛知识和推理能力。**非常常用。**
+        *   **GLUE / SuperGLUE**: 包含一系列多样化的 NLU（自然语言理解）任务，如情感分析、文本蕴含、相似度判断等。
+        *   **HellaSwag**: 评估模型对日常场景的常识推理能力（预测接下来最可能发生什么）。
+    *   **推理能力**:
+        *   **GSM8K**: 小学数学应用题，测试模型的数学推理能力。
+        *   **LogiQA**: 逻辑推理问题。
+    *   **代码能力**:
+        *   **HumanEval**: 根据 Python 函数文档字符串生成函数代码。
+        *   **MBPP (Mostly Basic Python Programming)**: 基础 Python 编程问题。
+    *   **综合性基准**:
+        *   **HELM (Holistic Evaluation of Language Models)**: 由斯坦福大学提出，试图从多个维度（准确性、鲁棒性、公平性、效率等）对模型进行更全面的评估。
+        *   **AlpacaEval**: 评估模型遵循指令和进行对话的能力，通常使用更强的模型（如 GPT-4）作为裁判进行打分。
 
-    这是一个常见问题，尤其对于非技术背景的 PM。参见 [[../核心技能/PM 对 LLM 的理解深度|PM 对 LLM 的理解深度]]。
+    ## 如何解读 Benchmark 结果？
 
-    **核心观点**: PM **不需要**深入理解模型的算法细节或数学原理，但需要：
+    *   **分数越高通常越好**: 但要理解每个 Benchmark 的具体指标含义。
+    *   **关注特定能力**: 根据你的产品需求，关注在相关任务（如问答、代码、推理）上的 Benchmark 表现。
+    *   **查看排行榜**: 许多组织（如 Hugging Face 的 Open LLM Leaderboard）会发布不同模型在各种 Benchmark 上的排名。
+    *   **注意模型规模**: 比较时应考虑模型的[[../Models/参数规模|参数规模]]，通常更大规模的模型表现更好。
+    *   **区分基础模型和微调模型**: 有些 Benchmark 是针对基础模型，有些是针对经过指令[[../微调 (Fine-tuning)|微调]]的对话模型。
 
-    1.  **理解核心概念**: 懂 [[../大型语言模型 (LLM)|LLM]], [[../Core Technologies/Transformer 模型|Transformer]], [[../Core Technologies/嵌入 (Embedding)|Embedding]], [[../检索增强生成 (RAG)|RAG]], [[../提示工程 (Prompt Engineering)|Prompt]], [[../模型幻觉 (Hallucination)|幻觉]], [[../模型鲁棒性 (Robustness)|鲁棒性]], [[../开源 vs 闭源模型|开源/闭源]] 等基本概念的含义和作用。
-    2.  **了解能力边界**: 知道当前主流模型能做什么、不能做什么，它们的优势和局限性是什么。
-    3.  **把握技术趋势**: 关注行业发展，了解不同模型的演进方向（例如：多模态、更长上下文、更高效率）。
-    4.  **评估与选型**: 能够基于产品需求，与技术团队讨论并参与模型选型的决策，理解不同选择（如开源 vs. 闭源, 不同模型 API）在**成本、性能、定制化、隐私、风险**等方面的权衡。
-    5.  **有效沟通**: 能够用相对准确的语言与工程师、算法科学家沟通需求和产品逻辑。
+    ## Benchmark 的局限性 (重要!)
 
-    [!tip] 面试建议
-    面试时，展现你对主流模型的**了解广度**（知道有哪些主要玩家和它们的特点）和对**核心概念的理解深度**（能解释 RAG、幻觉等并讨论其影响），比深入某个具体模型的算法细节更重要。强调你如何基于这些理解来做产品决策。
+    [!warning] 注意：Benchmark 不是万能的！
+    产品经理需要**批判性地看待 Benchmark 结果**，它只是评估模型能力的一个维度，存在以下局限性：
+
+    *   **无法完全反映真实世界表现**: 标准化测试环境与复杂多变的真实应用场景存在差距。模型在 Benchmark 上得分高，不代表在你的具体产品中表现一定好。
+    *   **可能存在“应试”现象 (Overfitting to Benchmarks)**: 模型可能针对特定 Benchmark 的模式进行了过度优化，导致在这些任务上得分虚高，但在其他未覆盖的任务上表现平平。
+    *   **数据污染 (Data Contamination)**: 如果 Benchmark 的测试数据意外地出现在模型的训练数据中，会导致分数虚高。
+    *   **评估维度有限**: 许多 Benchmark 主要关注准确性，可能忽略了[[../模型鲁棒性 (Robustness)|鲁棒性]]、[[../模型幻觉 (Hallucination)|幻觉控制]]、[[../模型偏见|公平性]]、[[../大型语言模型 (LLM)|生成速度 (Latency)]]、[[../大型语言模型 (LLM)|成本]]等在实际应用中同样重要的因素。
+    *   **指标本身的局限性**: 有些任务的评估指标（如 BLEU 用于翻译）并不能完全反映人类对质量的感知。
+    *   **更新速度滞后**: Benchmark 的更新速度可能跟不上模型发展的速度。
+
+    ## 对产品经理的意义
+
+    *   **了解行业水平**: Benchmark 提供了一个快速了解当前 SOTA (State-of-the-Art) 模型能力水平的参考。
+    *   **辅助技术选型**: 可以作为[[../技术选型|技术选型]]时的**参考依据之一**，但**绝不能是唯一依据**。
+    *   **沟通依据**: 在与技术团队或[[../沟通协作/利益相关者管理|利益相关者]]讨论模型能力时，可以引用相关的 Benchmark 结果。
+    *   **保持批判性思维**: 理解 Benchmark 的价值和局限性，避免唯分数论。**最终评估模型是否适合你的产品，还需要进行针对性的测试和评估。**
 
     ## 总结
 
-    LLM 领域百花齐放，了解主流模型的概况和特点，有助于 AI 产品经理把握行业动态，做出更明智的技术选型和产品规划。关键在于理解概念、能力边界和商业影响，而非钻研底层算法。
+    Benchmark 是评估和比较 LLM 能力的标准化工具，为行业提供了一个共同的参考框架。产品经理需要了解常见的 Benchmark 及其评估重点，能够解读结果，但更要认识到其局限性，**将 Benchmark 作为参考，并结合实际产品场景进行综合评估和决策**。
 
     ## 相关概念
 
     *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
-    *   [[../开源 vs 闭源模型|开源 vs 闭源模型]]
-    *   [[GPT 模型系列]] (Placeholder Link)
-    *   [[Claude 模型系列]] (Placeholder Link)
-    *   [[Gemini 模型系列]] (Placeholder Link)
-    *   [[LLaMA 模型系列]]
-    *   [[Mistral 模型系列]] (Placeholder Link)
-    *   [[Gemma 模型系列]] (Placeholder Link)
-    *   [[参数规模]]
-    *   [[基准测试 (Benchmark)]]
-    *   [[API (应用程序接口)]]
+    *   [[评估指标 (Evaluation Metrics)]]
+    *   [[模型比较]]
+    *   [[SOTA (State-of-the-Art)]]
+    *   [[MMLU]], [[SuperGLUE]], [[HumanEval]] (具体 Benchmark 示例)
+    *   [[../数据分析与实验/00 - 数据分析概览|数据分析]] (Benchmark 结果也是一种数据)
     *   [[../核心技能/PM 对 LLM 的理解深度|PM 对 LLM 的理解深度]]
 """)
 
-# Concepts/Product Management/核心技能
-core_skills_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'Product Management', '核心技能')
+# --- Concepts/AI & ML/Models ---
+# (Creating these specific model files)
+ai_models_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML', 'Models')
 
-pm_llm_depth_path = os.path.join(core_skills_folder, 'PM 对 LLM 的理解深度.md')
-pm_llm_depth_content = textwrap.dedent("""\
+gpt_series_path = os.path.join(ai_models_folder, 'GPT 模型系列.md')
+gpt_series_content = textwrap.dedent("""\
     ---
-    tags: [topic/product_management, skill/technical_literacy, type/soft_skill, domain/ai_ml]
-    aliases: [产品经理需要懂多少AI技术, PM技术深度]
+    tags: [topic/ai_ml, concept/llm, model/gpt, type/closed_source_model]
+    aliases: [GPT, GPT-3, GPT-4, GPT-4o, ChatGPT]
     ---
-    # PM 对 LLM 的理解深度
+    # GPT 模型系列 (OpenAI)
 
-    [[../../AI & ML/主流 LLM 模型概览|返回 模型概览]]
-
-    ## 问题背景
-
-    一个常见的疑问是：“作为 AI 产品经理，我需要理解像 [[../../AI & ML/Models/LLaMA 模型系列|LLaMA]]、[[../../AI & ML/Core Technologies/Transformer 模型|Transformer]] 这些技术到什么程度？” 尤其对于非技术背景出身的 PM 来说，把握合适的学习深度很重要。
-
-    ## 核心原则：聚焦Why和What，理解How的影响
-
-    产品经理的核心职责是定义**“Why”（为什么要做）**和**“What”（做什么）**，而技术团队负责**“How”（如何实现）**。但这并不意味着 PM 可以完全不懂技术。对于 AI PM，尤其需要理解“How”对“What”和“Why”的影响。
-
-    **PM 不需要成为 AI 算法专家或工程师，不需要能够编写代码或推导数学公式。**
-
-    **但是，PM 需要达到以下理解层次：**
-
-    1.  **理解核心概念与原理 (Conceptual Understanding)**:
-        *   **懂术语**: 能准确理解和使用 [[../../AI & ML/大型语言模型 (LLM)|LLM]], [[../../AI & ML/Core Technologies/Transformer 模型|Transformer]], [[../../AI & ML/Core Technologies/嵌入 (Embedding)|Embedding]], [[../../AI & ML/检索增强生成 (RAG)|RAG]], [[../../AI & ML/提示工程 (Prompt Engineering)|Prompt Engineering]], [[../../AI & ML/模型幻觉 (Hallucination)|幻觉]], [[../../AI & ML/模型鲁棒性 (Robustness)|鲁棒性]], [[../../AI & ML/微调 (Fine-tuning)|微调]], [[../../AI & ML/开源 vs 闭源模型|开源/闭源]] 等核心术语的**含义、作用和基本原理**。
-        *   **知其然，知其所以然 (Why it works)**: 对关键技术（如 [[../../AI & ML/Core Technologies/Transformer 模型|Transformer]] 的注意力机制为何能处理长依赖，[[../../AI & ML/检索增强生成 (RAG)|RAG]] 为何能缓解幻觉）有**直觉性、概念性**的理解。
-
-    2.  **了解能力边界与局限性 (Capabilities & Limitations)**:
-        *   知道当前 AI 技术（特别是 LLM）擅长什么（文本生成、理解、摘要等），不擅长什么（严格逻辑推理、事实绝对准确性、实时感知物理世界等）。
-        *   理解 [[../../AI & ML/模型幻觉 (Hallucination)|幻觉]]、[[../../AI & ML/模型偏见|偏见]]、[[../../AI & ML/模型鲁棒性 (Robustness)|鲁棒性]]差等是现有技术的固有局限性，需要在产品设计中考虑缓解策略。
-
-    3.  **把握技术趋势 (Technology Trends)**:
-        *   关注 AI 领域的主要发展方向（如多模态、更长上下文、Agent 化、效率优化等）。
-        *   了解[[../../AI & ML/Models/主流 LLM 模型概览|主流模型]]的演进和能力差异。
-
-    4.  **评估技术方案与权衡 (Evaluate Solutions & Trade-offs)**:
-        *   能够参与技术选型的讨论，理解不同方案（如 [[../../AI & ML/开源 vs 闭源模型|API vs. 开源模型]]、不同 RAG 策略、是否需要[[../../AI & ML/微调 (Fine-tuning)|微调]]）在**成本、性能、开发周期、可控性、数据隐私、风险**等方面的利弊权衡 (Trade-offs)。
-        *   能够基于产品需求，向技术团队提出合理的技术要求（例如：对[[../../AI & ML/模型幻觉 (Hallucination)|幻觉率]]的容忍度、响应[[../../AI & ML/大型语言模型 (LLM)|延迟]]要求）。
-
-    5.  **有效沟通与协作 (Effective Communication & Collaboration)**:
-        *   能够用**相对准确的技术语言**与工程师、算法科学家顺畅沟通产品需求、用户场景和业务逻辑。
-        *   能够理解技术团队反馈的技术难点、风险和限制。
-
-    ## 类比：产品经理 vs. 汽车设计师
-
-    [!info] 类比
-    想象一位汽车设计师（产品经理）。他/她不需要精通发动机的内部构造或流体力学计算（工程师/科学家的领域），但是：
-    *   需要知道不同类型的发动机（汽油、电动、混合动力）的**基本原理、优缺点、适用场景**（核心概念）。
-    *   需要了解当前发动机技术的**能力边界**（无法无限加速、有排放限制等）（局限性）。
-    *   需要关注电池技术、自动驾驶等**发展趋势**。
-    *   需要在设计时**权衡**动力、油耗/续航、成本、空间、安全性等因素（评估与权衡）。
-    *   需要能与工程师沟通设计意图，并理解工程师提出的结构或制造方面的限制（沟通协作）。
-
-    ## 如何学习？
-
-    *   **阅读科普文章和博客**: 关注 AI 领域的知名媒体、技术博客和专家解读。
-    *   **学习在线课程**: Coursera, Udacity, Fast.ai 等平台有许多面向非专业人士的 AI/ML 入门课程。
-    *   **阅读产品案例分析**: 学习其他 AI 产品是如何应用技术的。
-    *   **与技术同事交流**: 主动请教，参加技术分享会。
-    *   **动手实践**: 尝试使用 ChatGPT 等工具，体验不同的 Prompt 和功能；如果可能，参与一些简单的 AI 项目。
-    *   **聚焦概念而非细节**: 优先理解“是什么”、“为什么”、“有什么用”、“有什么风险”，而不是死抠算法细节。
-
-    ## 总结
-
-    AI 产品经理需要的是**技术素养 (Technical Literacy)**，而不是技术专精 (Technical Expertise)。关键在于**理解技术的核心概念、能力边界和商业影响，能够基于此进行产品决策，并与技术团队有效沟通协作**。不必为不懂算法细节而焦虑，持续学习，聚焦于技术如何服务于用户和业务价值即可。
-
-    ## 相关概念
-
-    *   [[技术素养]]
-    *   [[../完整框架/04 - 技术与实现|技术与实现 (完整框架)]]
-    *   [[../../AI & ML/00 - AI 与机器学习概览|AI 与机器学习概览]]
-    *   [[../../AI & ML/Models/主流 LLM 模型概览|主流 LLM 模型概览]]
-    *   [[权衡 (Trade-offs)]]
-    *   [[沟通技巧]]
-    *   [[学习能力]]
-""")
-
-
-# --- Modify existing LLM content to include new links ---
-# NOTE: In a real update scenario, you'd read the existing file first.
-# Here, we redefine the content string with added links for simplicity in this script.
-llm_content_updated = textwrap.dedent("""\
-    ---
-    tags: [topic/ai_ml, concept/llm, type/definition, technology]
-    aliases: [LLM, Large Language Model]
-    ---
-    # 大型语言模型 (Large Language Model - LLM)
-
-    [[00 - AI 与机器学习概览|返回 AI 概览]]
+    [[主流 LLM 模型概览|返回 模型概览]] | [[../开源 vs 闭源模型|闭源模型]]
 
     ## 概述
 
-    大型语言模型 (LLM) 是一种基于**[[深度学习]]**（特别是 [[Core Technologies/Transformer 模型|Transformer]] 架构）的人工智能模型，它通过在**海量文本数据**上进行训练，学习语言的模式、结构和知识，从而能够**理解和生成**类似人类的自然语言文本。
+    GPT (Generative Pre-trained Transformer) 是由 **OpenAI** 公司开发的一系列基于 [[../Core Technologies/Transformer 模型|Transformer]] 架构的[[../大型语言模型 (LLM)|大型语言模型]]。GPT 系列以其**强大的通用自然语言理解和生成能力**而闻名，尤其是 ChatGPT 的发布，极大地推动了生成式 AI 的普及和发展。
 
-    LLM 是当前许多先进 AI 应用（包括 AI 聊天机器人、内容创作工具、代码生成器以及像 Amazon Rufus 这样的 AI 购物助手）的核心驱动力。理解其基础有助于理解 [[Core Technologies/Transformer 模型|Transformer]] 和 [[Core Technologies/嵌入 (Embedding)|Embedding]] 等相关技术。
+    GPT 模型通常是**[[../开源 vs 闭源模型|闭源]]**的，主要通过 **[[../Infrastructure/API (应用程序接口)|API]]** 提供服务。
 
-    ## LLM 的核心能力
+    ## 主要版本与特点
 
-    *   **文本生成 (Text Generation)**: 创作文章、故事、邮件、代码等。
-    *   **问答 (Question Answering)**: 基于其内部知识或结合外部信息回答问题。
-    *   **文本摘要 (Summarization)**: 将长文本压缩成关键信息。
-    *   **翻译 (Translation)**: 在不同语言之间进行翻译。
-    *   **情感分析 (Sentiment Analysis)**: 判断文本所表达的情感倾向。
-    *   **对话系统 (Conversational AI)**: 进行多轮对话交互。
-    *   **代码生成/理解 (Code Generation/Understanding)**: 根据自然语言描述生成代码或解释代码。
+    *   **GPT-3 (Generative Pre-trained Transformer 3)**: 2020 年发布，拥有 1750 亿参数，在当时引起轰动。展现了强大的[[../大型语言模型 (LLM)|零示例 (Zero-shot)]]和[[../提示工程 (Prompt Engineering)|少量示例 (Few-shot)]]学习能力。
+    *   **InstructGPT / GPT-3.5**: 在 GPT-3 基础上，通过**指令[[../微调 (Fine-tuning)|微调]]**和 **RLHF (人类反馈强化学习)** 进行优化，使其更擅长**遵循用户指令**和进行**对话**。**ChatGPT (基于 GPT-3.5 Turbo)** 的发布使其广为人知。
+    *   **GPT-4**: 2023 年发布，是比 GPT-3.5 更强大的模型。
+        *   **更强的推理能力**: 在复杂问题、逻辑推理、数学等方面表现更好。
+        *   **更高的准确性**: 减少了[[../模型幻觉 (Hallucination)|幻觉]]的发生率（但仍然存在）。
+        *   **更长的上下文窗口**: 可以处理更长的输入文本。
+        *   **初步的多模态能力**: 可以接受图像输入（例如 GPT-4V）。
+    *   **GPT-4o ("o" for "omni")**: 2024 年 5 月发布，是 OpenAI 最新的旗舰模型。
+        *   **原生多模态**: 设计上可以无缝处理**文本、音频和图像**的输入和输出。
+        *   **速度更快，成本更低**: 相比 GPT-4 Turbo，API 速度更快且价格更低。
+        *   **更强的视觉和音频理解能力**。
+        *   **实时语音对话能力**显著提升，响应更自然、更快速。
 
-    ## LLM 的工作原理 (简化理解)
+    ## 优势
 
-    1.  **训练 (Training)**:
-        *   LLM 在包含互联网文本、书籍、代码等的大规模数据集上进行**预训练 (Pre-training)**。
-        *   目标是学习预测文本序列中的下一个词 (Next Token Prediction) 或填补文本中的空白 (Masked Language Modeling)。通过这个过程，模型学习语法、语义、常识知识等。输入文本首先会被转换为 [[Core Technologies/嵌入 (Embedding)|嵌入向量]]。
-        *   这个阶段计算量巨大，成本高昂。
-    2.  **[[微调 (Fine-tuning)|微调 (Fine-tuning)]]**: (可选但常见)
-        *   为了让模型在特定任务（如问答、摘要、特定领域对话）上表现更好，可以使用**更小、更具体**的数据集对预训练好的模型进行微调。
-        *   例如，可以用电商领域的问答数据微调 LLM，使其更擅长回答购物相关问题。
-    3.  **推理/推断 (Inference)**:
-        *   当用户输入一个**[[提示工程 (Prompt Engineering)|提示 (Prompt)]]**（例如一个问题）时，模型会根据其学到的模式和知识，**预测最可能**接在后面的词语序列，从而生成回答。
-        *   生成过程通常是**概率性**的，可以通过调整参数（如 Temperature）来控制输出的随机性和创造性。
+    *   **领先的通用能力**: 在广泛的自然语言任务上通常表现出业界顶尖或接近顶尖的性能。
+    *   **强大的指令遵循和对话能力**: 尤其是在微调后的 Chat 版本（如 ChatGPT, GPT-4o）。
+    *   **易用的 API**: 提供了相对成熟、文档完善的 API，方便开发者集成。
+    *   **持续快速迭代**: OpenAI 持续发布新模型和功能。
+    *   **多模态能力 (GPT-4/4o)**: 能够处理文本以外的模态。
 
-    ```mermaid
-    graph LR
-        A["海量文本数据<br/>(互联网, 书籍等)"] --> B("文本->[[Core Technologies/嵌入 (Embedding)|Embedding]]") --> C(预训练 Pre-training<br/>(基于 [[Core Technologies/Transformer 模型|Transformer]])<br/>学习语言模式);
-        C --> D["预训练 LLM<br/>(基础模型)"];
-        F["特定任务数据<br/>(如电商问答)"] --> G(微调 Fine-tuning<br/>优化特定能力);
-        D --> G;
-        G --> H["微调后 LLM<br/>(针对性优化)"];
-        I["用户[[提示工程 (Prompt Engineering)|提示]] (Prompt)<br/>(例如: '这件衣服有其他颜色吗?')"] --> J(推理 Inference<br/>预测后续文本);
-        D --> J;
-        H --> J;
-        J --> K["模型输出 (Output)<br/>(例如: '有的, 这件衣服还有蓝色和...')"];
+    ## 考量因素/潜在劣势
 
-        style D fill:#eee,stroke:#333
-        style H fill:#ccf,stroke:#333
-    ```
+    *   **[[../开源 vs 闭源模型|闭源]]**: 无法本地部署，无法深度定制模型本身。
+    *   **[[../Infrastructure/API (应用程序接口)|成本]]**: API 调用按 Token 收费，大规模使用成本较高。
+    *   **[[../技术相关/数据隐私|数据隐私]]**: 数据需要发送给 OpenAI 服务器，存在隐私顾虑（尽管 OpenAI 有相关政策）。
+    *   **依赖性**: 依赖单一供应商，存在 API 变更、停用或价格调整的风险。
+    *   **[[../模型幻觉 (Hallucination)|幻觉]]与偏见**: 仍然存在幻觉和潜在偏见问题，需要在使用中注意。
 
-    ## LLM 的关键考量 (产品角度)
+    ## 对产品经理的意义
 
-    *   **[[模型幻觉 (Hallucination)|幻觉 (Hallucination)]]**: LLM 可能生成看似合理但实际上是错误的或无中生有的信息。这是 LLM 应用中的核心挑战。
-    *   **[[模型鲁棒性 (Robustness)|鲁棒性]]**: 模型在面对不同类型、甚至略有干扰的输入时，表现是否稳定？
-    *   **[[提示工程 (Prompt Engineering)|提示工程]]**: 如何设计有效的提示来引导模型产生期望的输出？
-    *   **知识更新**: LLM 的知识截止于其训练数据。如何让它获取并使用最新的信息？（[[检索增强生成 (RAG)|RAG]] 是常用方法）
-    *   **成本 (Cost)**: 训练和运行 LLM（尤其是大型模型）的计算成本很高。API 调用也需要付费。
-    *   **延迟 (Latency)**: 模型生成响应需要时间，对于实时交互应用需要考虑延迟问题。
-    *   **[[开源 vs 闭源模型|开源 vs. 闭源]]**: 如何选择合适的模型？（见 [[开源 vs 闭源模型]]）
-    *   **[[模型偏见|偏见]]与伦理 (Bias & Ethics)**: 训练数据中可能存在的偏见会被模型学到，导致输出带有歧视性或不公平。需要进行风险评估和缓解。
-    *   **[[../技术相关/数据隐私|数据隐私]]**: 用户输入的数据如何处理？是否会被用于再训练？
-
-    ## 与 AI 购物助手 (Rufus) 的关联
-
-    Rufus 类助手很可能利用 LLM 来：
-    *   理解用户的自然语言查询（商品咨询、比较、售后问题等）。
-    *   生成自然的、对话式的回答。
-    *   可能结合 [[检索增强生成 (RAG)|RAG]] 技术，从亚马逊庞大的商品目录、评论、订单信息等实时数据库中检索信息，以提供准确、最新的答案，减少[[模型幻觉 (Hallucination)|幻觉]]。
-    *   通过[[提示工程 (Prompt Engineering)|精心设计的提示]]和可能的[[微调 (Fine-tuning)|微调]]，确保回答符合品牌调性、聚焦于购物场景。
+    *   **了解 SOTA**: GPT 系列通常代表了 LLM 能力的“天花板”或重要标杆，有助于了解当前技术能达到的水平。
+    *   **[[../技术选型|技术选型]]**: 在选择 LLM 方案时，GPT API 是一个重要的选项，需要权衡其性能、成本、易用性、隐私等因素。
+    *   **产品设计启发**: GPT 展示的能力（如多模态、流畅对话）可以为新的 AI 产品功能和交互提供灵感。
+    *   **[[../基础概念/风险管理|风险意识]]**: 理解闭源 API 模式带来的成本、隐私和依赖性风险。
 
     ## 总结
 
-    LLM 是驱动现代 AI 应用（如 AI 助手）的关键技术。产品经理需要理解其基本原理、能力、优势和局限性（特别是[[模型幻觉 (Hallucination)|幻觉]]、成本、[[模型鲁棒性 (Robustness)|鲁棒性]]等），以便在产品设计、技术选型和风险管理中做出明智的决策。
+    GPT 系列是 OpenAI 开发的领先的闭源 LLM，以其强大的通用能力和易用的 API 推动了 AI 应用的浪潮。了解其主要版本、优势和考量因素，对于 AI 产品经理进行技术评估和产品规划至关重要。
 
     ## 相关概念
 
-    *   [[00 - AI 与机器学习概览|AI 与机器学习概览]]
-    *   [[深度学习]]
-    *   [[Core Technologies/Transformer 模型|Transformer]]
-    *   [[Core Technologies/嵌入 (Embedding)|Embedding]]
-    *   [[提示工程 (Prompt Engineering)|提示工程 (Prompt Engineering)]]
-    *   [[模型幻觉 (Hallucination)|模型幻觉 (Hallucination)]]
-    *   [[模型鲁棒性 (Robustness)|模型鲁棒性 (Robustness)]]
-    *   [[检索增强生成 (RAG)|检索增强生成 (RAG)]]
-    *   [[开源 vs 闭源模型|开源 vs 闭源模型]]
-    *   [[微调 (Fine-tuning)]]
+    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
+    *   [[../开源 vs 闭源模型|闭源模型]]
+    *   [[../Infrastructure/API (应用程序接口)|API (应用程序接口)]]
+    *   [[OpenAI]]
+    *   [[../Core Technologies/Transformer 模型|Transformer]]
+    *   [[指令微调]]
+    *   [[RLHF]] (人类反馈强化学习)
+    *   [[多模态 AI]]
+    *   [[主流 LLM 模型概览]]
+""")
+
+claude_series_path = os.path.join(ai_models_folder, 'Claude 模型系列.md')
+claude_series_content = textwrap.dedent("""\
+    ---
+    tags: [topic/ai_ml, concept/llm, model/claude, type/closed_source_model]
+    aliases: [Claude, Claude 2, Claude 3]
+    ---
+    # Claude 模型系列 (Anthropic)
+
+    [[主流 LLM 模型概览|返回 模型概览]] | [[../开源 vs 闭源模型|闭源模型]]
+
+    ## 概述
+
+    Claude 是由 **Anthropic** 公司开发的一系列[[../大型语言模型 (LLM)|大型语言模型]]。Anthropic 由前 OpenAI 员工创立，其研究和产品特别强调 **AI 安全、伦理和负责任的 AI 开发**。Claude 系列模型以其**强大的长文本处理能力、较好的对话能力和对安全性的关注**而受到关注。
+
+    与 [[../Models/GPT 模型系列|GPT]] 类似，Claude 模型也是**[[../开源 vs 闭源模型|闭源]]**的，主要通过 **[[../Infrastructure/API (应用程序接口)|API]]** 提供服务。
+
+    ## 核心理念：宪法 AI (Constitutional AI)
+
+    Anthropic 在训练 Claude 时采用了一种称为“宪法 AI”的方法，旨在让 AI 的行为符合一套预先定义的原则（“宪法”），减少有害输出，提升 AI 的可靠性和可预测性。这套原则侧重于有益性 (Helpful)、诚实性 (Honest) 和无害性 (Harmless) (HHH)。
+
+    ## 主要版本与特点
+
+    *   **Claude / Claude Instant**: 早期版本，提供了不同速度和成本的选择。
+    *   **Claude 2 / Claude 2.1**: 性能显著提升，尤其在**长上下文处理**方面表现突出（支持高达 200K token 的上下文窗口），适合处理长文档、编写代码等任务。
+    *   **Claude 3 系列**: 2024 年初发布，是 Anthropic 当前的旗舰系列，包含三个不同规模和能力等级的模型：
+        *   **Claude 3 Haiku**: **速度最快、成本最低**的模型，适用于需要快速响应的简单任务（如客服）。
+        *   **Claude 3 Sonnet**: **平衡模型**，在智能和速度之间取得良好平衡，适合大多数企业级工作负载（如 RAG、代码生成、数据处理）。
+        *   **Claude 3 Opus**: **能力最强**的模型，在复杂推理、数学、代码生成和多语言任务上表现顶尖，接近或在某些基准上超过 [[../Models/GPT 模型系列|GPT-4]]。支持[[多模态]]能力（图像理解）。
+        *   **共同特点**: Claude 3 系列普遍提升了准确性（减少[[../模型幻觉 (Hallucination)|幻觉]]）、增强了多语言能力，并具备了视觉理解能力。
+
+    ## 优势
+
+    *   **强大的长文本处理能力**: 特别是 Claude 2.1 和 Claude 3 系列，非常适合需要分析或生成长篇文档的应用。
+    *   **强调安全与伦理**: 通过“宪法 AI”等方法，致力于减少有害和带有偏见的输出。
+    *   **优秀的对话和写作能力**: 通常能进行自然流畅的对话，并生成高质量的文本内容。
+    *   **性能具有竞争力**: 尤其是 Claude 3 Opus，在许多[[../Evaluation/基准测试 (Benchmark)|基准测试]]上达到了顶级水平。
+    *   **多模态能力 (Claude 3)**: 支持图像输入。
+
+    ## 考量因素/潜在劣势
+
+    *   **[[../开源 vs 闭源模型|闭源]]**: 同样存在闭源模型的通用限制（无法本地部署、定制化有限、数据隐私顾虑、供应商依赖）。
+    *   **[[../Infrastructure/API (应用程序接口)|API 成本]]**: 尤其是最强大的 Opus 模型，成本相对较高。
+    *   **可用区域限制**: 早期 API 的可用性可能受地理区域限制（情况可能变化）。
+    *   **生态系统相对较小**: 相比 OpenAI，Anthropic 的开发者生态和社区资源可能相对较少一些（但正在快速发展）。
+
+    ## 对产品经理的意义
+
+    *   **重要的技术选项**: Claude API 是 [[../Models/GPT 模型系列|GPT API]] 之外的一个重要高性能闭源 LLM 选择。
+    *   **关注长文本场景**: 如果产品需要处理大量文本（如文档问答、法律合同分析、长篇内容生成），Claude 可能是个有吸引力的选项。
+    *   **重视 AI 伦理与安全**: 如果产品的应用场景对安全性和可靠性要求极高，Anthropic 的理念和方法可能更具优势。
+    *   **[[../技术选型|技术选型]]权衡**: 需要在性能（不同版本）、成本、长文本能力、安全性、生态系统等因素间进行权衡。
+
+    ## 总结
+
+    Claude 系列是 Anthropic 公司推出的强调安全、伦理和长文本处理能力的闭源 LLM。其最新的 Claude 3 系列在性能上具有很强的竞争力。了解 Claude 的特点和优势，特别是在长文本和安全性方面的侧重，有助于产品经理在进行 LLM 选型时做出更全面的考虑。
+
+    ## 相关概念
+
+    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
+    *   [[../开源 vs 闭源模型|闭源模型]]
+    *   [[../Infrastructure/API (应用程序接口)|API (应用程序接口)]]
+    *   [[Anthropic]]
+    *   [[宪法 AI]]
+    *   [[AI 安全]]
     *   [[AI 伦理]]
-    *   [[../Product Management/完整框架/04 - 技术与实现|技术与实现 (完整框架)]]
-    *   [[Models/主流 LLM 模型概览|主流 LLM 模型概览]]
-    *   [[../Product Management/核心技能/PM 对 LLM 的理解深度|PM 对 LLM 的理解深度]]
+    *   [[长上下文窗口]]
+    *   [[多模态 AI]]
+    *   [[主流 LLM 模型概览]]
+""")
+
+gemini_series_path = os.path.join(ai_models_folder, 'Gemini 模型系列.md')
+gemini_series_content = textwrap.dedent("""\
+    ---
+    tags: [topic/ai_ml, concept/llm, model/gemini, type/closed_source_model, concept/multimodal]
+    aliases: [Gemini, Google Gemini]
+    ---
+    # Gemini 模型系列 (Google)
+
+    [[主流 LLM 模型概览|返回 模型概览]] | [[../开源 vs 闭源模型|闭源模型]]
+
+    ## 概述
+
+    Gemini 是由 **Google DeepMind** 开发的新一代[[../大型语言模型 (LLM)|大型语言模型]]系列，旨在成为谷歌在 AI 领域的核心基础模型。Gemini 的一个关键特点是其**原生的多模态 (Natively Multimodal)** 能力，即模型从一开始就被设计用来同时理解和处理**文本、图像、音频、视频和代码**等多种类型的信息。
+
+    Gemini 模型主要通过 **Google AI Studio** 和 **Google Cloud Vertex AI** 平台提供 **[[../Infrastructure/API (应用程序接口)|API]]** 访问，属于**[[../开源 vs 闭源模型|闭源]]**模型（但 Google 也基于 Gemini 技术推出了[[../Models/Gemma 模型系列|开源的 Gemma 模型]]）。
+
+    ## 主要版本与特点
+
+    Google 对 Gemini 进行了不同规模和能力的优化，以适应不同场景：
+
+    *   **Gemini Ultra (后更名或整合入 Gemini Advanced/1.5 Pro 的最高能力层级)**:
+        *   **能力最强、规模最大**的模型，适用于高度复杂的任务。
+        *   在多项[[../Evaluation/基准测试 (Benchmark)|基准测试]]中展现出顶尖性能，特别是在多模态理解和推理方面。
+    *   **Gemini Pro / Gemini 1.0 Pro**:
+        *   **性能与成本的平衡点**，适用于广泛的任务。
+        *   是驱动 Google Bard（现已更名为 Gemini App）和许多 Google Cloud AI 功能的核心模型之一。
+        *   具备强大的文本和代码能力，以及一定的多模态理解能力。
+    *   **Gemini Flash / Gemini 1.5 Flash**:
+        *   **速度优化**的模型，适用于需要低延迟、高吞吐量的场景（如大规模聊天应用、实时摘要）。
+        *   成本相对更低。
+    *   **Gemini Nano**:
+        *   **最高效**的模型，设计用于**端侧设备 (On-device)** 运行（如 Pixel 手机），可在离线状态下执行任务。
+    *   **Gemini 1.5 Pro**:
+        *   **重大升级**，引入了**突破性的长上下文窗口**（实验性支持高达 100 万 Token，远超之前的模型），能够处理非常长的文档、代码库或视频。
+        *   在长文本理解、复杂推理和多模态能力上进一步提升。
+
+    ## 核心优势
+
+    *   **原生多模态**: 从底层设计就能理解和融合多种信息类型，在处理涉及图像、音频、视频的任务时可能更具优势。
+    *   **强大的推理能力**: 特别是 Ultra 和 1.5 Pro 版本，在复杂推理任务上表现出色。
+    *   **超长上下文窗口 (Gemini 1.5 Pro)**: 能够处理和理解前所未有长度的输入信息。
+    *   **与 Google 生态集成**: 紧密集成于 Google 搜索、Workspace、Cloud 等产品和服务中。
+    *   **针对速度/效率优化的版本 (Flash, Nano)**: 提供了满足不同场景需求的选项。
+
+    ## 考量因素/潜在劣势
+
+    *   **[[../开源 vs 闭源模型|闭源]]**: 与 GPT/Claude 类似，存在闭源模型的通用限制。
+    *   **API 生态和文档**: 相比 OpenAI 可能稍显复杂或仍在发展中。
+    *   **性能稳定性/一致性**: 作为较新的模型系列，某些版本或特定任务上的表现可能仍在优化中。
+    *   **[[../技术相关/数据隐私|数据隐私]]**: 同样需要关注 Google 的数据处理政策。
+    *   **实际多模态效果**: 原生多模态的实际应用效果和易用性仍需在具体产品中验证。
+
+    ## 对产品经理的意义
+
+    *   **多模态产品机遇**: Gemini 的原生多模态能力为设计能够理解和交互多种信息类型的新型 AI 产品提供了可能（例如：用户可以上传图片进行提问，或者让 AI 分析视频内容）。
+    *   **长上下文应用**: Gemini 1.5 Pro 的超长上下文能力解锁了处理海量信息的新场景（例如：对整本书进行问答，分析数小时的会议录音）。
+    *   **[[../技术选型|技术选型]]**: Gemini API 是闭源 LLM 的另一个重要选项，尤其在需要强大[[多模态 AI|多模态]]能力或希望利用 Google Cloud 生态时。
+    *   **关注 Google AI 战略**: Gemini 代表了 Google AI 的核心方向，了解其发展有助于判断未来技术趋势。
+
+    ## 总结
+
+    Gemini 是 Google 推出的以原生多模态和强大推理能力为特点的新一代旗舰 LLM 系列。其不同规模的版本和突破性的长上下文能力为 AI 应用带来了新的可能性。产品经理需要了解 Gemini 的核心特性、优势和应用场景，以便在产品创新和技术选型中加以考虑。
+
+    ## 相关概念
+
+    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
+    *   [[../开源 vs 闭源模型|闭源模型]]
+    *   [[../Infrastructure/API (应用程序接口)|API (应用程序接口)]]
+    *   [[Google DeepMind]]
+    *   [[多模态 AI]]
+    *   [[长上下文窗口]]
+    *   [[端侧 AI (On-device AI)]]
+    *   [[../Models/Gemma 模型系列|Gemma 模型系列]] (基于 Gemini 技术的开源模型)
+    *   [[主流 LLM 模型概览]]
 """)
 
 
 # --- Main Script Logic ---
 def main():
-    print("Starting Obsidian Knowledge Base Generation (Part 6 - AI Core Tech & Models)...")
+    print("Starting Obsidian Knowledge Base Generation (Part 8 - Models, Benchmarks, API, NLP)...")
     print(f"Target Root Directory: {os.path.abspath(TARGET_ROOT_DIRECTORY)}")
     print(f"Overwrite Existing Files: {OVERWRITE_EXISTING}")
 
-    # Prioritized based on user request: Transformer intuition, LLaMA/models, PM understanding depth
+    # Files prioritized by user request
     files_to_create = {
-        # AI Core Technologies (Intuition focused)
-        transformer_path: transformer_content,
-        embedding_path: embedding_content,
-        vector_db_path: vector_db_content, # Essential for RAG understanding
-        # AI Models Landscape (Addressing LLaMA & comparison)
-        llama_path: llama_content,
-        mainstream_llms_path: mainstream_llms_content,
-        # Core Skills (Addressing PM's required depth)
-        pm_llm_depth_path: pm_llm_depth_content,
-        # Update existing LLM file content with new links
-        llm_path: llm_content_updated, # Use the updated content string
+        # Core Concepts
+        nlp_path: nlp_content,
+        # Infrastructure
+        api_path: api_content,
+        # Evaluation
+        benchmark_path: benchmark_content,
+        # Models
+        gpt_series_path: gpt_series_content,
+        claude_series_path: claude_series_content,
+        gemini_series_path: gemini_series_content,
+        # Note: PM LLM Depth and Llama were created in previous runs
     }
 
     # Create necessary base directories if they don't exist
     os.makedirs(ai_core_tech_folder, exist_ok=True)
+    os.makedirs(ai_infra_folder, exist_ok=True)
+    os.makedirs(ai_evaluation_folder, exist_ok=True)
     os.makedirs(ai_models_folder, exist_ok=True)
-    os.makedirs(core_skills_folder, exist_ok=True)
-    # Ensure the base AI/ML folder exists for the updated LLM file path
-    os.makedirs(os.path.dirname(llm_path), exist_ok=True)
     print("Base directories ensured.")
 
     for filepath, content in files_to_create.items():
@@ -616,8 +553,8 @@ def main():
             continue
         write_file(filepath, content)
 
-    print("\nObsidian Knowledge Base Generation (Part 6) Complete.")
-    print("Focus was on core AI technologies (Transformer, Embedding, VectorDB), LLM landscape (LLaMA, comparison), and PM's required technical depth.")
+    print("\nObsidian Knowledge Base Generation (Part 8) Complete.")
+    print("Focus was on NLP, API, Benchmarks, and specific LLM families (GPT, Claude, Gemini).")
 
 if __name__ == "__main__":
     main()

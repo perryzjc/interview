@@ -12,8 +12,68 @@ aliases: [Embedding, 词嵌入, 文本嵌入, 向量表示]
 
 这个向量被称为**嵌入向量 (Embedding Vector)**，其核心思想是**捕捉输入的语义信息**。在向量空间中，**语义上相似的输入，其对应的嵌入向量在空间中的距离也更近**。
 
-[!info] 直观理解
-想象一个巨大的多维空间（远超三维）。Embedding 技术就像给每个词（或句子、商品）在这个空间里找到一个坐标点。意思相近的词（比如“国王”和“女王”）它们的坐标点会很接近；而意思不同的词（比如“国王”和“香蕉”）坐标点会离得很远。甚至可以通过向量运算体现一些关系，比如 `Vector("国王") - Vector("男人") + Vector("女人")` 在空间中可能非常接近 `Vector("女王")`。
+> [!info]+ 直观理解：词语的空间坐标
+想象一个巨大的多维空间（远超三维，下图仅为示意）。Embedding 技术就像给每个词（或句子、商品）在这个空间里找到一个坐标点。意思相近的词（比如“国王”和“女王”）它们的坐标点会很接近；而意思不同的词（比如“国王”和“香蕉”）坐标点会离得很远。
+
+```tikz
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+    title={词嵌入空间示意（二维）},
+    xlabel={$X_1$},
+    ylabel={$X_2$},
+    axis lines=middle,
+    xmin=-1.2, xmax=1.2,
+    ymin=-1.2, ymax=1.2,
+    xtick=\empty,
+    ytick=\empty,
+    width=10cm,
+    height=8cm,
+    legend style={at={(1.05,1)}, anchor=north west, font=\small},
+]
+
+% 王室/性别相关 points
+\addplot[only marks, mark=*, mark size=3pt, blue] coordinates {
+    (0.8, 0.7) % 国王
+    (0.7, 0.8) % 女王
+    (0.9, 0.5) % 男人
+    (0.6, 0.9) % 女人
+};
+\addlegendentry{王室/性别相关}
+
+% 水果 points
+\addplot[only marks, mark=square*, mark size=3pt, red] coordinates {
+    (-0.8,-0.9) % 苹果
+    (-0.9,-0.8) % 香蕉
+};
+\addlegendentry{水果}
+
+% Labels without special formatting
+\node at (axis cs:0.8,0.7) [anchor=south west, font=\small, blue] {国王};
+\node at (axis cs:0.7,0.8) [anchor=south east, font=\small, blue] {女王};
+\node at (axis cs:0.9,0.5) [anchor=north west, font=\small, blue] {男人};
+\node at (axis cs:0.6,0.9) [anchor=south east, font=\small, blue] {女人};
+
+\node at (axis cs:-0.8,-0.9) [anchor=north east, font=\small, red] {苹果};
+\node at (axis cs:-0.9,-0.8) [anchor=south west, font=\small, red] {香蕉};
+
+% Simple vector illustration (no math, arrows only)
+\draw[->, dashed, thick, orange] (axis cs:0.9,0.5) -- (axis cs:0.8,0.7);
+\draw[->, dashed, thick, cyan] (axis cs:0.8,0.7) -- (axis cs:0.5,1.1);
+
+% Result point explicitly plotted
+\addplot[only marks, mark=*, green!60!black, mark size=3pt] coordinates {(0.5,1.1)};
+\node at (axis cs:0.5,1.1) [anchor=south west, font=\small, green!60!black] {女王（近似）};
+
+\end{axis}
+\end{tikzpicture}
+\end{document}
+
+```
+上图通过 3D 空间示意了词嵌入的概念。语义相关的词（如“国王”、“女王”、“男人”、“女人”）在空间中聚集，而与它们语义无关的词（如“苹果”、“香蕉”）则位于较远的位置。图中还用向量运算示意了“国王 - 男人 + 女人 ≈ 女王”这种通过嵌入向量捕捉到的语义关系。
 
 ## 为什么需要 Embedding？
 
@@ -26,8 +86,8 @@ aliases: [Embedding, 词嵌入, 文本嵌入, 向量表示]
 
 *   **词嵌入 (Word Embedding)**: 为词汇表中的每个单词生成一个向量。经典算法包括 Word2Vec, GloVe, FastText。缺点是无法处理未登录词 (OOV)，且无法很好地表达一词多义。
 *   **句子/文本嵌入 (Sentence/Text Embedding)**: 为整个句子或段落生成一个向量表示。常用的方法包括：
-    *   对词嵌入进行平均或加权平均。
-    *   使用 [[../Core Technologies/Transformer 模型|Transformer]] 的编码器（如 BERT, Sentence-BERT）直接生成句子级别的向量。这通常效果更好，能捕捉更复杂的语义。
+	*   对词嵌入进行平均或加权平均。
+	*   使用 [[../Core Technologies/Transformer 模型|Transformer]] 的编码器（如 BERT, Sentence-BERT）直接生成句子级别的向量。这通常效果更好，能捕捉更复杂的语义。
 
 ## Embedding 的应用
 

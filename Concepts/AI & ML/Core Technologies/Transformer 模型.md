@@ -57,7 +57,7 @@ Transformer 架构通过**注意力机制 (Attention Mechanism)**，特别是**�
 
     linkStyle default interpolate basis
 ```
-[!info] 直观理解
+> [!info] 直观理解
 想象一下你在阅读一个长句子：“**苹果**公司昨天发布了新款 **iPhone**，它具有更强的**处理器**和改进的**摄像头**。” 当模型处理 “iPhone” 这个词时，自注意力机制能让它同时关注到 “苹果”（知道是谁发布的）、“处理器”和“摄像头”（知道是 iPhone 的特性），即使这些词语在句子中位置不同。
 
 ## Transformer 的主要组成部分 (简化)
