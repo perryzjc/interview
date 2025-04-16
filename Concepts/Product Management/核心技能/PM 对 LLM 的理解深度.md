@@ -19,7 +19,7 @@ aliases: [产品经理需要懂多少AI技术, PM技术深度]
 **但是，PM 需要达到以下理解层次：**
 
 1.  **理解核心概念与原理 (Conceptual Understanding)**:
-    *   **懂术语**: 能准确理解和使用 [[../../AI & ML/大型语言模型 (LLM)|LLM]], [[../../AI & ML/Core Technologies/Transformer 模型|Transformer]], [[../../AI & ML/Core Technologies/嵌入 (Embedding)|Embedding]], [[../../AI & ML/检索增强生成 (RAG)|RAG]], [[../../AI & ML/提示工程 (Prompt Engineering)|Prompt Engineering]], [[../../AI & ML/模型幻觉 (Hallucination)|幻觉]], [[../../AI & ML/模型鲁棒性 (Robustness)|鲁棒性]], [[../../AI & ML/微调 (Fine-tuning)|微调]], [[../../AI & ML/开源 vs 闭源模型|开源/闭源]] 等核心术语的**含义、作用和基本原理**。
+    *   **懂术语**: 能准确理解和使用 [[../../AI & ML/大型语言模型 (LLM)|LLM]], [[../../AI & ML/Core Technologies/Transformer 模型|Transformer]], [[../../AI & ML/Core Technologies/嵌入 (Embedding)|Embedding]], [[../../AI & ML/检索增强生成 (RAG)|RAG]], [[../../AI & ML/提示工程 (Prompt Engineering)|Prompt Engineering]], [[../../AI & ML/模型幻觉 (Hallucination)|幻觉]], [[../../AI & ML/模型鲁棒性 (Robustness)|鲁棒性]], [[AI & ML/微调 (Fine-tuning)|微调]], [[../../AI & ML/开源 vs 闭源模型|开源/闭源]] 等核心术语的**含义、作用和基本原理**。
     *   **知其然，知其所以然 (Why it works)**: 对关键技术（如 [[../../AI & ML/Core Technologies/Transformer 模型|Transformer]] 的注意力机制为何能处理长依赖，[[../../AI & ML/检索增强生成 (RAG)|RAG]] 为何能缓解幻觉）有**直觉性、概念性**的理解。
 
 2.  **了解能力边界与局限性 (Capabilities & Limitations)**:
@@ -40,13 +40,13 @@ aliases: [产品经理需要懂多少AI技术, PM技术深度]
 
 ## 类比：产品经理 vs. 汽车设计师
 
-[!info] 类比
+> [!info] 类比
 想象一位汽车设计师（产品经理）。他/她不需要精通发动机的内部构造或流体力学计算（工程师/科学家的领域），但是：
-*   需要知道不同类型的发动机（汽油、电动、混合动力）的**基本原理、优缺点、适用场景**（核心概念）。
-*   需要了解当前发动机技术的**能力边界**（无法无限加速、有排放限制等）（局限性）。
-*   需要关注电池技术、自动驾驶等**发展趋势**。
-*   需要在设计时**权衡**动力、油耗/续航、成本、空间、安全性等因素（评估与权衡）。
-*   需要能与工程师沟通设计意图，并理解工程师提出的结构或制造方面的限制（沟通协作）。
+> * 需要知道不同类型的发动机（汽油、电动、混合动力）的**基本原理、优缺点、适用场景**（核心概念）。
+> * 需要了解当前发动机技术的**能力边界**（无法无限加速、有排放限制等）（局限性）。
+> * 需要关注电池技术、自动驾驶等**发展趋势**。
+> * 需要在设计时**权衡**动力、油耗/续航、成本、空间、安全性等因素（评估与权衡）。
+> * 需要能与工程师沟通设计意图，并理解工程师提出的结构或制造方面的限制（沟通协作）。
 
 ## 如何学习？
 
