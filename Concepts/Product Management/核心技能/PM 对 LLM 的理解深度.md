@@ -4,11 +4,11 @@ aliases: [产品经理需要懂多少AI技术, PM技术深度]
 ---
 # PM 对 LLM 的理解深度
 
-[[../../AI & ML/主流 LLM 模型概览|返回 模型概览]]
+[[AI & ML/主流 LLM 模型概览|返回 模型概览]]
 
 ## 问题背景
 
-一个常见的疑问是：“作为 AI 产品经理，我需要理解像 [[../../AI & ML/Models/LLaMA 模型系列|LLaMA]]、[[../../AI & ML/Core Technologies/Transformer 模型|Transformer]] 这些技术到什么程度？” 尤其对于非技术背景出身的 PM 来说，把握合适的学习深度很重要。
+一个常见的疑问是：“作为 AI 产品经理，我需要理解像 [[LLaMA 模型系列|LLaMA]]、[[Transformer 模型|Transformer]] 这些技术到什么程度？” 尤其对于非技术背景出身的 PM 来说，把握合适的学习深度很重要。
 
 ## 核心原则：聚焦Why和What，理解How的影响
 
@@ -19,20 +19,20 @@ aliases: [产品经理需要懂多少AI技术, PM技术深度]
 **但是，PM 需要达到以下理解层次：**
 
 1.  **理解核心概念与原理 (Conceptual Understanding)**:
-    *   **懂术语**: 能准确理解和使用 [[../../AI & ML/大型语言模型 (LLM)|LLM]], [[../../AI & ML/Core Technologies/Transformer 模型|Transformer]], [[../../AI & ML/Core Technologies/嵌入 (Embedding)|Embedding]], [[../../AI & ML/检索增强生成 (RAG)|RAG]], [[../../AI & ML/提示工程 (Prompt Engineering)|Prompt Engineering]], [[../../AI & ML/模型幻觉 (Hallucination)|幻觉]], [[../../AI & ML/模型鲁棒性 (Robustness)|鲁棒性]], [[AI & ML/微调 (Fine-tuning)|微调]], [[../../AI & ML/开源 vs 闭源模型|开源/闭源]] 等核心术语的**含义、作用和基本原理**。
-    *   **知其然，知其所以然 (Why it works)**: 对关键技术（如 [[../../AI & ML/Core Technologies/Transformer 模型|Transformer]] 的注意力机制为何能处理长依赖，[[../../AI & ML/检索增强生成 (RAG)|RAG]] 为何能缓解幻觉）有**直觉性、概念性**的理解。
+    *   **懂术语**: 能准确理解和使用 [[大型语言模型 (LLM)|LLM]], [[Transformer 模型|Transformer]], [[嵌入 (Embedding)|Embedding]], [[检索增强生成 (RAG)|RAG]], [[提示工程 (Prompt Engineering)|Prompt Engineering]], [[模型幻觉 (Hallucination)|幻觉]], [[模型鲁棒性 (Robustness)|鲁棒性]], [[AI & ML/微调 (Fine-tuning)|微调]], [[开源 vs 闭源模型|开源/闭源]] 等核心术语的**含义、作用和基本原理**。
+    *   **知其然，知其所以然 (Why it works)**: 对关键技术（如 [[Transformer 模型|Transformer]] 的注意力机制为何能处理长依赖，[[检索增强生成 (RAG)|RAG]] 为何能缓解幻觉）有**直觉性、概念性**的理解。
 
 2.  **了解能力边界与局限性 (Capabilities & Limitations)**:
     *   知道当前 AI 技术（特别是 LLM）擅长什么（文本生成、理解、摘要等），不擅长什么（严格逻辑推理、事实绝对准确性、实时感知物理世界等）。
-    *   理解 [[../../AI & ML/模型幻觉 (Hallucination)|幻觉]]、[[../../AI & ML/模型偏见|偏见]]、[[../../AI & ML/模型鲁棒性 (Robustness)|鲁棒性]]差等是现有技术的固有局限性，需要在产品设计中考虑缓解策略。
+    *   理解 [[模型幻觉 (Hallucination)|幻觉]]、[[AI & ML/模型偏见|偏见]]、[[模型鲁棒性 (Robustness)|鲁棒性]]差等是现有技术的固有局限性，需要在产品设计中考虑缓解策略。
 
 3.  **把握技术趋势 (Technology Trends)**:
     *   关注 AI 领域的主要发展方向（如多模态、更长上下文、Agent 化、效率优化等）。
-    *   了解[[../../AI & ML/Models/主流 LLM 模型概览|主流模型]]的演进和能力差异。
+    *   了解[[主流 LLM 模型概览|主流模型]]的演进和能力差异。
 
 4.  **评估技术方案与权衡 (Evaluate Solutions & Trade-offs)**:
-    *   能够参与技术选型的讨论，理解不同方案（如 [[../../AI & ML/开源 vs 闭源模型|API vs. 开源模型]]、不同 RAG 策略、是否需要[[../../AI & ML/微调 (Fine-tuning)|微调]]）在**成本、性能、开发周期、可控性、数据隐私、风险**等方面的利弊权衡 (Trade-offs)。
-    *   能够基于产品需求，向技术团队提出合理的技术要求（例如：对[[../../AI & ML/模型幻觉 (Hallucination)|幻觉率]]的容忍度、响应[[../../AI & ML/大型语言模型 (LLM)|延迟]]要求）。
+    *   能够参与技术选型的讨论，理解不同方案（如 [[开源 vs 闭源模型|API vs. 开源模型]]、不同 RAG 策略、是否需要[[AI & ML/微调 (Fine-tuning)|微调]]）在**成本、性能、开发周期、可控性、数据隐私、风险**等方面的利弊权衡 (Trade-offs)。
+    *   能够基于产品需求，向技术团队提出合理的技术要求（例如：对[[模型幻觉 (Hallucination)|幻觉率]]的容忍度、响应[[大型语言模型 (LLM)|延迟]]要求）。
 
 5.  **有效沟通与协作 (Effective Communication & Collaboration)**:
     *   能够用**相对准确的技术语言**与工程师、算法科学家顺畅沟通产品需求、用户场景和业务逻辑。
@@ -64,9 +64,9 @@ AI 产品经理需要的是**技术素养 (Technical Literacy)**，而不是技�
 ## 相关概念
 
 *   [[技术素养]]
-*   [[../完整框架/04 - 技术与实现|技术与实现 (完整框架)]]
-*   [[../../AI & ML/00 - AI 与机器学习概览|AI 与机器学习概览]]
-*   [[../../AI & ML/Models/主流 LLM 模型概览|主流 LLM 模型概览]]
+*   [[04 - 技术与实现|技术与实现 (完整框架)]]
+*   [[00 - AI 与机器学习概览|AI 与机器学习概览]]
+*   [[主流 LLM 模型概览|主流 LLM 模型概览]]
 *   [[权衡 (Trade-offs)]]
 *   [[沟通技巧]]
 *   [[学习能力]]

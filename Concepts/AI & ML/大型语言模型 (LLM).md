@@ -8,9 +8,9 @@ aliases: [LLM, Large Language Model]
 
 ## 概述
 
-大型语言模型 (LLM) 是一种基于**[[深度学习]]**（特别是 [[Core Technologies/Transformer 模型|Transformer]] 架构）的人工智能模型，它通过在**海量文本数据**上进行训练，学习语言的模式、结构和知识，从而能够**理解和生成**类似人类的自然语言文本。
+大型语言模型 (LLM) 是一种基于**[[深度学习]]**（特别是 [[Transformer 模型|Transformer]] 架构）的人工智能模型，它通过在**海量文本数据**上进行训练，学习语言的模式、结构和知识，从而能够**理解和生成**类似人类的自然语言文本。
 
-LLM 是当前许多先进 AI 应用（包括 AI 聊天机器人、内容创作工具、代码生成器以及像 Amazon Rufus 这样的 AI 购物助手）的核心驱动力。理解其基础有助于理解 [[Core Technologies/Transformer 模型|Transformer]] 和 [[Core Technologies/嵌入 (Embedding)|Embedding]] 等相关技术。
+LLM 是当前许多先进 AI 应用（包括 AI 聊天机器人、内容创作工具、代码生成器以及像 Amazon Rufus 这样的 AI 购物助手）的核心驱动力。理解其基础有助于理解 [[Transformer 模型|Transformer]] 和 [[嵌入 (Embedding)|Embedding]] 等相关技术。
 
 ## LLM 的核心能力
 
@@ -26,7 +26,7 @@ LLM 是当前许多先进 AI 应用（包括 AI 聊天机器人、内容创作�
 
 1.  **训练 (Training)**:
     *   LLM 在包含互联网文本、书籍、代码等的大规模数据集上进行**预训练 (Pre-training)**。
-    *   目标是学习预测文本序列中的下一个词 (Next Token Prediction) 或填补文本中的空白 (Masked Language Modeling)。通过这个过程，模型学习语法、语义、常识知识等。输入文本首先会被转换为 [[Core Technologies/嵌入 (Embedding)|嵌入向量]]。
+    *   目标是学习预测文本序列中的下一个词 (Next Token Prediction) 或填补文本中的空白 (Masked Language Modeling)。通过这个过程，模型学习语法、语义、常识知识等。输入文本首先会被转换为 [[嵌入 (Embedding)|嵌入向量]]。
     *   这个阶段计算量巨大，成本高昂。
 2.  **[[微调 (Fine-tuning)|微调 (Fine-tuning)]]**: (可选但常见)
     *   为了让模型在特定任务（如问答、摘要、特定领域对话）上表现更好，可以使用**更小、更具体**的数据集对预训练好的模型进行微调。
@@ -61,7 +61,7 @@ graph LR
 *   **延迟 (Latency)**: 模型生成响应需要时间，对于实时交互应用需要考虑延迟问题。
 *   **[[开源 vs 闭源模型|开源 vs. 闭源]]**: 如何选择合适的模型？（见 [[开源 vs 闭源模型]]）
 *   **[[模型偏见|偏见]]与伦理 (Bias & Ethics)**: 训练数据中可能存在的偏见会被模型学到，导致输出带有歧视性或不公平。需要进行风险评估和缓解。
-*   **[[../技术相关/数据隐私|数据隐私]]**: 用户输入的数据如何处理？是否会被用于再训练？
+*   **[[技术相关/数据隐私|数据隐私]]**: 用户输入的数据如何处理？是否会被用于再训练？
 
 ## 与 AI 购物助手 (Rufus) 的关联
 
@@ -79,8 +79,8 @@ LLM 是驱动现代 AI 应用（如 AI 助手）的关键技术。产品经理�
 
 *   [[00 - AI 与机器学习概览|AI 与机器学习概览]]
 *   [[深度学习]]
-*   [[Core Technologies/Transformer 模型|Transformer]]
-*   [[Core Technologies/嵌入 (Embedding)|Embedding]]
+*   [[Transformer 模型|Transformer]]
+*   [[嵌入 (Embedding)|Embedding]]
 *   [[提示工程 (Prompt Engineering)|提示工程 (Prompt Engineering)]]
 *   [[模型幻觉 (Hallucination)|模型幻觉 (Hallucination)]]
 *   [[模型鲁棒性 (Robustness)|模型鲁棒性 (Robustness)]]
@@ -88,6 +88,6 @@ LLM 是驱动现代 AI 应用（如 AI 助手）的关键技术。产品经理�
 *   [[开源 vs 闭源模型|开源 vs 闭源模型]]
 *   [[微调 (Fine-tuning)]]
 *   [[AI 伦理]]
-*   [[../Product Management/完整框架/04 - 技术与实现|技术与实现 (完整框架)]]
-*   [[Models/主流 LLM 模型概览|主流 LLM 模型概览]]
-*   [[../Product Management/核心技能/PM 对 LLM 的理解深度|PM 对 LLM 的理解深度]]
+*   [[04 - 技术与实现|技术与实现 (完整框架)]]
+*   [[主流 LLM 模型概览|主流 LLM 模型概览]]
+*   [[PM 对 LLM 的理解深度|PM 对 LLM 的理解深度]]

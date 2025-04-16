@@ -4,20 +4,20 @@ aliases: [LLM Landscape, 主流大模型]
 ---
 # 主流 LLM 模型概览
 
-[[../00 - AI 与机器学习概览|返回 AI 概览]] | [[../大型语言模型 (LLM)|LLM 基础]]
+[[00 - AI 与机器学习概览|返回 AI 概览]] | [[大型语言模型 (LLM)|LLM 基础]]
 
 ## 概述
 
-当前[[../大型语言模型 (LLM)|大型语言模型 (LLM)]]领域发展迅速，涌现了众多来自不同公司和研究机构的模型。了解主流模型的名称、开发者、主要特点以及[[../开源 vs 闭源模型|开放性]]，对于 AI 产品经理进行技术选型和评估非常有帮助。
+当前[[大型语言模型 (LLM)|大型语言模型 (LLM)]]领域发展迅速，涌现了众多来自不同公司和研究机构的模型。了解主流模型的名称、开发者、主要特点以及[[开源 vs 闭源模型|开放性]]，对于 AI 产品经理进行技术选型和评估非常有帮助。
 
 以下列举一些当前（截至编写时，技术发展很快，请关注最新信息）比较知名和有影响力的 LLM 系列：
 
 ## 主流模型系列简介
-|模型系列|主要开发者|主要特点/定位|开放性 ([Open/Closed](../开源 vs 闭源模型))|备注/知名版本举例|
+|模型系列|主要开发者|主要特点/定位|开放性 ([Open/Closed](开源 vs 闭源模型))|备注/知名版本举例|
 |---|---|---|---|---|
 |**[GPT 系列](GPT 模型系列)**|OpenAI|**通用能力强**，引领多轮对话和指令遵循，API 易用|**闭源 (API)**|GPT-3, GPT-3.5 (ChatGPT), GPT-4, GPT-4o|
 |**[Claude 系列](Claude 模型系列)**|Anthropic|强调**安全性、伦理**和“宪法 AI”，长文本处理能力强|**闭源 (API)**|Claude, Claude 2, Claude 3 (Haiku, Sonnet, Opus)|
-|**[Gemini 系列](Gemini 模型系列)**|Google DeepMind|**多模态能力**（原生支持文本、图像、音频、视频），与 Google 生态集成|**闭源 (API)** / 部分小模型 [Gemma](../Models/Gemma 模型系列) 为开源|Gemini Pro, Gemini Ultra, Gemini Flash|
+|**[Gemini 系列](Gemini 模型系列)**|Google DeepMind|**多模态能力**（原生支持文本、图像、音频、视频），与 Google 生态集成|**闭源 (API)** / 部分小模型 [Gemma](Models/Gemma 模型系列) 为开源|Gemini Pro, Gemini Ultra, Gemini Flash|
 |**[Llama 系列](LLaMA 模型系列)**|Meta AI|**高性能开源**，推动开源生态发展，允许商用|**开源**|Llama 2 (7B, 13B, 70B), Llama 3 (8B, 70B)|
 |**[Mistral 系列](Mistral 模型系列)**|Mistral AI|**高性能开源**，尤其在中等规模模型上表现优异，注重效率|**开源** / 部分模型闭源 (API)|Mistral 7B, Mixtral 8x7B (MoE), Mistral Large (API)|
 |**Falcon 系列**|TII (阿联酋)|早期重要的高性能开源模型|**开源**|Falcon 40B, Falcon 180B|
@@ -30,11 +30,11 @@ aliases: [LLM Landscape, 主流大模型]
 
 ## 产品经理需要了解多深？
 
-这是一个常见问题，尤其对于非技术背景的 PM。参见 [[../核心技能/PM 对 LLM 的理解深度|PM 对 LLM 的理解深度]]。
+这是一个常见问题，尤其对于非技术背景的 PM。参见 [[核心技能/PM 对 LLM 的理解深度|PM 对 LLM 的理解深度]]。
 
 **核心观点**: PM **不需要**深入理解模型的算法细节或数学原理，但需要：
 
-1.  **理解核心概念**: 懂 [[../大型语言模型 (LLM)|LLM]], [[../Core Technologies/Transformer 模型|Transformer]], [[../Core Technologies/嵌入 (Embedding)|Embedding]], [[../检索增强生成 (RAG)|RAG]], [[../提示工程 (Prompt Engineering)|Prompt]], [[../模型幻觉 (Hallucination)|幻觉]], [[../模型鲁棒性 (Robustness)|鲁棒性]], [[../开源 vs 闭源模型|开源/闭源]] 等基本概念的含义和作用。
+1.  **理解核心概念**: 懂 [[大型语言模型 (LLM)|LLM]], [[Transformer 模型|Transformer]], [[嵌入 (Embedding)|Embedding]], [[检索增强生成 (RAG)|RAG]], [[提示工程 (Prompt Engineering)|Prompt]], [[模型幻觉 (Hallucination)|幻觉]], [[模型鲁棒性 (Robustness)|鲁棒性]], [[开源 vs 闭源模型|开源/闭源]] 等基本概念的含义和作用。
 2.  **了解能力边界**: 知道当前主流模型能做什么、不能做什么，它们的优势和局限性是什么。
 3.  **把握技术趋势**: 关注行业发展，了解不同模型的演进方向（例如：多模态、更长上下文、更高效率）。
 4.  **评估与选型**: 能够基于产品需求，与技术团队讨论并参与模型选型的决策，理解不同选择（如开源 vs. 闭源, 不同模型 API）在**成本、性能、定制化、隐私、风险**等方面的权衡。
@@ -49,8 +49,8 @@ LLM 领域百花齐放，了解主流模型的概况和特点，有助于 AI 产
 
 ## 相关概念
 
-*   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
-*   [[../开源 vs 闭源模型|开源 vs 闭源模型]]
+*   [[大型语言模型 (LLM)|大型语言模型 (LLM)]]
+*   [[开源 vs 闭源模型|开源 vs 闭源模型]]
 *   [[GPT 模型系列]] (Placeholder Link)
 *   [[Claude 模型系列]] (Placeholder Link)
 *   [[Gemini 模型系列]] (Placeholder Link)
@@ -60,4 +60,4 @@ LLM 领域百花齐放，了解主流模型的概况和特点，有助于 AI 产
 *   [[参数规模]]
 *   [[基准测试 (Benchmark)]]
 *   [[API (应用程序接口)]]
-*   [[../核心技能/PM 对 LLM 的理解深度|PM 对 LLM 的理解深度]]
+*   [[核心技能/PM 对 LLM 的理解深度|PM 对 LLM 的理解深度]]

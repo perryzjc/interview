@@ -16,152 +16,138 @@ def write_file(filepath, content):
     except IOError as e:
         print(f"Error writing file {filepath}: {e}")
 
-# --- Knowledge Base Content Definitions (Part 11 - AI Assistant Tech FAQ & Interview Prep) ---
+# --- Knowledge Base Content Definitions (Part 12 - Fine-tuning) ---
 
-# --- Interview Simulation/Product Manager Interview/Technical Deep Dive ---
-# (Creating this new subfolder for focused technical interview prep)
-technical_deep_dive_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Interview Simulation', 'Product Manager Interview', 'Technical Deep Dive')
+# --- Concepts/AI & ML/Core Technologies ---
+ai_core_tech_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML', 'Core Technologies')
 
-tech_faq_path = os.path.join(technical_deep_dive_folder, '06 - AI助手技术剖析与PM面试准备FAQ.md')
-tech_faq_content = textwrap.dedent("""\
+finetuning_path = os.path.join(ai_core_tech_folder, '微调 (Fine-tuning).md')
+finetuning_content = textwrap.dedent("""\
     ---
-    tags: [topic/interview, type/faq, domain/ai_assistant, skill/technical_literacy, process/preparation]
-    aliases: [AI助手技术FAQ, Rufus技术理解, LLM PM技术问题]
+    tags: [topic/ai_ml, concept/fine_tuning, type/technique, technology, process/training]
+    aliases: [Fine-tuning, 模型微调, 微调模型]
     ---
-    # AI 助手技术剖析与 PM 面试准备 FAQ
+    # 微调 (Fine-tuning)
 
-    [[../Preparation Guide/00 - 面试准备指南与行动计划|返回 准备指南]]
+    [[../大型语言模型 (LLM)|返回 LLM]] | [[../00 - AI 与机器学习概览|返回 AI 概览]]
 
-    ## 引言
+    ## 概述
 
-    本篇内容旨在针对你在准备 AI 产品经理（特别是类似 AI 购物助手方向，以 Amazon Rufus 为例）面试时提出的一些具体技术疑问，提供一个结构化的解答思路和学习指引。我们将结合之前建立的知识库笔记，聚焦于技术原理、产品应用和面试中的沟通策略。
+    微调 (Fine-tuning) 是在[[../大型语言模型 (LLM)|大型语言模型 (LLM)]]或其他[[../../Fundamentals/机器学习 (ML)|机器学习]]模型开发中的一个重要步骤。它指的是在一个已经在**大规模通用数据集上完成[[预训练 (Pre-training)|预训练]]的基础模型 (Base Model)** 之上，再使用一个**规模相对较小、但与特定任务或领域高度相关的数据集**进行**进一步训练**的过程。
 
-    ---
+    其核心目的是**将通用模型的能力适配到特定的下游任务或知识领域**，使其在这些特定场景下表现更好，或者让模型学会遵循特定的指令风格或行为模式。
 
-    ## Q1: AI 购物助手 (如 Rufus) 在技术上是如何运行的？
+    可以将其类比为：一个学习了广泛通识知识的大学生（预训练模型），为了成为一名特定领域的专家（如医生、律师），还需要在该领域进行专门的学习和训练（微调）。
 
-    理解这类系统的运作方式，我们可以从 MVP（核心逻辑）和更完整（考虑更多细节）两个层面来看：
+    ## 为什么需要微调？
 
-    **A1. MVP 视角 (核心流程):**
+    *   **领域适应 (Domain Adaptation)**: 提高模型在特定行业或专业领域（如医疗、金融、法律、电商）的术语理解和知识应用能力。通用模型可能不包含足够的领域知识或理解专业术语。
+    *   **任务性能提升 (Task-Specific Performance)**: 优化模型在特定 NLP 任务（如文本摘要、情感分析、代码生成、问答）上的表现，超越通用模型的性能。
+    *   **指令遵循/风格模仿 (Instruction Following / Style Imitation)**: 让模型更好地理解并遵循用户的特定指令格式，或者模仿特定的写作风格、对话语气（例如，训练模型像特定品牌的客服一样回答问题）。这是训练对话式 LLM（如 ChatGPT, Llama 3 Instruct）的关键步骤，通常涉及[[指令微调]]和 [[RLHF]]。
+    *   **引入新知识 (Knowledge Injection)**: (有限地) 向模型灌输少量新的、在预训练数据中可能不存在的知识。（但对于大规模、实时更新的知识，[[../检索增强生成 (RAG)|RAG]] 通常是更有效的方法）。
+    *   **效率考量 (有时)**: 对于某些任务，使用较小的模型进行微调可能比直接使用超大通用模型更具成本效益。
 
-    > “从最核心的层面来看，一个 AI 购物助手的工作流程可以简化为：**理解用户问题 -> 查找相关信息 -> 生成回答**。”
-
-    1.  **理解用户问题**:
-        *   利用 [[../../Concepts/AI & ML/大型语言模型 (LLM)|大型语言模型 (LLM)]] 的 [[../../Concepts/AI & ML/Core Technologies/自然语言处理 (NLP)|自然语言理解 (NLU)]] 能力，解析用户输入的自然语言（文本或语音），识别用户的**意图**（是想问商品规格？比较商品？还是查询订单？）和**关键信息**（[[实体识别|实体抽取]]，如商品名称、属性、订单号）。
-    2.  **查找相关信息 (关键步骤!)**:
-        *   仅仅依靠 LLM 的内部知识是**不够**的，因为商品信息、库存、价格、评论、政策等都是**实时变化且需要绝对准确**的。
-        *   因此，系统需要接入**外部知识库**（如电商平台的商品数据库、评论库、订单系统、FAQ 知识库）。
-        *   **[[../../Concepts/AI & ML/检索增强生成 (RAG)|检索增强生成 (RAG)]]** 是实现这一步的关键技术。系统将用户问题（或其[[../../Concepts/AI & ML/Core Technologies/嵌入 (Embedding)|嵌入向量]]）作为查询，在知识库中**检索**出最相关的信息片段。
-    3.  **生成回答**:
-        *   将用户原始问题和 RAG **检索到的上下文信息**，通过精心设计的**[[../../Concepts/AI & ML/提示工程 (Prompt Engineering)|提示 (Prompt)]]** 一起喂给 LLM。
-        *   LLM 基于这些输入，生成一个**自然的、相关的、且基于所提供事实**的回答。
+    ## 微调的基本流程 (简化)
 
     ```mermaid
     graph TD
-        A[用户问题] --> B(LLM 理解意图/实体);
-        B -- 查询 --> C{RAG 检索器};
-        D[电商知识库<br/>(商品/订单/FAQ)] --> C;
-        C -- 相关信息 --> E{Prompt 构建};
-        A --> E;
-        E --> F(LLM 生成回答);
-        F --> G[返回用户];
+        A["选择预训练好的<br/>基础 LLM (Base Model)<br/>(e.g., Llama 3, GPT-3)"] --> B["准备特定任务/领域的<br/>**微调数据集**<br/>(规模相对小, 高质量)"];
+        B --> C{"模型训练<br/>(在微调数据上继续训练,<br/>调整模型权重)"};
+        A -- "作为起点" --> C;
+        C --> D{"评估微调后模型<br/>(在特定任务的测试集上)"};
+        D -- "性能达标?" --> E["部署/使用<br/>微调后的模型"];
+        D -- "否" --> B; # 可能需要调整数据或训练参数
 
-        style D fill:#eee, stroke:#333
+        subgraph 微调流程
+            direction LR
+            A ~~~ B ~~~ C ~~~ D ~~~ E
+        end
+
+        style B fill:#ccf, stroke:#333
+        style C fill:#f9f, stroke:#333
+        style E fill:#cfc, stroke:#333
     ```
 
-    **A2. 更完整的视角 (考虑更多因素):**
+    1.  **选择基础模型**: 选择一个合适的预训练 LLM 作为起点。通常选择性能较好、与目标任务相关的模型。
+    2.  **准备微调数据集**: 收集或创建针对目标任务或领域的**高质量**数据集。数据的质量对微调效果至关重要。数据集的格式通常是**(输入, 期望输出)**对（例如：(指令, 回答), (文章, 摘要)）。
+    3.  **模型训练**: 使用微调数据集在基础模型上进行训练。通常使用较低的学习率，训练时间也远少于预训练。目标是调整模型的权重，使其适应新的数据分布和任务要求。
+    4.  **评估**: 在专门用于评估该特定任务的测试集上，衡量微调后模型的性能，看是否达到预期目标。
+    5.  **部署**: 将微调后的模型部署到应用中。
 
-    > “在实际系统中，除了上述核心流程，还需要考虑更多细节来保证效果和体验：”
+    ## 常见的微调方法
 
-    *   **[[../../Concepts/AI & ML/Core Technologies/嵌入 (Embedding)|Embedding]] 与 [[../../Concepts/AI & ML/Core Technologies/向量数据库|向量数据库]]**: RAG 的高效检索通常依赖于将知识库内容和用户查询都转换为[[../../Concepts/AI & ML/Core Technologies/嵌入 (Embedding)|语义向量]]，并存储在[[../../Concepts/AI & ML/Core Technologies/向量数据库|向量数据库]]中，以便进行快速的[[../../Concepts/AI & ML/Information Retrieval/相似性搜索|语义相似性搜索]]（通常是 [[../../Concepts/AI & ML/Information Retrieval/近似最近邻搜索 (ANN)|ANN]]）。
-    *   **[[../../Concepts/AI & ML/提示工程 (Prompt Engineering)|提示工程 (Prompt Engineering)]] 优化**: 需要持续优化 Prompt，以更好地控制 LLM 的输出格式、语气、安全性，并有效利用 RAG 检索到的上下文。
-    *   **对话管理 (Dialogue Management)**: 对于多轮对话，系统需要维护对话历史（上下文），理解指代关系（如“它怎么样？”中的“它”指什么）。
-    *   **[[../../Concepts/AI & ML/模型幻觉 (Hallucination)|幻觉]]控制**: 这是核心挑战。除了 RAG，还需要其他策略（如 [[../../Concepts/AI & ML/模型幻觉 (Hallucination)|事实核查]]、置信度评估、用户反馈）来进一步降低模型“胡说八道”的风险。
-    *   **[[../../Concepts/AI & ML/模型鲁棒性 (Robustness)|鲁棒性]]处理**: 需要处理用户的各种模糊、错误、甚至恶意的输入。
-    *   **[[个性化]]**: 结合用户画像、浏览历史、购买记录等信息，提供更个性化的推荐或回答。
-    *   **[[../../Concepts/AI & ML/开源 vs 闭源模型|模型选型]]与[[../../Concepts/AI & ML/微调 (Fine-tuning)|微调]]**: 选择合适的[[../../Concepts/AI & ML/大型语言模型 (LLM)|基础模型]]（[[../../Concepts/AI & ML/开源 vs 闭源模型|开源或闭源 API]]），并可能需要针对电商领域进行[[../../Concepts/AI & ML/微调 (Fine-tuning)|微调]]以提升特定能力。
-    *   **性能考量**: [[../../Concepts/AI & ML/大型语言模型 (LLM)|延迟 (Latency)]] 和 [[../../Concepts/AI & ML/大型语言模型 (LLM)|成本 (Cost)]] 是重要的工程和产品考量。
+    *   **全参数微调 (Full Fine-tuning)**: 调整模型的所有参数。效果通常最好，但计算成本和内存需求最高，尤其对于大型模型。
+    *   **参数高效微调 (Parameter-Efficient Fine-Tuning, PEFT)**: 只调整模型参数的一小部分，或者增加少量额外的可训练参数。
+        *   **优势**: 大幅降低计算和存储成本，使得在消费级硬件上微调大型模型成为可能。训练更快，也减少了[[灾难性遗忘]](模型忘记预训练知识)的风险。
+        *   **常见技术**: [[LoRA (Low-Rank Adaptation)]], Prefix Tuning, Adapter Tuning 等。**LoRA 是目前非常流行的一种 PEFT 方法。**
+    *   **指令微调 (Instruction Tuning)**: 使用大量**(指令, 回答)**格式的数据进行微调，让模型学会理解并遵循各种自然语言指令。这是训练出 ChatGPT 类对话能力的关键。
+    *   **[[RLHF (Reinforcement Learning from Human Feedback)]]**: 基于人类对模型输出的偏好排序，使用[[../../Fundamentals/机器学习 (ML)|强化学习]]进一步优化模型的对话能力、安全性和有用性。
 
-    [!tip] 面试沟通
-    面试时，可以先给出 MVP 视角的核心逻辑，如果面试官追问或时间允许，再逐步展开更完整的技术考量，并强调其中的**关键挑战**（如幻觉控制、RAG 效果）和**产品需要做的权衡**（如成本 vs. 性能）。
+    ## 微调 vs. [[../提示工程 (Prompt Engineering)|提示工程]] vs. [[../检索增强生成 (RAG)|RAG]]
 
-    ---
+    这三者都是定制或优化 LLM 输出的方法，但侧重点不同：
 
-    ## Q2: 助手如何生成非常细节或特定的回答？尤其在没有大量用户直接输入类似问题时？
+    [!info]- 对比
 
-    > “这是一个很好的问题，它涉及到 AI 助手知识来源的核心。助手能提供细节信息，主要**不是依赖用户输入来‘学习’具体事实**，而是依赖于其**接入的知识库**和**利用这些知识库的能力**。”
+    > *   **[[../提示工程 (Prompt Engineering)|提示工程]]**:
+    >     *   **方式**: 通过**设计输入提示**来引导**现有模型**的行为。
+    >     *   **优点**: 简单、快速、灵活，**无需重新训练**模型，成本最低。
+    >     *   **缺点**: 对复杂任务或需要深度领域知识的任务效果有限，需要反复试验找到好 Prompt，无法根本改变模型内部知识。
+    >     *   **适用**: 快速实验，简单任务定制，利用模型的[[上下文学习 (In-Context Learning)]]能力。
+    > *   **[[../检索增强生成 (RAG)|RAG]]**:
+    >     *   **方式**: 在生成前**检索外部知识**，并将其作为上下文提供给**现有模型**。
+    >     *   **优点**: 能有效利用**最新、准确、可信**的外部知识，**显著减少幻觉**，知识可维护性好（只需更新知识库）。
+    >     *   **缺点**: 依赖检索系统的质量，会增加[[../大型语言模型 (LLM)|延迟]]，无法改变模型的核心行为模式。
+    >     *   **适用**: 需要高事实准确性、实时信息或大量领域知识的问答、摘要等任务。
+    > *   **微调 (Fine-tuning)**:
+    >     *   **方式**: 使用特定数据**重新训练模型**的部分或全部参数。
+    >     *   **优点**: 能**深度适配**特定领域或任务，**根本性地改变**模型的知识或行为模式（如风格、指令遵循能力），推理时通常**延迟较低**（相比 RAG）。
+    >     *   **缺点**: 需要**高质量的微调数据**，**训练成本较高**（尤其是全参数微调），可能存在[[灾难性遗忘]]风险，无法轻易更新知识。
+    >     *   **适用**: 需要深度领域适应、特定风格模仿、复杂指令遵循能力提升的场景。
 
-    1.  **核心在于知识库 (Knowledge Base)**:
-        *   电商平台本身就拥有海量的、结构化的、半结构化的信息，这就是 AI 助手的主要知识来源：
-            *   **商品数据**: 详细的规格参数、材质、尺寸、功能描述、图片、视频等。
-            *   **用户评论 (UGC)**: 大量的用户评论包含了非常细节的使用体验、优缺点、特定场景下的表现等。（LLM 可以被训练或通过 Prompt 指导来从评论中提取和总结信息）
-            *   **问答数据 (Q&A)**: 商品页面可能积累的用户提问和商家/其他用户的回答。
-            *   **平台政策与 FAQ**: 物流、退换货、支付、优惠券等规则。
-            *   **订单与用户数据**: （需严格权限控制）用户的购买历史、浏览记录、个人偏好等。
-    2.  **[[../../Concepts/AI & ML/检索增强生成 (RAG)|RAG]] 的作用**:
-        *   当用户提出一个具体问题时（例如“这款帐篷的防水系数是多少？” 或 “有评论提到这款耳机在跑步时容易掉吗？”），RAG 系统会**精确地**从上述知识库中**检索**出对应的规格参数或相关评论片段。
-    3.  **[[../../Concepts/AI & ML/提示工程 (Prompt Engineering)|Prompt Engineering]] 的引导**:
-        *   Prompt 会指示 LLM **基于检索到的具体信息**来回答问题，而不是让 LLM 自己去“猜测”或“编造”。Prompt 可能类似于：“根据以下信息：[检索到的规格：防水系数 5000mm]，请回答用户问题：[这款帐篷的防水系数是多少？]”。
-    4.  **并非凭空生成**:
-        *   所以，细节并非 LLM“凭空生成”的，而是**基于已有知识的检索、整合与转述**。LLM 的作用是将检索到的结构化或非结构化信息，用自然的语言组织起来回答用户。
-    5.  **关于“没有用户输入”时的生成**:
-        *   如果指的是 AI 助手**主动提供**一些细节信息或建议（而非回答特定问题），这通常是基于**其他信号**，而非无中生有：
-            *   **基于用户行为**: 用户正在浏览某个商品，AI 可以主动提供该商品的热门问答或关键评论摘要。
-            *   **[[个性化]]推荐**: 基于用户的历史偏好和当前浏览上下文，推荐相关商品或信息。
-            *   **预设规则/策略**: 产品可以设定一些规则，例如当用户将某类商品加入购物车时，主动提示相关的配件或优惠信息。
-        *   这些“主动生成”的内容，其信息来源仍然是**知识库**和**用户数据**，LLM 负责将其包装成自然的语言。
+    **实践中，这三者常常结合使用。** 例如，可以先对模型进行指令微调，然后在应用中使用 RAG 提供实时信息，并通过提示工程优化最终输出。
 
-    [!warning] 区分知识来源
-    面试时要清晰地区分：LLM 提供的是**语言能力**（理解、生成、总结、转述），而回答中的**事实性信息**主要来源于**外部知识库**（通过 RAG 接入）。
+    ## 对产品经理的意义
 
-    ---
+    *   **理解技术选项**: 知道微调是提升模型在特定场景表现的一种重要手段，是 [[../提示工程 (Prompt Engineering)|Prompt Engineering]] 和 [[../检索增强生成 (RAG)|RAG]] 之外的另一种选择。
+    *   **成本与效益评估**: 理解微调需要专门的数据集和训练资源，涉及相应的成本和时间投入。能够参与评估微调带来的性能提升是否值得这些投入。
+    *   **数据策略**: 认识到高质量微调数据的价值和获取难度。
+    *   **[[../技术选型|技术选型]]讨论**: 能够与技术团队讨论是否需要微调、采用哪种微调方法（Full vs PEFT）、以及微调与 RAG/Prompt 的结合策略。
+    *   **设定合理预期**: 了解微调的效果上限和潜在风险。
 
-    ## Q3: AI/LLM 产品经理岗位需要理解 LLaMA 这种“太高级”的内容吗？理解到什么程度？
+    ## 总结
 
-    > “关于需要理解 LLaMA 等具体模型到什么程度，这是一个很好的问题，也是很多想进入 AI PM 领域的人关心的。我的理解是，关键在于把握**合适的深度**，即 **[[../../Concepts/Product Management/核心技能/PM 对 LLM 的理解深度|技术素养而非技术专精]]**。”
+    微调是通过在特定数据集上进一步训练，来适配预训练 LLM 到具体任务或领域的技术。它能够显著提升模型在特定场景下的性能、指令遵循能力或风格模仿能力。产品经理需要理解微调的基本原理、流程、不同方法（特别是 PEFT 的意义）以及它与其他定制化技术（Prompt, RAG）的区别与联系，以便在产品规划和技术决策中做出合理判断。
 
-    1.  **不需要成为算法专家**: 你**不需要**理解 LLaMA 的具体网络结构、训练算法细节、数学原理。这些是算法工程师和研究员的范畴。
-    2.  **需要理解其“身份”和“定位”**:
-        *   **知道它是什么**: 了解 [[../../Concepts/AI & ML/Models/LLaMA 模型系列|LLaMA]] 是 Meta 推出的一个**重要的、高性能的[[../../Concepts/AI & ML/开源 vs 闭源模型|开源 LLM]]系列**。
-        *   **知道它的意义**: 理解 LLaMA 的出现**推动了开源 LLM 生态的发展**，为企业提供了 [[../../Concepts/AI & ML/开源 vs 闭源模型|API 之外的另一种选择]]。
-        *   **了解其主要特点**: 知道 Llama 2/3 是**允许商用**的，并且有不同[[../../Concepts/AI & ML/Models/参数规模|参数规模]]的版本（如 8B, 70B），有基础版和对话版 (Instruct/Chat)。
-    3.  **需要理解其“共性”**:
-        *   LLaMA 作为一种 [[../../Concepts/AI & ML/大型语言模型 (LLM)|LLM]]，它同样拥有 LLM 的**通用能力**（文本理解、生成等）和**共同挑战**（[[../../Concepts/AI & ML/模型幻觉 (Hallucination)|幻觉]]、[[../../Concepts/AI & ML/模型鲁棒性 (Robustness)|鲁棒性]]、[[../../Concepts/AI & ML/模型偏见|偏见]]等）。你在理解 GPT 或 Claude 时学到的关于 LLM 的普遍规律，同样适用于 LLaMA。
-    4.  **需要理解其作为“选项”的意义**:
-        *   **[[../../Concepts/AI & ML/开源 vs 闭源模型|技术选型]]**: 能够在讨论技术方案时，将 LLaMA 作为**开源选项**与 [[../../Concepts/AI & ML/Models/GPT 模型系列|GPT]], [[../../Concepts/AI & ML/Models/Claude 模型系列|Claude]] 等**闭源 API** 进行对比，分析其在**成本、性能（微调潜力）、控制权、数据隐私**等方面的利弊权衡。这体现了你的[[../../Concepts/Product Management/技术选型|选型思考能力]]。
-        *   **了解市场格局**: 知道 [[../../Concepts/AI & ML/Models/主流 LLM 模型概览|主流模型]]有哪些主要玩家和代表作，有助于把握技术趋势。
+    ## 相关概念
 
-    [!info] 总结 PM 的理解深度
-    你需要理解 LLaMA **是什么**，它在 LLM 生态中的**位置**（重要开源代表），以及它作为**技术选项**时需要考虑的**权衡因素**。你不需要知道它具体是怎么训练出来的，但需要知道选择它可能意味着什么（例如：需要自己部署维护，但数据更安全、可定制性更高）。参考 [[../../Concepts/Product Management/核心技能/PM 对 LLM 的理解深度]]。
-
-    ---
-
-    ## 面试策略与进一步学习建议
-
-    *   **结构化回答**: 面对技术问题，先阐述核心概念，再结合产品场景（如 AI 购物助手）进行分析，最后讨论挑战和权衡。
-    *   **展现产品思维**: 始终将技术讨论落脚到用户价值、业务目标、产品体验和风险管理上。例如，讨论[[../../Concepts/AI & ML/模型幻觉 (Hallucination)|幻觉]]时，重点是它对用户的**影响**以及产品层面**如何缓解**。
-    *   **突出学习能力**: 如果遇到不确定的技术细节，可以坦诚说明，但同时表达你会如何去学习和了解（例如，“关于 LLaMA 3 最新的训练细节我可能需要再查阅一下，但我理解它作为开源模型的主要优势在于...”）。
-    *   **针对性复习**:
-        *   重点复习本知识库中 `Concepts/AI & ML` 文件夹下的核心概念笔记。
-        *   回顾 `Concepts/Product Management/应用案例 - AI 助手` 中的两个框架应用笔记，思考技术如何在其中落地。
-        *   练习 `Interview Simulation` 中相关的技术理解模拟题。
-
-    希望这个 FAQ 能帮助你更好地理解 AI 助手的技术层面，并为你的面试做好准备！
+    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
+    *   [[预训练 (Pre-training)]]
+    *   [[数据集 (Dataset)]]
+    *   [[模型训练]]
+    *   [[参数高效微调 (PEFT)]]
+    *   [[LoRA]]
+    *   [[指令微调]]
+    *   [[RLHF]]
+    *   [[../提示工程 (Prompt Engineering)|提示工程 (Prompt Engineering)]]
+    *   [[../检索增强生成 (RAG)|检索增强生成 (RAG)]]
+    *   [[迁移学习 (Transfer Learning)]] (微调是迁移学习的一种形式)
+    *   [[灾难性遗忘]]
 """)
 
 # --- Main Script Logic ---
 def main():
-    print("Starting Obsidian Knowledge Base Generation (Part 11 - AI Tech FAQ & Prep)...")
+    print("Starting Obsidian Knowledge Base Generation (Part 12 - Fine-tuning)...")
     print(f"Target Root Directory: {os.path.abspath(TARGET_ROOT_DIRECTORY)}")
     print(f"Overwrite Existing Files: {OVERWRITE_EXISTING}")
 
-    # File prioritized by user request: A detailed FAQ for AI Assistant Tech & PM Interview Prep
+    # File prioritized by user request: Fine-tuning
     files_to_create = {
-        tech_faq_path: tech_faq_content,
+        finetuning_path: finetuning_content,
     }
 
     # Create necessary base directories if they don't exist
-    os.makedirs(technical_deep_dive_folder, exist_ok=True)
+    os.makedirs(ai_core_tech_folder, exist_ok=True)
     print("Base directories ensured.")
 
     for filepath, content in files_to_create.items():
@@ -170,8 +156,8 @@ def main():
             continue
         write_file(filepath, content)
 
-    print("\nObsidian Knowledge Base Generation (Part 11) Complete.")
-    print("Focus was on creating the AI Assistant Technical FAQ & Interview Preparation Guide.")
+    print("\nObsidian Knowledge Base Generation (Part 12) Complete.")
+    print("Focus was on creating the 'Fine-tuning' concept note with enhanced formatting and structure.")
 
 if __name__ == "__main__":
     main()

@@ -78,4 +78,4 @@ aliases: [Prompt Engineering, 提示词工程, Prompt Design]
 *   [[思维链 (Chain-of-Thought)]]
 *   [[检索增强生成 (RAG)|检索增强生成 (RAG)]] (RAG 的结果通常用于增强 Prompt)
 *   [[模型幻觉 (Hallucination)|模型幻觉 (Hallucination)]] (好的 Prompt 有助于减少幻觉)
-*   [[../Product Management/完整框架/03 - 产品设计与方案构思|产品设计与方案构思]] (需要考虑 Prompt 设计)
+*   [[03 - 产品设计与方案构思|产品设计与方案构思]] (需要考虑 Prompt 设计)

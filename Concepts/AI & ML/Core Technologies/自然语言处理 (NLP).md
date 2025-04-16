@@ -4,15 +4,15 @@ aliases: [NLP, Natural Language Processing]
 ---
 # 自然语言处理 (Natural Language Processing - NLP)
 
-[[../00 - AI 与机器学习概览|返回 AI 概览]]
+[[00 - AI 与机器学习概览|返回 AI 概览]]
 
 ## 概述
 
 自然语言处理 (NLP) 是人工智能 (AI) 和语言学的一个交叉领域，专注于**使计算机能够理解、解释、处理和生成人类自然语言（如中文、英文）**。其目标是弥合人类交流方式与计算机理解能力之间的鸿沟。
 
 NLP 是许多现代 AI 应用的基础，尤其是那些涉及文本或语音交互的应用，例如：
-*   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]] 本身就是 NLP 领域取得突破性进展的成果。
-*   [[../应用案例 - AI 助手/00 - AI 购物助手案例分析 (Rufus 启发)|AI 助手]] / 聊天机器人
+*   [[大型语言模型 (LLM)|大型语言模型 (LLM)]] 本身就是 NLP 领域取得突破性进展的成果。
+*   [[应用案例 - AI 助手/00 - AI 购物助手案例分析 (Rufus 启发)|AI 助手]] / 聊天机器人
 *   机器翻译
 *   情感分析
 *   文本摘要
@@ -33,7 +33,7 @@ NLP 涵盖了广泛的任务，可以大致分为两大类：
     *   **文本规划**: 决定要表达哪些信息。
     *   **句子规划**: 将信息组织成合乎语法的句子结构。
     *   **文本实现**: 生成最终的自然语言文本。
-    *   [[../大型语言模型 (LLM)|LLM]] 在 NLG 方面表现尤为突出。
+    *   [[大型语言模型 (LLM)|LLM]] 在 NLG 方面表现尤为突出。
 
 ```mermaid
 graph TD
@@ -55,7 +55,7 @@ graph TD
         C --> C4["内容创作"];
     end
 
-    B & C <--> D("[[../大型语言模型 (LLM)|LLM]]<br/>(同时擅长 NLU 和 NLG)");
+    B & C <--> D("[[大型语言模型 (LLM)|LLM]]<br/>(同时擅长 NLU 和 NLG)");
 ```
 
 ## NLP 技术的发展
@@ -63,11 +63,11 @@ graph TD
 *   **早期 (基于规则)**: 依赖语言学家手动编写大量语法规则和词典。效果有限，难以覆盖语言的复杂性和歧义性。
 *   **统计 NLP**: 基于大规模语料库，使用[[机器学习]]（如 [[朴素贝叶斯]]、[[支持向量机 (SVM)]]、[[隐马尔可夫模型 (HMM)]]）学习语言的统计模式。比基于规则的方法效果更好，但仍依赖特征工程。
 *   **[[深度学习]]时代**:
-    *   [[../Core Technologies/嵌入 (Embedding)|词嵌入 (Word Embeddings)]] (Word2Vec, GloVe) 解决了词语的向量表示问题。
+    *   [[嵌入 (Embedding)|词嵌入 (Word Embeddings)]] (Word2Vec, GloVe) 解决了词语的向量表示问题。
     *   RNN/LSTM 在序列建模上取得进展。
-    *   **[[../Core Technologies/Transformer 模型|Transformer]] 架构 (2017)**: 带来了革命性突破，其[[自注意力]]机制能有效捕捉长距离依赖并支持并行计算，成为现代 NLP 的基石。
-    *   **预训练语言模型 (Pre-trained Language Models, PLM)**: 如 BERT, GPT 等基于 [[../Core Technologies/Transformer 模型|Transformer]] 在海量数据上预训练的模型，只需少量[[../微调 (Fine-tuning)|微调]]即可在各种下游 NLP 任务上取得优异效果，极大降低了应用门槛。
-    *   **[[../大型语言模型 (LLM)|大型语言模型 (LLM)]]**: 参数规模更大、能力更强的 PLM，展现出强大的理解和生成能力。
+    *   **[[Transformer 模型|Transformer]] 架构 (2017)**: 带来了革命性突破，其[[自注意力]]机制能有效捕捉长距离依赖并支持并行计算，成为现代 NLP 的基石。
+    *   **预训练语言模型 (Pre-trained Language Models, PLM)**: 如 BERT, GPT 等基于 [[Transformer 模型|Transformer]] 在海量数据上预训练的模型，只需少量[[微调 (Fine-tuning)|微调]]即可在各种下游 NLP 任务上取得优异效果，极大降低了应用门槛。
+    *   **[[大型语言模型 (LLM)|大型语言模型 (LLM)]]**: 参数规模更大、能力更强的 PLM，展现出强大的理解和生成能力。
 
 ## 对产品经理的意义
 
@@ -78,16 +78,16 @@ graph TD
 
 ## 总结
 
-NLP 是使计算机能够处理人类语言的关键技术领域。从早期的规则方法到统计学习，再到如今由 [[../Core Technologies/Transformer 模型|Transformer]] 和 [[../大型语言模型 (LLM)|LLM]] 引领的深度学习时代，NLP 取得了巨大进步。理解 NLP 的基本概念、主要任务和发展历程，有助于产品经理更好地设计和评估利用自然语言交互的 AI 产品。
+NLP 是使计算机能够处理人类语言的关键技术领域。从早期的规则方法到统计学习，再到如今由 [[Transformer 模型|Transformer]] 和 [[大型语言模型 (LLM)|LLM]] 引领的深度学习时代，NLP 取得了巨大进步。理解 NLP 的基本概念、主要任务和发展历程，有助于产品经理更好地设计和评估利用自然语言交互的 AI 产品。
 
 ## 相关概念
 
 *   [[人工智能 (AI)]]
 *   [[机器学习 (ML)]]
 *   [[深度学习]]
-*   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
-*   [[../Core Technologies/Transformer 模型|Transformer 模型]]
-*   [[../Core Technologies/嵌入 (Embedding)|嵌入 (Embedding)]]
+*   [[大型语言模型 (LLM)|大型语言模型 (LLM)]]
+*   [[Transformer 模型|Transformer 模型]]
+*   [[嵌入 (Embedding)|嵌入 (Embedding)]]
 *   [[自然语言理解 (NLU)]]
 *   [[自然语言生成 (NLG)]]
-*   [[../应用案例 - AI 助手/00 - AI 购物助手案例分析 (Rufus 启发)|AI 助手]]
+*   [[应用案例 - AI 助手/00 - AI 购物助手案例分析 (Rufus 启发)|AI 助手]]

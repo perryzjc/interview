@@ -4,13 +4,13 @@ aliases: [Transformer Architecture, Transformer架构]
 ---
 # Transformer 模型架构
 
-[[../00 - AI 与机器学习概览|返回 AI 概览]] | [[../大型语言模型 (LLM)|LLM 基础]]
+[[00 - AI 与机器学习概览|返回 AI 概览]] | [[大型语言模型 (LLM)|LLM 基础]]
 
 ## 概述
 
-Transformer 是一种**深度学习模型架构**，由 Google 在 2017 年的论文《Attention Is All You Need》中提出。它最初用于机器翻译任务，但其核心机制——**自注意力 (Self-Attention)**——被证明在处理各种序列数据（尤其是自然语言文本）方面非常强大，从而**彻底改变了[[../大型语言模型 (LLM)|自然语言处理 (NLP)]]领域**。
+Transformer 是一种**深度学习模型架构**，由 Google 在 2017 年的论文《Attention Is All You Need》中提出。它最初用于机器翻译任务，但其核心机制——**自注意力 (Self-Attention)**——被证明在处理各种序列数据（尤其是自然语言文本）方面非常强大，从而**彻底改变了[[大型语言模型 (LLM)|自然语言处理 (NLP)]]领域**。
 
-**几乎所有现代的[[../大型语言模型 (LLM)|大型语言模型 (LLM)]]（如 GPT、BERT、LLaMA、Claude 等）都是基于 Transformer 架构构建的。** 理解 Transformer 的核心思想有助于理解 LLM 为何如此强大。
+**几乎所有现代的[[大型语言模型 (LLM)|大型语言模型 (LLM)]]（如 GPT、BERT、LLaMA、Claude 等）都是基于 Transformer 架构构建的。** 理解 Transformer 的核心思想有助于理解 LLM 为何如此强大。
 
 ## 核心思想：注意力机制 (Attention Mechanism)
 
@@ -62,7 +62,7 @@ Transformer 架构通过**注意力机制 (Attention Mechanism)**，特别是**�
 
 ## Transformer 的主要组成部分 (简化)
 
-*   **[[../Core Technologies/嵌入 (Embedding)|词嵌入 (Embeddings)]]**: 将输入的单词转换为向量表示。
+*   **[[嵌入 (Embedding)|词嵌入 (Embeddings)]]**: 将输入的单词转换为向量表示。
 *   **位置编码 (Positional Encoding)**: 由于 Transformer 并行处理，本身没有顺序信息，需要加入位置编码来告诉模型单词在句子中的位置。
 *   **多头自注意力 (Multi-Head Self-Attention)**: 同时从不同角度（不同的“头”）计算注意力权重，捕捉更丰富的依赖关系。
 *   **前馈神经网络 (Feed-Forward Networks)**: 在注意力层之后对每个位置的表示进行进一步处理。
@@ -77,18 +77,18 @@ Transformer 架构通过**注意力机制 (Attention Mechanism)**，特别是**�
 *   **理解能力基础**: Transformer 的注意力机制是 LLM 能够理解上下文、把握语义关系、处理长文本的关键。
 *   **生成能力基础**: 基于 Transformer 的解码器架构使得 LLM 能够流畅地生成连贯的文本。
 *   **效率与规模**: Transformer 的并行计算能力使得训练更大规模的模型成为可能，从而带来了能力的涌现。
-*   **局限性提示**: 理解其基于模式匹配和概率生成，有助于理解[[../模型幻觉 (Hallucination)|幻觉]]等局限性的来源（它不具备真正的逻辑推理或世界模型）。
+*   **局限性提示**: 理解其基于模式匹配和概率生成，有助于理解[[模型幻觉 (Hallucination)|幻觉]]等局限性的来源（它不具备真正的逻辑推理或世界模型）。
 
 ## 总结
 
-Transformer 架构及其核心的自注意力机制是理解现代 [[../大型语言模型 (LLM)|LLM]] 工作原理的基础。产品经理不需要深入了解其数学细节，但理解其**核心思想（如何通过注意力捕捉依赖关系）**以及**它带来的优势（处理长距离依赖、并行计算）**，对于理解 LLM 的能力边界、评估相关技术方案非常有帮助。
+Transformer 架构及其核心的自注意力机制是理解现代 [[大型语言模型 (LLM)|LLM]] 工作原理的基础。产品经理不需要深入了解其数学细节，但理解其**核心思想（如何通过注意力捕捉依赖关系）**以及**它带来的优势（处理长距离依赖、并行计算）**，对于理解 LLM 的能力边界、评估相关技术方案非常有帮助。
 
 ## 相关概念
 
-*   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
+*   [[大型语言模型 (LLM)|大型语言模型 (LLM)]]
 *   [[注意力机制]]
 *   [[自注意力]]
-*   [[../Core Technologies/嵌入 (Embedding)|嵌入 (Embedding)]]
+*   [[嵌入 (Embedding)|嵌入 (Embedding)]]
 *   [[自然语言处理 (NLP)]]
 *   [[深度学习]]
 *   [[编码器-解码器架构]]
