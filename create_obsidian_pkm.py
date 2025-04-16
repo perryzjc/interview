@@ -2,992 +2,1024 @@ import os
 import textwrap
 
 # --- Configuration ---
-# Define the root directory where the script should create folders and files.
-# '.' means the current directory where the script is run.
-# Adjust this if you want to run it from a different base location.
-ROOT_DIR = '.'
-
-# --- Notes Data ---
-# Dictionary mapping file paths (relative to ROOT_DIR) to their Markdown content.
-# Uses os.path.join for cross-platform compatibility.
-# Content is in Chinese and utilizes Obsidian features.
-
-notes_data = {
-    # --- Product Management Core Concepts ---
-    os.path.join("Concepts", "Product Management", "00 - Product Management Overview.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, overview, core-concept]
-        aliases: [产品管理, PM]
-        ---
-        # 產品管理核心概念 (Product Management Core Concepts)
-
-        > [!info] 定义 (Definition)
-        > 產品管理是組織內的一個職能，負責產品或產品線的整體成功，從策略制定到市場發布及後續迭代。它連接了業務、技術和用戶體驗 (UX)。
-
-        ## 核心職責 (Core Responsibilities)
-
-        產品經理通常負責以下關鍵領域：
-
-        - **[[03 - Product Strategy|產品策略]]**: 定義產品的願景、目標市場和長期方向。
-        - **[[04 - Roadmapping|產品路線圖]]**: 規劃產品的發展路徑和功能發布順序。
-        - **[[02 - User Research/User Research Overview|用戶研究]]**: 理解用戶需求、痛點和行為。
-        - **[[05 - Prioritization/Prioritization Overview|優先級排序]]**: 決定開發哪些功能以及何時開發。
-        - **[[06 - Product Metrics/Product Metrics Overview|產品指標]]**: 定義、追踪和分析產品成功的關鍵指標。
-        - **[[07 - Go-to-Market Strategy|上市策略]]**: 規劃和執行產品發布。
-        - **[[08 - Stakeholder Management|干系人管理]]**: 與工程、設計、市場、銷售、法務等團隊協調溝通。
-        - **[[01 - Product Lifecycle|產品生命週期]]**: 管理產品從概念到退市的整個過程。
-
-        ## 主要知識領域 (Key Knowledge Areas)
-
-        ```mermaid
-        graph TD
-            A(產品管理) --> B(產品策略);
-            A --> C(用戶研究);
-            A --> D(產品路線圖);
-            A --> E(優先級排序);
-            A --> F(產品指標);
-            A --> G(上市策略);
-            A --> H(干系人管理);
-            A --> I(產品生命週期);
-
-            C --> C1(用戶訪談);
-            C --> C2(問卷調查);
-            C --> C3(可用性測試);
-
-            E --> E1(RICE模型);
-            E --> E2(MoSCoW方法);
-            E --> E3(Kano模型);
-
-            F --> F1(北極星指標);
-            F --> F2(AARRR模型);
-
-            style A fill:#f9f,stroke:#333,stroke-width:2px
-        ```
-
-        > [!tip] 延伸閱讀
-        > 探索以上每個連結，深入了解各個具體概念。這個知識庫旨在模塊化，方便你按需學習。
-        """),
-
-    os.path.join("Concepts", "Product Management", "01 - Product Lifecycle.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, core-concept, product-lifecycle]
-        aliases: [產品生命週期]
-        ---
-        # 產品生命週期 (Product Lifecycle)
-
-        > [!info] 定义 (Definition)
-        > 產品生命週期描述了一個產品從引入市場到最終退出市場的各個階段。理解這些階段有助於制定相應的策略。
-
-        ## 主要階段 (Key Stages)
-
-        ```mermaid
-        graph LR
-            A[導入期 (Introduction)] --> B(成長期 (Growth));
-            B --> C(成熟期 (Maturity));
-            C --> D(衰退期 (Decline));
-
-            subgraph 產品生命週期
-                direction LR
-                A
-                B
-                C
-                D
-            end
-
-            style A fill:#cde4ff
-            style B fill:#baffc9
-            style C fill:#ffffba
-            style D fill:#ffb3ba
-        ```
-
-        1.  **導入期 (Introduction)**:
-            -   新產品推向市場，銷售額低，成本高。
-            -   重點：建立市場認知，吸引早期採用者。
-            -   相關策略：[[07 - Go-to-Market Strategy|上市策略]]。
-        2.  **成長期 (Growth)**:
-            -   市場接受度提高，銷售額快速增長，利潤開始出現。
-            -   重點：擴大市場份額，建立品牌偏好，應對競爭。
-            -   相關策略：功能迭代，渠道擴展。
-        3.  **成熟期 (Maturity)**:
-            -   銷售額達到頂峰並趨於穩定，市場飽和，競爭激烈。
-            -   重點：維持市場份額，差異化，提高效率。
-            -   相關策略：優化現有功能，探索細分市場。
-        4.  **衰退期 (Decline)**:
-            -   銷售額和利潤下降，市場萎縮。
-            -   重點：決定是維持、收割還是退出產品。
-            -   相關策略：成本控制，產品線簡化。
-
-        > [!tip] 注意
-        > 並非所有產品都嚴格遵循此模型，週期長度也因產品和市場而異。
-
-        ---
-        關聯概念: [[00 - Product Management Overview|產品管理核心概念]], [[03 - Product Strategy|產品策略]]
-        """),
-
-    # --- User Research ---
-    os.path.join("Concepts", "Product Management", "02 - User Research", "User Research Overview.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, core-concept, user-research]
-        aliases: [用戶研究]
-        ---
-        # 用戶研究概述 (User Research Overview)
-
-        > [!info] 定义 (Definition)
-        > 用戶研究是系統性地了解目標用戶及其需求、行為、動機和痛點的過程。它是以用戶為中心設計的基礎。
-
-        ## 為何重要 (Why is it Important?)
-
-        -   **驗證假設**: 減少基於猜測的決策。
-        -   **發現需求**: 找到未被滿足的用戶需求和機會點。
-        -   **提升用戶體驗**: 設計出更易用、更有價值的產品。
-        -   **降低風險**: 避免開發沒人要的功能或產品。
-
-        ## 主要方法 (Key Methods)
-
-        用戶研究方法多種多樣，可以分為定性和定量兩大類：
-
-        -   **定性研究 (Qualitative)**: 深入理解“為什麼”和“怎麼樣”。
-            -   [[User Interviews|用戶訪談]]
-            -   [[Usability Testing|可用性測試]]
-            -   焦點小組 (Focus Groups)
-            -   實境調查 (Ethnographic Studies)
-        -   **定量研究 (Quantitative)**: 用數據衡量“多少”和“多頻繁”。
-            -   [[Surveys|問卷調查]]
-            -   A/B 測試 (A/B Testing)
-            -   網站/應用分析 (Analytics)
-
-        > [!example] 如何選擇方法?
-        > - 探索早期概念或深入理解動機 -> [[User Interviews|用戶訪談]]
-        > - 評估現有設計的易用性 -> [[Usability Testing|可用性測試]]
-        > - 收集大量用戶的意見或偏好 -> [[Surveys|問卷調查]]
-
-        ---
-        關聯概念: [[00 - Product Management Overview|產品管理核心概念]], [[05 - Prioritization/Prioritization Overview|優先級排序]] (用戶研究的發現是排序的重要輸入)
-        """),
-
-    os.path.join("Concepts", "Product Management", "02 - User Research", "User Interviews.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, user-research, qualitative-method]
-        aliases: [用戶訪談]
-        ---
-        # 用戶訪談 (User Interviews)
-
-        > [!info] 定义 (Definition)
-        > 用戶訪談是一種定性研究方法，通過與用戶進行一對一的對話，深入了解他們的經驗、態度、需求和痛點。
-
-        ## 目標 (Goals)
-
-        -   探索用戶行為背後的動機。
-        -   驗證或推翻關於用戶需求的假設。
-        -   發現未預期的見解和機會。
-        -   建立用戶畫像 (Personas)。
-
-        ## 最佳實踐 (Best Practices)
-
-        -   **明確目標**: 每次訪談前確定你想了解的核心問題。
-        -   **開放式問題**: 多問 "How", "Why", "Tell me about..."，避免引導性問題。
-        -   **積極傾聽**: 不僅聽用戶說什麼，還要觀察他們的語氣和肢體語言。
-        -   **保持中立**: 不要評判用戶的回答。
-        -   **記錄**: 錄音（經同意）並做筆記。
-        -   **尋找模式**: 訪談結束後，整理筆記，尋找跨多個訪談的共同主題。
-
-        > [!warning] 常見陷阱
-        > - 不要問用戶他們想要什麼功能 (他們通常不知道或說不清)。要問他們遇到的問題和現在是如何解決的。
-        > - 不要只訪談“喜歡”你產品的用戶。
-
-        ---
-        關聯概念: [[User Research Overview|用戶研究概述]], [[Usability Testing|可用性測試]] (訪談常用於測試前後)
-        """),
-
-    os.path.join("Concepts", "Product Management", "02 - User Research", "Surveys.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, user-research, quantitative-method]
-        aliases: [問卷調查]
-        ---
-        # 問卷調查 (Surveys)
-
-        > [!info] 定义 (Definition)
-        > 問卷調查是一種定量研究方法，通過向大量用戶分發結構化的問卷來收集數據，了解用戶的偏好、態度、行為頻率等。
-
-        ## 優點 (Pros)
-
-        -   **規模化**: 可以快速觸達大量用戶。
-        -   **量化數據**: 易於統計分析，發現趨勢。
-        -   **成本相對較低**: 比一對一訪談成本低。
-
-        ## 缺點 (Cons)
-
-        -   **缺乏深度**: 難以理解“為什麼”。
-        -   **設計挑戰**: 問題設計不當可能導致誤導性結果。
-        -   **回答偏差**: 用戶可能不認真回答或提供社會期望的答案。
-
-        ## 設計技巧 (Design Tips)
-
-        -   **保持簡短**: 問題越少越好。
-        -   **問題清晰**: 避免模糊或雙關語。
-        -   **選項互斥且窮盡**: 對於選擇題。
-        -   **從易到難**: 先問簡單的問題。
-        -   **避免引導性問題**: 如 "您難道不喜歡我們的新功能嗎？"。
-        -   **預測試 (Pilot Test)**: 在小範圍內測試問卷，發現問題。
-
-        > [!example] 應用場景
-        > - 測量用戶滿意度 (如 NPS - Net Promoter Score)。
-        > - 了解功能使用頻率。
-        > - 收集用戶基本信息。
-
-        ---
-        關聯概念: [[User Research Overview|用戶研究概述]], [[06 - Product Metrics/Product Metrics Overview|產品指標]] (NPS 就是一種通過問卷收集的指標)
-        """),
-
-    os.path.join("Concepts", "Product Management", "02 - User Research", "Usability Testing.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, user-research, qualitative-method, ux]
-        aliases: [可用性測試]
-        ---
-        # 可用性測試 (Usability Testing)
-
-        > [!info] 定义 (Definition)
-        > 可用性測試是一種評估產品易用性的方法，通過觀察真實用戶在嘗試完成特定任務時遇到的問題。
-
-        ## 目標 (Goals)
-
-        -   **識別易用性問題**: 發現用戶在哪裡卡頓、困惑或犯錯。
-        -   **評估任務完成率**: 用戶能否成功完成關鍵任務？
-        -   **衡量效率**: 完成任務需要多長時間？
-        -   **收集主觀反饋**: 用戶對使用體驗的感受如何？
-
-        ## 測試流程 (Testing Process)
-
-        1.  **定義目標和任務**: 明確要測試的產品部分和用戶需要完成的關鍵任務。
-        2.  **招募參與者**: 尋找代表目標用戶群體的測試者 (通常5-8人就能發現大部分問題)。
-        3.  **準備測試環境**: 設置好設備、原型或產品。
-        4.  **執行測試**:
-            -   向用戶解釋流程，強調測試的是產品而非用戶本人。
-            -   讓用戶“放聲思考”(Think Aloud)。
-            -   觀察用戶行為，記錄遇到的困難。
-            -   主持人盡量少干預。
-        5.  **分析結果**: 匯總觀察到的問題，按嚴重程度排序。
-
-        > [!tip] 原型測試
-        > 可用性測試可以在產品開發的任何階段進行，甚至在只有低保真原型時就可以開始，這樣可以及早發現問題，降低修改成本。
-
-        ---
-        關聯概念: [[User Research Overview|用戶研究概述]], [[User Interviews|用戶訪談]] (測試後常會進行簡短訪談)
-        """),
-
-    # --- Product Strategy ---
-    os.path.join("Concepts", "Product Management", "03 - Product Strategy.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, core-concept, strategy]
-        aliases: [產品策略]
-        ---
-        # 產品策略 (Product Strategy)
-
-        > [!info] 定义 (Definition)
-        > 產品策略是一個高層次的計劃，描述了產品為實現業務目標將要達成什麼，以及如何達成。它為產品決策提供了框架和方向。
-
-        ## 核心要素 (Key Components)
-
-        一個好的產品策略通常包含：
-
-        1.  **願景 (Vision)**:
-            -   產品的長期目標和最終想要達到的狀態。
-            -   回答：“我們為什麼要打造這個產品？”
-        2.  **目標市場 (Target Audience)**:
-            -   我們為誰解決問題？定義清晰的用戶畫像 (Personas)。
-            -   相關：[[02 - User Research/User Research Overview|用戶研究]]
-        3.  **要解決的問題 (Problems to Solve)**:
-            -   產品旨在解決目標用戶的哪些核心痛點？
-        4.  **目標與關鍵成果 (Objectives and Key Results - OKRs)**:
-            -   如何衡量策略的成功？設定具體、可衡量的目標。
-            -   相關：[[06 - Product Metrics/Product Metrics Overview|產品指標]]
-        5.  **差異化與定位 (Differentiation & Positioning)**:
-            -   我們的產品與競爭對手有何不同？獨特價值主張 (Unique Value Proposition - UVP) 是什麼？
-        6.  **商業模式 (Business Model)**:
-            -   產品如何創造收入和利潤？
-
-        ## 策略 vs 路線圖 (Strategy vs. Roadmap)
-
-        -   **策略 (Strategy)** 是 **Why** (為什麼做) 和 **What** (做什麼的核心目標)。
-        -   **[[04 - Roadmapping|路線圖 (Roadmap)]]** 是 **How** (如何分步實現) 和 **When** (大致的時間規劃)。
-
-        > [!tip] 策略是動態的
-        > 市場和用戶需求不斷變化，產品策略也需要定期審視和調整。
-
-        ---
-        關聯概念: [[00 - Product Management Overview|產品管理核心概念]], [[04 - Roadmapping|產品路線圖]], [[01 - Product Lifecycle|產品生命週期]] (不同生命週期階段需要不同的策略)
-        """),
-
-    # --- Roadmapping ---
-    os.path.join("Concepts", "Product Management", "04 - Roadmapping.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, core-concept, planning, roadmap]
-        aliases: [產品路線圖, Roadmap]
-        ---
-        # 產品路線圖 (Roadmapping)
-
-        > [!info] 定义 (Definition)
-        > 產品路線圖是一個高層次的視覺化計劃，溝通了產品的發展方向和隨時間推移的主要工作重點 (通常是主題或目標，而非具體功能列表)。
-
-        ## 主要目的 (Key Purposes)
-
-        -   **溝通策略**: 向 [[08 - Stakeholder Management|干系人]] (團隊、管理層、客戶等) 展示產品的 [[03 - Product Strategy|策略]] 和未來方向。
-        -   **協調工作**: 幫助不同團隊 (開發、市場、銷售) 了解即將到來的工作，以便協調計劃。
-        -   **指導優先級**: 作為 [[05 - Prioritization/Prioritization Overview|優先級排序]] 的依據，確保開發工作與策略一致。
-
-        ## 常見類型 (Common Types)
-
-        -   **基於目標的路線圖 (Goal-Oriented Roadmap)**: 側重於要實現的業務目標或用戶成果 (例如：提高用戶活躍度)。
-        -   **基於主題的路線圖 (Theme-Based Roadmap)**: 圍繞高層次的主題組織工作 (例如：改善新手引導、提升性能)。
-        -   **基於時間的路線圖 (Time-Based Roadmap)**: 按時間框架 (如季度) 劃分，標注大致的時間預期 (Now, Next, Later 是常見模式)。
-
-        ```mermaid
-        gantt
-            dateFormat  YYYY-MM-DD
-            title 產品路線圖示例 (基於時間)
-            excludes    weekends
-
-            section Q3 2024 (Now)
-            用戶登錄優化     :a1, 2024-07-01, 30d
-            數據分析基礎建設 :a2, 2024-07-15, 45d
-
-            section Q4 2024 (Next)
-            新功能模塊A探索  :b1, 2024-10-01, 60d
-            性能瓶頸改善     :b2, 2024-10-20, 40d
-
-            section Q1 2025 (Later)
-            國際化支持       :c1, 2025-01-10, 90d
-            合作夥伴集成     :c2, 2025-02-01, 75d
-        ```
-
-        > [!warning] 路線圖不是承諾
-        > 路線圖應被視為方向指引，而非功能的精確交付日期承諾。它需要根據市場反饋、[[02 - User Research/User Research Overview|用戶研究]]發現和業務變化保持靈活性和調整空間。
-
-        ---
-        關聯概念: [[00 - Product Management Overview|產品管理核心概念]], [[03 - Product Strategy|產品策略]], [[05 - Prioritization/Prioritization Overview|優先級排序]]
-        """),
-
-    # --- Prioritization ---
-    os.path.join("Concepts", "Product Management", "05 - Prioritization", "Prioritization Overview.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, core-concept, prioritization]
-        aliases: [優先級排序, 優先級]
-        ---
-        # 優先級排序概述 (Prioritization Overview)
-
-        > [!info] 定义 (Definition)
-        > 優先級排序是在資源有限（時間、人力、資金）的情況下，決定先做什麼、後做什麼、甚至不做什麼的過程。這是產品經理最關鍵也最具挑戰性的職責之一。
-
-        ## 為何重要 (Why is it Important?)
-
-        -   **聚焦價值**: 確保團隊時間投入到對用戶和業務最有價值的事情上。
-        -   **資源優化**: 在限制條件下最大化產出。
-        -   **策略對齊**: 保證開發工作符合 [[03 - Product Strategy|產品策略]] 和 [[04 - Roadmapping|路線圖]]。
-        -   **管理預期**: 向 [[08 - Stakeholder Management|干系人]] 清晰地溝通決策依據。
-
-        ## 常用框架 (Common Frameworks)
-
-        沒有萬能的框架，通常需要結合多種方法和判斷：
-
-        -   **[[RICE Framework|RICE 模型]]**: 基於 Reach (觸達), Impact (影響), Confidence (信心), Effort (投入) 進行量化評分。
-        -   **[[MoSCoW Method|MoSCoW 方法]]**: 將需求分為 Must have, Should have, Could have, Won't have。
-        -   **[[Kano Model|Kano 模型]]**: 從用戶滿意度角度區分基本需求、期望需求和興奮需求。
-        -   **價值 vs 複雜度矩陣 (Value vs. Complexity Matrix)**: 簡單的二維矩陣，快速分類。
-        -   **機會排序法 (Opportunity Scoring)**: 基於用戶對需求的重要性和滿意度打分。
-
-        > [!tip] 輸入來源
-        > 優先級排序的決策應基於多方面信息：
-        > - [[02 - User Research/User Research Overview|用戶研究]] 的發現
-        > - [[06 - Product Metrics/Product Metrics Overview|產品指標]] 數據
-        > - 業務目標和 [[03 - Product Strategy|產品策略]]
-        > - [[08 - Stakeholder Management|干系人]] 的輸入 (銷售、市場、客服等)
-        > - 技術可行性和依賴關係
-        > - 市場競爭分析
-
-        ---
-        關聯概念: [[00 - Product Management Overview|產品管理核心概念]], [[04 - Roadmapping|產品路線圖]], [[RICE Framework|RICE 模型]], [[MoSCoW Method|MoSCoW 方法]], [[Kano Model|Kano 模型]]
-        """),
-
-    os.path.join("Concepts", "Product Management", "05 - Prioritization", "RICE Framework.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, prioritization, framework, RICE]
-        aliases: [RICE模型, RICE]
-        ---
-        # RICE 模型 (RICE Framework)
-
-        > [!info] 定义 (Definition)
-        > RICE 是一種量化的優先級排序框架，旨在通過評估四個維度來幫助決策：Reach (觸達), Impact (影響), Confidence (信心), 和 Effort (投入)。
-
-        ## 計算公式 (Formula)
-
-        ```
-        RICE Score = (Reach * Impact * Confidence) / Effort
-        ```
-
-        ## 四個維度 (The Four Factors)
-
-        1.  **Reach (觸達範圍)**:
-            -   這個功能/項目在一定時間內會影響多少用戶？
-            -   *示例*: 每月影響 500 個用戶，Reach = 500。
-            -   *度量*: 用戶數、交易數、試用轉化數等。
-
-        2.  **Impact (影響程度)**:
-            -   這個功能/項目對每個用戶的影響有多大？（通常對應產品目標，如提高轉化率、滿意度等）
-            -   *評分*: 通常使用量級評分，例如：
-                -   3 = 巨大影響 (massive impact)
-                -   2 = 較大影響 (high impact)
-                -   1 = 中等影響 (medium impact)
-                -   0.5 = 較小影響 (low impact)
-                -   0.25 = 微小影響 (minimal impact)
-
-        3.  **Confidence (信心水平)**:
-            -   你對 Reach 和 Impact 的估計有多大把握？（基於數據支撐、研究等）
-            -   *評分*: 百分比形式：
-                -   100% = 高度信心 (high confidence)
-                -   80% = 中等信心 (medium confidence)
-                -   50% = 低度信心 (low confidence)
-                -   <50% = 猜測 (moonshot) - 需要更多研究
-
-        4.  **Effort (投入成本)**:
-            -   實現這個功能/項目需要多少資源？（通常指工程、設計等團隊投入的“人月”或“點數”）
-            -   *評分*: 使用相對估算值，例如：
-                -   0.5 = 非常小 (幾天)
-                -   1 = 小 (1-2週)
-                -   2 = 中 (1個月)
-                -   3 = 大 (2個月)
-                -   5 = 非常大 (一個季度)
-            -   *注意*: Effort 在分母，投入越大，得分越低。
-
-        ## 使用步驟 (How to Use)
-
-        1.  列出所有待排序的功能/項目。
-        2.  對每個項目，估算 R, I, C, E 四個值。
-        3.  計算每個項目的 RICE 分數。
-        4.  按 RICE 分數從高到低排序。
-
-        > [!warning] RICE 不是絕對真理
-        > - 分數是相對的，用於比較不同選項。
-        > - 對於主觀評分 (Impact, Confidence)，需要團隊達成共識。
-        > - 策略性項目或基礎設施項目可能得分不高，但仍然重要，需要額外考慮。
-
-        ---
-        關聯概念: [[Prioritization Overview|優先級排序概述]]
-        """),
-
-    os.path.join("Concepts", "Product Management", "05 - Prioritization", "MoSCoW Method.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, prioritization, framework, MoSCoW]
-        aliases: [MoSCoW方法, MoSCoW]
-        ---
-        # MoSCoW 方法 (MoSCoW Method)
-
-        > [!info] 定义 (Definition)
-        > MoSCoW 是一種相對簡單的優先級排序方法，將需求或功能分為四個類別，常用於確定特定發布版本 (Release) 或時間盒 (Timebox) 內的範圍。
-
-        ## 四個類別 (The Four Categories)
-
-        1.  **Must have (必須有)**:
-            -   **定義**: 核心需求，沒有它們產品就無法發布或不可用。如果發布時沒有包含任何一個 Must have 項，則發布應被視為失敗。
-            -   **特徵**: 關鍵功能、法律要求、安全必需品。
-            -   *示例*: 電商網站的“添加到購物車”和“結賬”功能。
-
-        2.  **Should have (應該有)**:
-            -   **定義**: 重要但非必需的需求。如果沒有它們，產品仍然可用，但價值會降低或用戶體驗不佳。可以嘗試在發布時包含，但如果時間緊張，可以推遲。
-            -   **特徵**: 重要的輔助功能、性能改進。
-            -   *示例*: 電商網站的“商品篩選”或“多種支付方式”。
-
-        3.  **Could have (可以有)**:
-            -   **定義**: 期望但不重要的需求。如果時間和資源允許，可以包含，它們能帶來一些額外價值或用戶愉悅感，但缺少它們影響不大。
-            -   **特徵**: “錦上添花”的功能、小的易用性改進。
-            -   *示例*: 電商網站的“自定義主題顏色”。
-
-        4.  **Won't have (這次不會有)**:
-            -   **定義**: 已被明確排除在當前範圍之外的需求。記錄下來是為了明確共識，避免範圍蔓延。這些需求可能會在未來考慮。
-            -   **特徵**: 與當前目標不符、成本過高、或者計劃在後續版本實現的功能。
-            -   *示例*: 電商網站初期版本可能決定“暫不做”社交分享功能。
-
-        ## 使用場景 (When to Use)
-
-        -   非常適合與 [[08 - Stakeholder Management|干系人]] 快速就範圍達成共識。
-        -   在敏捷開發中，常用於確定 Sprint 或 Release 的目標。
-        -   相比 [[RICE Framework|RICE]] 等量化模型，更側重於分類和範圍界定。
-
-        > [!tip] 保持平衡
-        > 要警惕將過多的需求歸類為 "Must have"，這會導致範圍過大。通常建議將有限比例 (例如 60% 或更少) 的精力分配給 Must have，為 Should have 和 Could have 留出空間。
-
-        ---
-        關聯概念: [[Prioritization Overview|優先級排序概述]]
-        """),
-
-    os.path.join("Concepts", "Product Management", "05 - Prioritization", "Kano Model.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, prioritization, framework, Kano, user-satisfaction]
-        aliases: [Kano模型, Kano]
-        ---
-        # Kano 模型 (Kano Model)
-
-        > [!info] 定义 (Definition)
-        > Kano 模型是一種用戶需求分類和優先級排序的理論，它將產品質量特性與用戶滿意度聯繫起來，幫助理解不同功能對用戶感受的影響。
-
-        ## 核心思想 (Core Idea)
-
-        Kano 模型認為，並非所有功能都能同等地提升用戶滿意度。有些功能缺失會導致極度不滿，但有了也未必帶來高滿意度；而另一些功能即使沒有，用戶也不會太在意，但一旦提供，則可能帶來極大的驚喜和滿意度。
-
-        ## 五種質量特性 (Five Categories of Attributes)
-
-        ```mermaid
-        graph LR
-            subgraph "Kano 模型"
-            direction TB
-                A(基本型需求<br>Must-be Quality) -- 不滿足 --> B(極度不滿);
-                A -- 滿足 --> C(沒感覺/理所當然);
-                D(期望型需求<br>One-dimensional Quality) -- 不滿足 --> E(不滿);
-                D -- 滿足 --> F(滿意);
-                G(魅力型需求<br>Attractive Quality) -- 不滿足 --> H(沒感覺);
-                G -- 滿足 --> I(非常滿意/驚喜);
-                J(無差異需求<br>Indifferent Quality) -- 不滿足/滿足 --> K(無所謂);
-                L(反向型需求<br>Reverse Quality) -- 不滿足 --> M(滿意);
-                L -- 滿足 --> N(不滿);
-            end
-
-        style A fill:#ffb3ba
-        style D fill:#ffffba
-        style G fill:#baffc9
-        style J fill:#eeeeee
-        style L fill:#cde4ff
-        ```
-
-        1.  **基本型需求 (Must-be / Basic Needs)**:
-            -   用戶認為產品“必須”具備的功能。
-            -   **特點**: 滿足了不會提升滿意度 (因為是理所當然的)，但不滿足會導致極度不滿。
-            -   *示例*: 酒店房間有乾淨的床鋪，App 可以正常登錄。
-            -   **策略**: 必須優先滿足。
-
-        2.  **期望型需求 (One-dimensional / Performance Needs)**:
-            -   用戶期望的功能，滿足程度與滿意度成正比。
-            -   **特點**: 提供得越多/越好，用戶越滿意；提供得越少/越差，用戶越不滿。
-            -   *示例*: 手機電池續航時間越長越好，網頁加載速度越快越好。
-            -   **策略**: 在資源允許下盡力滿足，是競爭的關鍵。
-
-        3.  **魅力型需求 (Attractive / Excitement Needs)**:
-            -   用戶未預期到的、帶來驚喜的功能。
-            -   **特點**: 沒有也不會引起不滿，但一旦提供，會讓用戶非常滿意，甚至產生口碑效應。
-            -   *示例*: 某 App 的一個意想不到的貼心小功能，首次使用降噪耳機的安靜體驗。
-            -   **策略**: 是產品差異化和創造忠誠度的來源，可以選擇性投入。
-
-        4.  **無差異需求 (Indifferent Quality)**:
-            -   用戶根本不在意的功能。
-            -   **特點**: 無論提供與否，用戶滿意度都沒有變化。
-            -   **策略**: 避免投入資源。
-
-        5.  **反向型需求 (Reverse Quality)**:
-            -   一些用戶喜歡，但另一些用戶討厭的功能。
-            -   **特點**: 提供後反而導致一部分用戶不滿。
-            -   *示例*: 過於複雜的界面，某些用戶不喜歡的自動播放功能。
-            -   **策略**: 需要謹慎處理，可能需要提供選項或避免。
-
-        ## 如何應用 (How to Apply)
-
-        -   通常通過專門設計的 Kano 問卷進行 [[02 - User Research/Surveys|問卷調查]] 來識別功能屬於哪個類別。
-        -   問卷會針對每個功能問兩個問題：
-            -   如果 **有** 這個功能，您感覺如何？ (正面問題)
-            -   如果 **沒有** 這個功能，您感覺如何？ (負面問題)
-        -   根據用戶對這兩個問題的回答組合，判斷該功能對該用戶屬於哪個類別。
-
-        > [!tip] 動態變化
-        > 需求的類別會隨時間變化。今天的魅力型需求可能變成明天的期望型需求，甚至後天的基本型需求 (例如：手機觸摸屏)。
-
-        ---
-        關聯概念: [[Prioritization Overview|優先級排序概述]], [[02 - User Research/User Research Overview|用戶研究]]
-        """),
-
-    # --- Product Metrics ---
-    os.path.join("Concepts", "Product Management", "06 - Product Metrics", "Product Metrics Overview.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, core-concept, metrics, data-driven]
-        aliases: [產品指標, 指標]
-        ---
-        # 產品指標概述 (Product Metrics Overview)
-
-        > [!info] 定义 (Definition)
-        > 產品指標是用於衡量產品表現、用戶行為和業務成果的可量化數據點。它們幫助產品團隊做出數據驅動的決策，並追蹤實現目標的進展。
-
-        ## 為何重要 (Why are Metrics Important?)
-
-        -   **衡量成功**: 定義和追蹤實現 [[03 - Product Strategy|產品策略]] 和目標的進度。
-        -   **識別問題**: 發現產品或用戶體驗中的瓶頸和機會點。
-        -   **數據驅動決策**: 為 [[05 - Prioritization/Prioritization Overview|優先級排序]]、功能設計和迭代提供依據。
-        -   **溝通效果**: 向 [[08 - Stakeholder Management|干系人]] 展示產品的價值和影響。
-        -   **學習與改進**: 驗證假設，了解哪些有效，哪些無效。
-
-        ## 指標類型 (Types of Metrics)
-
-        指標可以從多個維度分類：
-
-        -   **按性質**:
-            -   **定量指標 (Quantitative)**: 數字（如：用戶數、轉化率、收入）。
-            -   **定性指標 (Qualitative)**: 非數字的反饋（如：用戶訪談、[[02 - User Research/Usability Testing|可用性測試]]發現的問題、NPS 的評論）。
-        -   **按焦點**:
-            -   **用戶行為指標**: 活躍用戶數 (DAU/MAU)、留存率、功能使用率。
-            -   **業務指標**: 收入 (Revenue)、客戶獲取成本 (CAC)、客戶生命週期價值 (LTV)。
-            -   **產品質量指標**: Bug 數量、加載時間、崩潰率。
-            -   **用戶滿意度指標**: [[North Star Metric|北極星指標]] (可能相關)、淨推薦值 (NPS)、客戶滿意度 (CSAT)。
-        -   **按層級**:
-            -   **[[North Star Metric|北極星指標 (NSM)]]**: 指引整個產品方向的單一核心指標。
-            -   **一級指標 (Tier 1 / Driver Metrics)**: 直接驅動 NSM 的關鍵指標。
-            -   **二級指標 (Tier 2 / Diagnostic Metrics)**: 解釋一級指標變化的細分指標。
-
-        ## 選擇好的指標 (Choosing Good Metrics - AARRR Framework Example)
-
-        一個常用的框架是 [[AARRR Framework|AARRR 模型]]（海盜指標），它關注用戶生命週期的關鍵階段：
-
-        -   **Acquisition (獲取)**: 用戶如何找到你？ (流量來源、註冊數)
-        -   **Activation (激活)**: 用戶首次體驗是否良好？ (完成關鍵操作、新手引導完成率)
-        -   **Retention (留存)**: 用戶是否持續回來？ (日/週/月留存率、流失率)
-        -   **Referral (推薦)**: 用戶是否願意推薦？ (NPS、分享率)
-        -   **Revenue (收入)**: 你如何賺錢？ (付費轉化率、ARPU、LTV)
-
-        > [!warning] 虛榮指標 (Vanity Metrics)
-        > 警惕那些看起來不錯但不能指導實際行動的指標（如：累計註冊用戶數）。關注 **可操作指標 (Actionable Metrics)**，即那些能夠反映真實用戶行為並能指導你改進產品的指標。
-
-        ---
-        關聯概念: [[00 - Product Management Overview|產品管理核心概念]], [[03 - Product Strategy|產品策略]] (指標衡量策略成功), [[North Star Metric|北極星指標]], [[AARRR Framework|AARRR 模型]]
-        """),
-
-    os.path.join("Concepts", "Product Management", "06 - Product Metrics", "North Star Metric.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, metrics, strategy, NSM]
-        aliases: [北極星指標, NSM]
-        ---
-        # 北極星指標 (North Star Metric - NSM)
-
-        > [!info] 定义 (Definition)
-        > 北極星指標 (NSM) 是一個單一的、能夠最好地體現產品為客戶創造的核心價值的指標。它應該是領先指標 (Leading Indicator)，預示著未來的業務成功（如收入）。
-
-        ## 核心特徵 (Key Characteristics)
-
-        一個好的北極星指標應該：
-
-        1.  **反映用戶價值 (Reflects Customer Value)**: 它衡量了用戶從產品中獲得的核心利益。
-        2.  **代表產品願景 (Represents Product Vision)**: 與 [[03 - Product Strategy|產品策略]] 和長期目標一致。
-        3.  **領先指標 (Is a Leading Indicator)**: 它的增長預示著未來收入或其他滯後業務指標的增長。
-        4.  **可行動 (Is Actionable)**: 團隊的日常工作可以直接或間接地影響這個指標。
-        5.  **可衡量 (Is Measurable)**: 可以清晰地定義和追踪。
-        6.  **易於理解 (Is Understandable)**: 整個公司都能理解它的含義。
-        7.  **非虛榮指標 (Is Not a Vanity Metric)**: 它的增長真正代表了產品的健康發展。
-
-        ## 示例 (Examples)
-
-        -   **Facebook (早期)**: 月活躍用戶數 (MAU) - 反映連接人的核心價值。
-        -   **Airbnb**: 預訂間夜數 (Nights Booked) - 反映房東和房客成功匹配的核心價值。
-        -   **Spotify**: 聽眾總收聽時長 (Time Spent Listening) - 反映用戶享受音樂/播客的核心價值。
-        -   **Slack**: 每週發送消息達到一定數量 (e.g., 2000條) 的團隊數 - 反映團隊協作的核心價值。
-        -   **電商平台**: 每週完成購買的用戶數。
-
-        ## 如何找到 NSM (How to Find Your NSM)
-
-        1.  **明確核心價值**: 你的產品為用戶解決的最關鍵問題是什麼？
-        2.  **識別關鍵行為**: 哪些用戶行為最能體現他們體驗到了這種價值？
-        3.  **量化該行為**: 如何用一個數字來衡量這種行為的頻率或深度？
-        4.  **驗證關聯性**: 這個指標的增長是否真的與長期業務成功（如留存、收入）相關？
-
-        > [!tip] NSM 不是唯一的指標
-        > NSM 是指引方向的核心，但仍需要 [[Product Metrics Overview|其他一級和二級指標]] 來全面了解產品健康狀況並診斷問題。NSM 也可能隨著產品發展和策略調整而演變。
-
-        ---
-        關聯概念: [[Product Metrics Overview|產品指標概述]], [[03 - Product Strategy|產品策略]]
-        """),
-
-    os.path.join("Concepts", "Product Management", "06 - Product Metrics", "AARRR Framework.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, metrics, framework, AARRR, pirate-metrics]
-        aliases: [AARRR模型, 海盜指標, Pirate Metrics]
-        ---
-        # AARRR 模型 (海盜指標)
-
-        > [!info] 定义 (Definition)
-        > AARRR 模型，又稱“海盜指標”(因為發音像海盜的吼聲 "Arrr!")，是一個由 Dave McClure 提出的用戶生命週期分析框架。它將用戶轉化路徑分解為五個關鍵階段，並為每個階段設定核心指標，幫助初創公司和產品團隊了解其增長引擎的健康狀況。
-
-        ## 五個階段 (The Five Stages)
-
-        ```mermaid
-        graph TD
-            A(獲取 Acquisition) --> B(激活 Activation);
-            B --> C(留存 Retention);
-            C --> D(收入 Revenue);
-            C --> E(推薦 Referral);
-
-            subgraph 用戶生命週期漏斗 (User Lifecycle Funnel)
-                direction TB
-                A
-                B
-                C
-                D & E
-            end
-        ```
-        *(注意: Revenue 和 Referral 的順序有時會互換，取決於商業模式)*
-
-        1.  **Acquisition (獲取)**:
-            -   **問題**: 用戶從哪裡來？如何找到我們？
-            -   **核心目標**: 吸引潛在用戶訪問你的產品或網站。
-            -   **示例指標**: 網站訪問量、各渠道流量來源、應用下載量、註冊用戶數、每次獲取成本 (CPA)。
-
-        2.  **Activation (激活)**:
-            -   **問題**: 用戶是否體驗到了“啊哈時刻”(Aha! Moment)？首次體驗是否愉快？
-            -   **核心目標**: 讓用戶體驗到產品的核心價值。
-            -   **示例指標**: 完成新手引導的用戶比例、註冊後完成關鍵操作 (如發布第一條內容、添加第一個好友) 的用戶比例、次日留存率 (可視為早期激活信號)。
-
-        3.  **Retention (留存)**:
-            -   **問題**: 用戶是否會持續回來使用？
-            -   **核心目標**: 讓用戶養成使用習慣，長期留在產品中。
-            -   **示例指標**: 日活躍用戶 (DAU) / 月活躍用戶 (MAU) 比例、日/週/月留存率 (Cohort Analysis)、流失率 (Churn Rate)。
-
-        4.  **Referral (推薦)**:
-            -   **問題**: 用戶是否願意向他人推薦我們的產品？
-            -   **核心目標**: 利用現有用戶帶來新用戶（病毒式增長）。
-            -   **示例指標**: 淨推薦值 (NPS)、分享/邀請次數、病毒係數 K (K factor)。
-
-        5.  **Revenue (收入)**:
-            -   **問題**: 我們如何從用戶行為中賺錢？
-            -   **核心目標**: 將用戶價值轉化為商業價值。
-            -   **示例指標**: 付費轉化率、每用戶平均收入 (ARPU)、客戶生命週期價值 (LTV)、總收入。
-
-        ## 應用價值 (Value of Application)
-
-        -   **診斷瓶頸**: 幫助定位用戶流失發生在哪個環節，以便集中資源改進。
-        -   **衡量增長**: 提供一個全面的框架來衡量產品的增長健康度。
-        -   **設定目標**: 為每個階段設定具體的、可衡量的指標和目標。
-
-        > [!tip] 關注轉化率
-        > 除了各階段的絕對數字，更重要的是關注從一個階段到下一個階段的 **轉化率**，這能更清晰地揭示漏斗中的問題所在。
-
-        ---
-        關聯概念: [[Product Metrics Overview|產品指標概述]], [[01 - Product Lifecycle|產品生命週期]]
-        """),
-
-    # --- Go-to-Market Strategy ---
-    os.path.join("Concepts", "Product Management", "07 - Go-to-Market Strategy.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, core-concept, strategy, marketing, launch]
-        aliases: [上市策略, GTM]
-        ---
-        # 上市策略 (Go-to-Market Strategy - GTM)
-
-        > [!info] 定义 (Definition)
-        > 上市策略 (GTM) 是一個行動計劃，詳細說明了公司將如何利用其資源將新產品或服務推向市場，並觸達目標客戶以實現競爭優勢。它涵蓋了從產品定位、定價、銷售渠道到市場營銷的所有方面。
-
-        ## 為何需要 GTM 策略 (Why Need a GTM Strategy?)
-
-        -   **降低風險**: 減少產品上市失敗的可能性。
-        -   **明確路徑**: 為所有相關團隊（產品、市場、銷售、客服）提供清晰的行動指南。
-        -   **資源協調**: 確保各部門步調一致，有效利用資源。
-        -   **加速成功**: 更快地觸達目標市場，實現產品目標。
-
-        ## 核心組成部分 (Key Components)
-
-        一個全面的 GTM 策略通常需要回答以下問題：
-
-        1.  **目標市場 (Target Market)**:
-            -   我們要賣給誰？（[[03 - Product Strategy|產品策略]] 中的定義）
-            -   市場細分 (Market Segmentation) 和理想客戶畫像 (Ideal Customer Profile - ICP)。
-        2.  **價值主張 (Value Proposition)**:
-            -   我們的產品為目標客戶提供什麼獨特價值？（[[03 - Product Strategy|產品策略]] 中的定義）
-            -   如何清晰地溝通這種價值？（產品定位和信息傳遞）
-        3.  **定價策略 (Pricing Strategy)**:
-            -   產品如何定價？（基於成本、價值、競爭對手？）
-            -   是否有不同的定價層級或模式（如訂閱、按需付費）？
-        4.  **銷售渠道 (Sales Channels)**:
-            -   我們如何將產品交付給客戶？（直銷、分銷、線上、線下？）
-            -   銷售團隊的結構和策略是什麼？
-        5.  **市場營銷計劃 (Marketing Plan)**:
-            -   如何提高產品知名度並產生潛在客戶？（內容營銷、廣告、SEO、社交媒體、公關等）
-            -   品牌建設和信息傳遞策略。
-        6.  **客戶支持 (Customer Support)**:
-            -   如何幫助客戶成功使用產品並解決他們的問題？
-        7.  **預算和資源 (Budget & Resources)**:
-            -   執行 GTM 策略需要多少資金和人力？
-        8.  **成功指標 (Success Metrics)**:
-            -   如何衡量 GTM 策略的成功？（[[06 - Product Metrics/Product Metrics Overview|產品指標]]，如：早期用戶獲取數、轉化率、收入目標達成率）
-
-        > [!tip] GTM 與產品發布 (Launch)
-        > 產品發布 (Product Launch) 通常是 GTM 策略中的一個關鍵里程碑事件，但 GTM 是一個更廣泛、更持續的過程，涵蓋了產品進入市場的整個生命週期早期階段。
-
-        ---
-        關聯概念: [[00 - Product Management Overview|產品管理核心概念]], [[03 - Product Strategy|產品策略]], [[01 - Product Lifecycle|產品生命週期]] (特別是導入期), [[06 - Product Metrics/Product Metrics Overview|產品指標]]
-        """),
-
-    # --- Stakeholder Management ---
-    os.path.join("Concepts", "Product Management", "08 - Stakeholder Management.md"): textwrap.dedent("""\
-        ---
-        tags: [product-management, core-concept, communication, collaboration]
-        aliases: [干系人管理, 相關方管理]
-        ---
-        # 干系人管理 (Stakeholder Management)
-
-        > [!info] 定义 (Definition)
-        > 干系人管理是指識別所有對產品成功有影響或受產品影響的個人或團體（即干系人），並與他們建立和維護良好關係，以理解他們的需求、管理他們的預期、獲取他們的支持，並最終促進產品成功的過程。
-
-        ## 誰是干系人 (Who are Stakeholders?)
-
-        產品的干系人通常非常廣泛，可以分為內部和外部：
-
-        -   **內部干系人 (Internal)**:
-            -   **開發團隊 (Engineering/Development)**: 負責實現產品。
-            -   **設計團隊 (Design/UX)**: 負責用戶體驗和界面設計。
-            -   **市場團隊 (Marketing)**: 負責 [[07 - Go-to-Market Strategy|上市策略]] 和推廣。
-            -   **銷售團隊 (Sales)**: 負責將產品賣給客戶。
-            -   **客服團隊 (Customer Support/Success)**: 負責幫助用戶解決問題。
-            -   **管理層/高管 (Leadership/Executives)**: 負責公司戰略和資源分配。
-            -   **法務團隊 (Legal)**: 負責合規性。
-            -   **數據分析團隊 (Data Analytics)**: 提供數據洞察。
-            -   其他產品經理 (若有)。
-        -   **外部干系人 (External)**:
-            -   **客戶/用戶 (Customers/Users)**: 產品的最終使用者。
-            -   **合作夥伴 (Partners)**: 合作提供價值。
-            -   **投資者 (Investors)**: 關注回報。
-            -   **監管機構 (Regulators)**: 關注合規性。
-            -   **媒體 (Media)**: 影響公眾認知。
-
-        ## 為何重要 (Why is it Important?)
-
-        -   **獲取支持**: 產品開發需要跨團隊協作，良好的關係是基礎。
-        -   **收集信息**: 不同干系人擁有不同的視角和信息，對產品決策至關重要（如銷售反饋市場需求，客服反饋用戶痛點）。
-        -   **管理預期**: 確保干系人了解產品的 [[03 - Product Strategy|策略]]、[[04 - Roadmapping|路線圖]] 和 [[05 - Prioritization/Prioritization Overview|優先級]]，避免誤解和衝突。
-        -   **建立信任**: 透明、及時的溝通能建立信任。
-        -   **減少阻力**: 主動管理可以預防或化解潛在的衝突。
-
-        ## 關鍵技巧 (Key Skills)
-
-        -   **識別 (Identification)**: 繪製干系人地圖，了解誰是關鍵人物。
-        -   **分析 (Analysis)**: 理解每個干系人的興趣、權力、影響力、需求和期望。
-        -   **溝通 (Communication)**:
-            -   針對不同對象調整溝通方式和頻率。
-            -   積極傾聽他們的需求和擔憂。
-            -   清晰地闡述產品願景、策略和決策依據 (The "Why")。
-            -   定期同步進展和變化。
-        -   **協商與影響 (Negotiation & Influence)**: 在資源衝突或意見不一時，尋求共贏方案。
-        -   **建立關係 (Relationship Building)**: 真誠互動，建立信任。
-
-        > [!example] 溝通頻率示例
-        > - 與開發/設計團隊：每日站會、每周迭代計劃會。
-        > - 與市場/銷售團隊：每周/每兩週同步會。
-        > - 與管理層：每月/每季度匯報。
-        > - (根據實際情況調整)
-
-        ---
-        關聯概念: [[00 - Product Management Overview|產品管理核心概念]], [[03 - Product Strategy|產品策略]], [[04 - Roadmapping|產品路線圖]], [[05 - Prioritization/Prioritization Overview|優先級排序]] (需要向干系人解釋排序結果)
-        """),
-
-    # --- Interview Simulation ---
-    os.path.join("Interview Simulation", "Product Manager Interview", "1 - Prioritization Question.md"): textwrap.dedent("""\
-        ---
-        tags: [interview, product-manager, prioritization]
-        ---
-        # 面試問題：優先級排序 (Interview Question: Prioritization)
-
-        ## 問題示例 (Example Question)
-
-        > "假設你是某個 SaaS 產品 (例如：項目管理工具) 的產品經理。現在你收到了來自不同渠道的需求：用戶反饋希望增加甘特圖功能，銷售團隊強烈要求開發一個面向大客戶的定制報表功能，工程團隊建議重構一個舊的技術模塊以提高性能。同時，數據顯示用戶留存率近期有所下降。你會如何決定接下來的開發優先級？請闡述你的思考過程。"
-
-        ## 解答思路 (Approach)
-
-        > [!tip] 核心框架：目標 -> 評估 -> 排序 -> 溝通
-        > 面試官不僅關心你的 *結論*，更關心你得出結論的 *結構化思考過程*。
-
-        1.  **澄清目標與背景 (Clarify Goals & Context)**:
-            *   首先，回顧當前階段的 **[[03 - Product Strategy|產品策略]]** 和 **[[06 - Product Metrics/Product Metrics Overview|產品指標]]** 目標。當前最重要的目標是什麼？是提高留存率？擴展大客戶市場？還是提升用戶滿意度？
-            *   確認是否存在既定的 **[[04 - Roadmapping|產品路線圖]]**？這些需求是否與路線圖主題相關？
-            *   (反問面試官) "為了更好地回答這個問題，我想先確認一下我們產品現階段的核心目標是什麼？比如，我們是更關注用戶增長、留存，還是收入？"
-
-        2.  **評估每個選項 (Evaluate Each Option)**:
-            *   **甘特圖功能 (用戶反饋)**:
-                *   **價值**: 提升項目可視化能力，可能提升部分用戶滿意度和使用深度。
-                *   **影響**: 會影響多少用戶？(Reach) 對核心指標 (如留存率) 的影響有多大？(Impact)
-                *   **依據**: 是否有 [[02 - User Research/User Research Overview|用戶研究]] 支持？有多少用戶提了這個需求？
-                *   **成本**: 開發需要多少資源？(Effort)
-            *   **定制報表 (銷售驅動)**:
-                *   **價值**: 可能贏得大客戶合同，增加收入。
-                *   **影響**: 影響客戶數量少，但單個價值高。對整體 [[06 - Product Metrics/AARRR Framework|Revenue]] 可能有顯著影響。
-                *   **風險**: 定制化程度多高？是否會影響產品的通用性？維護成本？
-                *   **成本**: 開發和後續維護投入？(Effort)
-            *   **技術重構 (工程建議)**:
-                *   **價值**: 提高性能、穩定性，降低未來開發成本，可能間接改善用戶體驗和留存。
-                *   **影響**: 可能影響所有用戶，但影響是間接的。對留存率下降問題可能有幫助。
-                *   **緊迫性**: 當前的性能問題有多嚴重？是否阻礙了新功能的開發？
-                *   **成本**: 需要多少工程資源？(Effort) 是否會阻塞其他功能開發？
-            *   **留存率下降問題 (數據驅動)**:
-                *   **根本原因**: 為什麼留存率下降？需要進一步分析數據或做 [[02 - User Research/User Research Overview|用戶研究]] 來定位原因。這可能不是一個單一“功能”能解決的，可能需要一系列改進。
-
-        3.  **運用優先級框架 (Apply Prioritization Framework)**:
-            *   可以口頭上應用 [[05 - Prioritization/RICE Framework|RICE]] 或 [[05 - Prioritization/Value vs. Complexity Matrix|價值 vs 複雜度]] 的思路來比較這些選項。
-            *   **RICE 思考**:
-                *   甘特圖: Reach (中/高?), Impact (中?), Confidence (中?), Effort (高?)
-                *   定制報表: Reach (低), Impact (高 - 對特定客戶), Confidence (高 - 如果銷售確認), Effort (中/高?)
-                *   技術重構: Reach (高), Impact (中 - 間接), Confidence (高 - 如果工程確認必要性), Effort (高?)
-            *   **結合目標**: 如果當前核心目標是 **解決留存率下降**，那麼技術重構或針對導致流失原因的功能改進可能優先級更高。如果目標是 **擴展大客戶市場**，定制報表優先級可能更高。
-
-        4.  **做出初步決策並說明理由 (Make a Preliminary Decision & Justify)**:
-            *   沒有唯一正確答案。關鍵是展示權衡過程。
-            *   *示例回答方向*: "基於留存率下降這個關鍵問題，我會優先投入資源 **深入分析留存率下降的原因**。這可能涉及數據分析和快速的用戶研究。同時，我會評估 **技術重構** 對穩定性和性能的改善是否能直接緩解部分流失問題。對於 **甘特圖**，雖然用戶有需求，但如果不是導致流失的核心原因，可以考慮放在 'Next'。對於 **定制報表**，需要評估其對整體策略的影響以及資源佔用，看是否可以找到更通用的解決方案滿足部分需求，或者確認其戰略重要性後再排入。"
-
-        5.  **強調溝通與迭代 (Emphasize Communication & Iteration)**:
-            *   強調會與 [[08 - Stakeholder Management|干系人]] (銷售、工程、用戶) 溝通這個決策及其背後的原因。
-            *   說明這是一個動態過程，會根據後續的數據和反饋進行調整。
-
-        > [!success] 加分項
-        > - 展示結構化思維。
-        > - 清晰引用產品管理概念和框架 (如 RICE, 策略, 指標)。
-        > - 表現出數據敏感度和用戶中心思想。
-        > - 強調溝通和協作的重要性。
-        > - 能夠進行權衡取捨 (Trade-offs)。
-        """),
-}
-
-# --- Script Logic ---
-def create_notes():
-    """Creates the directory structure and .md files based on notes_data."""
-    print(f"Starting knowledge base creation in root directory: {os.path.abspath(ROOT_DIR)}")
-    created_files = 0
-    created_dirs = 0
-
-    for rel_path, content in notes_data.items():
-        full_path = os.path.join(ROOT_DIR, rel_path)
-        dir_path = os.path.dirname(full_path)
-
-        # Create directories if they don't exist
-        if not os.path.exists(dir_path):
-            try:
-                os.makedirs(dir_path)
-                print(f"  Created directory: {dir_path}")
-                created_dirs += 1
-            except OSError as e:
-                print(f"  Error creating directory {dir_path}: {e}")
-                continue # Skip file creation if directory failed
-
-        # Create or overwrite the markdown file
-        try:
-            with open(full_path, 'w', encoding='utf-8') as f:
-                f.write(content)
-            print(f"  Created/Updated file: {full_path}")
-            created_files += 1
-        except IOError as e:
-            print(f"  Error writing file {full_path}: {e}")
-
-    print("\n--------------------")
-    print("Knowledge base creation process finished.")
-    print(f"Total directories created: {created_dirs}")
-    print(f"Total files created/updated: {created_files}")
-    print("--------------------")
-    print("\n建議：")
-    print("1. 在 Obsidian 中打開包含這些文件的 Vault。")
-    print("2. 安裝並啟用 Mermaid 插件以查看圖表。")
-    print("3. 探索文件之間的雙向鏈接，體驗知識圖譜的效果。")
-    print("4. 根據自己的學習進度，繼續添加和完善筆記內容。")
+TARGET_ROOT_DIRECTORY = '.' # Base directory for creating files/folders
+OVERWRITE_EXISTING = True # Set to False to avoid overwriting existing files
+
+# --- Helper Function ---
+def write_file(filepath, content):
+    """Creates directories and writes content to a file."""
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    try:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(content)
+        print(f"Successfully wrote: {filepath}")
+    except IOError as e:
+        print(f"Error writing file {filepath}: {e}")
+
+# --- Knowledge Base Content Definitions ---
+
+# 1. Main Overview
+pm_overview_path = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'Product Management', '00 - 产品管理框架概览.md')
+pm_overview_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, type/overview, framework/comparison]
+    aliases: [产品管理框架, PM Frameworks]
+    ---
+    # 产品管理框架概览
+
+    ## 概述
+
+    产品管理是一个涉及从概念到市场、再到持续迭代优化整个产品生命周期的复杂过程。为了系统性地思考和执行产品工作，业界发展出了多种框架。
+
+    本文档旨在概述两种核心的产品管理框架：
+    1.  **[[MVP 框架/00 - MVP 框架概览|MVP（最小可行产品）框架]]**: 侧重于快速验证核心价值，适用于初期探索和面试速成。
+    2.  **[[完整框架/00 - 完整产品管理框架概览|完整产品管理框架]]**: 覆盖更全面的产品管理流程，适用于系统学习和深入实践。
+
+    理解并灵活运用这些框架，能够帮助产品经理更清晰地定义问题、设计方案、衡量效果并推动产品成功。
+
+    ## 框架对比
+
+    ```mermaid
+    graph TD
+        subgraph "方法论范畴"
+            A["[[MVP 框架/00 - MVP 框架概览|MVP 框架 (快速验证)]]"]
+            B["[[完整框架/00 - 完整产品管理框架概览|完整框架 (系统全面)]]"]
+        end
+
+        A -- "聚焦核心痛点与快速迭代" --> C{面试速成 & 早期验证};
+        B -- "覆盖市场、用户、设计、技术、数据、沟通、迭代全流程" --> D{系统学习 & 深入实践};
+
+        D -- "包含" --> A;
+    ```
+
+    ## 主要框架入口
+
+    *   [[MVP 框架/00 - MVP 框架概览|进入 MVP 框架学习]]
+    *   [[完整框架/00 - 完整产品管理框架概览|进入 完整产品管理框架学习]]
+    *   [[../../Interview Simulation/Product Manager Interview/02 - 产品管理框架面试准备与深造|查看 面试准备与后续深造建议]]
+
+    ## 相关概念
+
+    *   [[产品生命周期]]
+    *   [[敏捷开发]]
+    *   [[精益创业]]
+    *   [[产品战略]]
+""")
+
+# 2. MVP Framework
+mvp_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'Product Management', 'MVP 框架')
+
+mvp_overview_path = os.path.join(mvp_folder, '00 - MVP 框架概览.md')
+mvp_overview_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, framework/mvp, type/overview]
+    aliases: [MVP Framework, 最小可行产品框架]
+    ---
+    # MVP 框架概览
+
+    [[../00 - 产品管理框架概览|返回 产品管理框架概览]]
+
+    ## 概述
+
+    MVP (Minimum Viable Product) 即 **最小可行产品**，是一种用于快速验证核心商业假设的产品开发策略。它包含刚好足够满足早期用户需求、并能提供反馈的核心功能集。
+
+    MVP 框架的核心思想是**快速学习和迭代**，避免在未经市场验证的功能上投入过多资源。这套思维框架尤其适用于**面试准备**，能够帮助你快速抓住产品经理思考问题的核心要点。
+
+    > **目标：** 能够在最短时间内理解并运用基本的PM理念，回答面试官问题时突出要点。
+
+    ## MVP 4步法
+
+    1.  [[01 - 用户痛点价值 (MVP)|用户 → 痛点 → 价值]]
+    2.  [[02 - MVP 解决方案|解决方案 (MVP 版本)]]
+    3.  [[03 - MVP 数据验证|数据指标 & 验证]]
+    4.  [[04 - MVP 迭代优化|迭代优化]]
+
+    ```mermaid
+    graph LR
+        A["[[01 - 用户痛点价值 (MVP)|用户 & 痛点]]"] --> B["[[02 - MVP 解决方案|解决方案 (MVP)]]"];
+        B --> C["[[03 - MVP 数据验证|数据 & 验证]]"];
+        C --> D["[[04 - MVP 迭代优化|快速迭代]]"];
+        D -.-> A;
+    ```
+
+    ## 总结
+
+    MVP 框架提供了一个在面试时**最小可行**的回答思路。当面试官让你谈谈如何设计一个产品（例如AI电商聊天机器人）时，这4步足以让你结构清晰、抓住关键。
+
+    ## 相关概念
+
+    *   [[完整框架/00 - 完整产品管理框架概览|完整产品管理框架]]
+    *   [[精益创业]] (`[[Lean Startup]]`)
+    *   [[用户访谈]]
+    *   [[A/B 测试]]
+    *   [[敏捷开发]]
+""")
+
+mvp_step1_path = os.path.join(mvp_folder, '01 - 用户痛点价值 (MVP).md')
+mvp_step1_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, framework/mvp, type/concept, step/1]
+    aliases: [MVP用户痛点价值]
+    ---
+    # 1. 用户 → 痛点 → 价值 (MVP 框架)
+
+    [[00 - MVP 框架概览|返回 MVP 框架概览]] | [[02 - MVP 解决方案|下一步: MVP 解决方案]]
+
+    ## 概述
+
+    这是 MVP 思考框架的第一步，也是所有产品设计的起点：明确你的产品是为谁服务，解决了他们的什么核心问题，以及带来的核心价值是什么。
+
+    ## 核心问题
+
+    1.  **用户是谁？**
+        *   明确具体的目标用户群体（例如：消费者、卖家、学生、教师、企业管理员等）。
+        *   尽可能具体化，避免过于宽泛的定义。
+    2.  **痛点是什么？**
+        *   用户当前遇到的具体问题、困难、不便之处，或者未被满足的需求是什么？
+        *   痛点需要真实存在且足够“痛”，值得用户为解决方案付费或改变习惯。
+    3.  **我们带来什么价值？**
+        *   你的产品或功能如何解决这个痛点？
+        *   能为用户带来什么具体的收益？（例如：省钱、省时间、提升效率、降低风险、增加收入、提供娱乐、增强连接等）
+
+    ## 示例：AI 电商助理 Rufus
+
+    *   **用户是谁？** 在电商平台购物的消费者。
+    *   **痛点是什么？** 查找商品信息费时、对比困难；遇到售后问题（物流、退换货）时沟通成本高、等待时间长。
+    *   **带来什么价值？** 快速提供准确的商品信息、解答常见售后疑问，提升购物效率和满意度。
+
+    ## 思考
+
+    [!tip] 关键点
+    在 MVP 阶段，聚焦于**最核心**的用户群体的**最核心**的痛点，并提供**最直接**的价值。避免试图满足所有人的所有需求。
+
+    ## 相关概念
+
+    *   [[用户画像]]
+    *   [[用户研究]]
+    *   [[价值主张]]
+    *   [[完整框架/02 - 用户需求分析|用户需求分析 (完整框架)]]
+""")
+
+mvp_step2_path = os.path.join(mvp_folder, '02 - MVP 解决方案.md')
+mvp_step2_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, framework/mvp, type/concept, step/2]
+    aliases: [MVP解决方案]
+    ---
+    # 2. 解决方案 (MVP 版本)
+
+    [[01 - 用户痛点价值 (MVP)|上一步: 用户痛点价值]] | [[00 - MVP 框架概览|返回 MVP 框架概览]] | [[03 - MVP 数据验证|下一步: MVP 数据验证]]
+
+    ## 概述
+
+    在明确了用户、痛点和价值之后，下一步是设计一个最小化的解决方案（MVP）来验证你的核心假设。关键在于“最小”和“可行”。
+
+    ## 核心要素
+
+    1.  **功能重点 (Feature Focus)**
+        *   列出能够直接解决核心痛点的 **1-2 个核心功能**。
+        *   问自己：“什么功能是绝对必要的，没有它就无法验证核心价值？”
+        *   **抵制诱惑**：避免增加“锦上添花”的功能，保持简洁。
+    2.  **范围界定 (Scope Definition)**
+        *   清晰地定义这个 MVP 版本**要做什么**（In Scope）和**不做什么**（Out of Scope）。
+        *   这有助于管理预期，控制开发复杂度和时间。
+    3.  **技术可行性 (Technical Feasibility)**
+        *   确保所选的核心功能可以用相对简单、成熟、可快速实现的技术来满足。
+        *   优先选择能够快速上线并收集反馈的技术方案，避免陷入复杂的技术攻关或底层重构。
+
+    ## 示例：AI 电商助理 Rufus (MVP)
+
+    *   **功能重点**：
+        *   核心功能 1: 基于用户提问（如“我的订单到哪了？”、“这款商品怎么退货？”）提供物流和退换货政策的自动问答。
+    *   **Scope 界定**：
+        *   **做**：处理常见的、结构化的售后问题查询。
+        *   **不做**：复杂的、需要人工判断的客诉处理；商品推荐；主动营销。
+    *   **技术可行性**：
+        *   可以先基于规则匹配或简单的[[FAQ]]知识库实现，或者调用成熟的 [[NLU]] 服务进行意图识别，快速上线。暂时不追求复杂的 [[LLM]] 对话能力。
+
+    ## 思考
+
+    [!warning] 注意
+    MVP 不是粗糙或半成品，而是**聚焦**。它应该能够完整地传递核心价值，并提供良好的用户体验（在核心功能范围内）。
+
+    ## 相关概念
+
+    *   [[功能优先级排序]]
+    *   [[产品路线图]]
+    *   [[技术选型]]
+    *   [[完整框架/03 - 产品设计与方案构思|产品设计与方案构思 (完整框架)]]
+    *   [[完整框架/04 - 技术与实现|技术与实现 (完整框架)]]
+""")
+
+mvp_step3_path = os.path.join(mvp_folder, '03 - MVP 数据验证.md')
+mvp_step3_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, framework/mvp, type/concept, step/3]
+    aliases: [MVP数据验证]
+    ---
+    # 3. 数据指标 & 验证 (MVP 框架)
+
+    [[02 - MVP 解决方案|上一步: MVP 解决方案]] | [[00 - MVP 框架概览|返回 MVP 框架概览]] | [[04 - MVP 迭代优化|下一步: MVP 迭代优化]]
+
+    ## 概述
+
+    设计和发布 MVP 的目的不是完成功能，而是**学习和验证**。因此，必须定义清晰的衡量指标和验证计划，以判断 MVP 是否成功触达用户痛点、传递了预期价值。
+
+    ## 核心要素
+
+    1.  **核心目标 (Core Objective)**
+        *   MVP 要验证的关键假设或要达成的核心业务目标是什么？
+        *   目标应该是具体的、可衡量的。例如：验证用户是否愿意使用 AI 回答售后问题，初步目标是提升自助解决率 5%。
+    2.  **关键指标 (Key Metrics)**
+        *   选择 1-3 个最能反映核心目标达成情况的指标。
+        *   常见的 MVP 指标可能包括：
+            *   **用户参与度**: 功能使用率、日/月活跃用户 (DAU/MAU)
+            *   **任务完成率**: 用户通过 MVP 成功解决问题的比例
+            *   **用户满意度**: CSAT (Customer Satisfaction Score)、NPS (Net Promoter Score) - 通过简单问卷收集
+            *   **转化率**: （如果适用）例如从问答引导到购买的转化率
+            *   **留存率**: 用户是否会再次使用该功能
+    3.  **测试/验证计划 (Test/Validation Plan)**
+        *   如何将 MVP 推向目标用户并收集数据？
+        *   常见方法：
+            *   **小范围灰度发布 (Canary Release)**: 先推送给一小部分用户（如 1%-5%）。
+            *   **[[A/B 测试]]**: 将用户随机分为两组，一组使用 MVP 功能，另一组使用原有方案（或无此功能），对比关键指标。
+            *   **定向邀请/内测 (Beta Testing)**: 邀请特定用户试用并收集深度反馈。
+        *   目标是**快速获得真实的用户行为数据和反馈**。
+
+    ## 示例：AI 电商助理 Rufus (MVP)
+
+    *   **核心目标**：验证 AI 问答能否有效处理常见售后咨询，提升用户满意度。
+    *   **关键指标**：
+        *   AI 对话成功率（AI 能理解并成功回答问题的比例）。
+        *   用户满意度评分（在对话结束后询问“本次回答是否有帮助？”）。
+        *   对比未使用 AI 功能的用户，其联系人工客服的比例是否下降。
+    *   **测试/验证计划**：
+        *   对 5% 的用户开启 AI 问答入口（灰度发布）。
+        *   或进行 [[A/B 测试]]：50% 用户看到 AI 入口，50% 用户维持原有客服流程，对比两组的满意度评分和人工客服进线量。
+        *   监控后台日志，分析用户提问类型和 AI 回答准确率。
+
+    ## 思考
+
+    [!info] 数据驱动
+    数据是验证 MVP 是否成功的关键依据。没有衡量，就无法有效学习和迭代。
+
+    ## 相关概念
+
+    *   [[数据分析]]
+    *   [[北极星指标]]
+    *   [[A/B 测试]]
+    *   [[灰度发布]]
+    *   [[用户反馈]]
+    *   [[完整框架/05 - 数据指标与衡量|数据指标与衡量 (完整框架)]]
+""")
+
+mvp_step4_path = os.path.join(mvp_folder, '04 - MVP 迭代优化.md')
+mvp_step4_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, framework/mvp, type/concept, step/4]
+    aliases: [MVP迭代优化]
+    ---
+    # 4. 迭代优化 (MVP 框架)
+
+    [[03 - MVP 数据验证|上一步: MVP 数据验证]] | [[00 - MVP 框架概览|返回 MVP 框架概览]]
+
+    ## 概述
+
+    MVP 的发布不是终点，而是学习循环的开始。基于从[[03 - MVP 数据验证|数据和用户反馈]]中获得的洞察，进行快速迭代和优化是 MVP 方法论的核心。这个过程被称为**构建-衡量-学习 (Build-Measure-Learn)** 循环。
+
+    ## 核心要素
+
+    1.  **收集反馈 (Gather Feedback)**
+        *   **定量数据**: 分析[[03 - MVP 数据验证|关键指标]]的变化趋势，识别用户行为模式（例如，哪些问题 AI 回答不好，用户在哪个环节流失）。
+        *   **定性反馈**:
+            *   用户在产品内提供的直接反馈（例如，对话满意度评分、评论、投诉）。
+            *   用户访谈、问卷调查，了解用户的使用体验和未被满足的需求。
+            *   客服、销售等一线团队收集到的用户声音。
+    2.  **分析与洞察 (Analyze & Insight)**
+        *   结合定量数据和定性反馈，分析 MVP 的表现：
+            *   哪些假设得到了验证？哪些被证伪？
+            *   用户的实际使用方式是否符合预期？
+            *   最大的问题或机会点在哪里？
+    3.  **决策与优化 (Decide & Optimize)**
+        *   基于分析结果，决定下一步行动：
+            *   **坚持 (Persevere)**: 如果数据显示方向正确，继续优化现有功能，或基于反馈添加少量高优先级新功能。
+            *   **转型 (Pivot)**: 如果核心假设被证伪，或者发现了更大的机会，需要调整产品方向或核心策略。
+            *   **放弃 (Kill)**: 如果验证表明该方向没有价值或不可行，及时止损。
+        *   **确定优先级**: 基于数据和用户反馈，决定下一个迭代周期要开发什么、修复什么。
+
+    ## 示例：AI 电商助理 Rufus (MVP)
+
+    *   **收集反馈**:
+        *   数据：发现用户关于“商品推荐”和“优惠券”的提问占比很高，但 MVP 并未覆盖，导致回答失败率高。对话满意度在处理“物流查询”时较高，但在“退货流程复杂性”问题上较低。
+        *   反馈：用户评论中提到“希望 AI 能帮我找到类似的商品”，“AI 不知道最新的促销活动”。
+    *   **分析与洞察**:
+        *   核心假设（AI 能处理简单售后问题）部分验证。
+        *   用户对 AI 的期待超出了售后范围，有强烈的导购需求。
+        *   退货流程本身的复杂性导致 AI 难以简单回答，需要优化流程或提供更清晰指引。
+    *   **决策与优化**:
+        *   **坚持**：优化物流查询的回答准确性。
+        *   **迭代 (优化)**：针对退货流程问题，优化 AI 回答逻辑，或链接到更清晰的帮助文档。
+        *   **规划下一版本**: 将“优惠券查询”或简单的“相似商品推荐”作为下一个迭代的高优先级功能进行探索。
+
+    ## 思考
+
+    [!tip] 快速循环
+    MVP 的精髓在于快速完成“构建-衡量-学习”循环，不断根据市场反馈调整产品，降低失败风险，更快找到[[产品市场契合度]] (`[[Product-Market Fit]]`)。
+
+    ## 相关概念
+
+    *   [[构建-衡量-学习循环]] (`[[Build-Measure-Learn Loop]]`)
+    *   [[精益创业]] (`[[Lean Startup]]`)
+    *   [[用户反馈]]
+    *   [[数据驱动决策]]
+    *   [[产品路线图]]
+    *   [[完整框架/07 - 迭代与成长|迭代与成长 (完整框架)]]
+""")
+
+# 3. Complete Framework
+complete_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'Product Management', '完整框架')
+
+complete_overview_path = os.path.join(complete_folder, '00 - 完整产品管理框架概览.md')
+complete_overview_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, framework/complete, type/overview]
+    aliases: [完整产品管理框架, Comprehensive PM Framework]
+    ---
+    # 完整产品管理框架概览
+
+    [[../00 - 产品管理框架概览|返回 产品管理框架概览]]
+
+    ## 概述
+
+    与侧重快速验证的 [[MVP 框架/00 - MVP 框架概览|MVP 框架]]相比，这套**完整产品管理框架**更加系统和全面。它覆盖了从市场洞察到产品迭代的全生命周期，旨在帮助产品经理更深入地理解职责、流程和所需能力。
+
+    这套框架适合在掌握了 MVP 思维后，进行**系统学习和深入实践**，也能够在面试中展现你对产品管理工作的**深度和广度**。
+
+    > **目标：** 在具备“MVP”思维的基础上，知道如何覆盖更多PM职责与流程，帮助你在面试和后续工作中胜任更复杂的需求与挑战。
+
+    ## 完整框架 7 步法
+
+    1.  [[01 - 行业与市场认知|行业与市场认知]]
+    2.  [[02 - 用户需求分析|用户需求分析]]
+    3.  [[03 - 产品设计与方案构思|产品设计与方案构思]]
+    4.  [[04 - 技术与实现|技术与实现]]
+    5.  [[05 - 数据指标与衡量|数据指标与衡量]]
+    6.  [[06 - 推动与沟通|推动与沟通]]
+    7.  [[07 - 迭代与成长|迭代与成长]]
+
+    ```mermaid
+    graph TD
+        subgraph "产品管理全流程"
+            direction LR
+            S1["[[01 - 行业与市场认知|1. 市场认知]]"] --> S2["[[02 - 用户需求分析|2. 用户需求]]"];
+            S2 --> S3["[[03 - 产品设计与方案构思|3. 产品设计]]"];
+            S3 --> S4["[[04 - 技术与实现|4. 技术实现]]"];
+            S4 --> S5["[[05 - 数据指标与衡量|5. 数据衡量]]"];
+            S5 --> S6["[[06 - 推动与沟通|6. 推动沟通]]"];
+            S6 --> S7["[[07 - 迭代与成长|7. 迭代成长]]"];
+            S7 -.-> S1;
+            S7 -.-> S2;
+        end
+    ```
+
+    ## 总结
+
+    这个完整的流程，可以让你在面试中“进可攻、退可守”：
+    *   如果时间紧，你可以快速抓住 [[MVP 框架/00 - MVP 框架概览|MVP 框架]] 的核心部分回答。
+    *   如果面试官深入追问，你还能基于这个框架展开更多专业细节和思路。
+
+    ## 相关概念
+
+    *   [[MVP 框架/00 - MVP 框架概览|MVP 框架]]
+    *   [[产品生命周期]]
+    *   [[产品战略]]
+    *   [[产品路线图]]
+    *   [[跨职能团队]]
+    *   [[../../Interview Simulation/Product Manager Interview/02 - 产品管理框架面试准备与深造|面试准备与深造]]
+""")
+
+complete_step1_path = os.path.join(complete_folder, '01 - 行业与市场认知.md')
+complete_step1_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, framework/complete, type/concept, step/1]
+    aliases: [市场认知, 行业分析]
+    ---
+    # 1. 行业与市场认知 (完整框架)
+
+    [[00 - 完整产品管理框架概览|返回 完整框架概览]] | [[02 - 用户需求分析|下一步: 用户需求分析]]
+
+    ## 概述
+
+    在深入研究用户和设计产品之前，首先需要对产品所处的宏观环境有清晰的认识。这包括了解市场规模、发展趋势、竞争格局以及相关的技术、政策法规等。
+
+    ## 核心要素
+
+    1.  **市场规模与趋势 (Market Size & Trends)**
+        *   目标市场的总体规模有多大？（例如：TAM, SAM, SOM）
+        *   市场是在增长、萎缩还是稳定？主要的增长驱动力或阻碍因素是什么？
+        *   当前和未来的主要行业趋势是什么？（例如：AI 在电商领域的应用、直播带货的兴起、隐私法规收紧等）
+        *   宏观经济、技术发展（如 [[LLM]]）、社会文化、政策法规（PEST 分析）等如何影响市场？
+    2.  **竞争格局 (Competitive Landscape)**
+        *   主要的直接和间接竞争对手是谁？
+        *   他们的市场份额、产品特点、目标用户、定价策略、优劣势是什么？
+        *   他们最近的动向和策略是什么？
+        *   是否存在潜在的新进入者或替代品威胁？（波特五力模型）
+    3.  **自身定位与机会 (Positioning & Opportunity)**
+        *   结合市场趋势和竞争格局，我们（公司/产品）的优势和劣势是什么？(SWOT 分析)
+        *   市场中存在哪些未被满足的需求或细分机会？
+        *   我们的产品或服务应该如何在市场中定位，以形成差异化优势？
+
+    ## 示例：AI 电商助理
+
+    *   **市场规模与趋势**:
+        *   全球及特定区域（如中国）电商市场规模巨大且持续增长（尽管增速可能放缓）。
+        *   AI 技术（特别是 [[LLM]]）在提升客服效率、个性化推荐、购物体验方面的应用成为重要趋势。
+        *   用户对即时、准确、个性化服务的期望越来越高。
+    *   **竞品分析**:
+        *   大型电商平台（淘宝、京东、Amazon）内置的智能客服/助手。
+        *   独立的 AI 客服解决方案提供商（如 [[Zendesk]], [[Intercom]] 的 AI 功能）。
+        *   分析它们的功能覆盖范围（售前、售中、售后）、智能化程度、接入渠道、用户评价、商业模式。
+    *   **自身定位与机会 (假设是字节电商)**:
+        *   优势：庞大的用户基数（抖音/TikTok）、强大的推荐算法基因、短视频/直播内容生态。
+        *   机会：将 AI 助理与内容生态、推荐算法深度结合，提供更无缝、更具娱乐性的购物咨询和导购体验，形成差异化。
+
+    ## 面试价值
+
+    [!tip] 展现宏观视野
+    在面试中展现对行业的理解和市场趋势的思考，表明你不仅仅关注功能细节，更能从战略层面思考产品的定位和发展方向。
+
+    ## 相关概念
+
+    *   [[市场调研]]
+    *   [[竞品分析]]
+    *   [[PEST 分析]]
+    *   [[波特五力模型]]
+    *   [[SWOT 分析]]
+    *   [[TAM SAM SOM]]
+    *   [[产品战略]]
+""")
+
+complete_step2_path = os.path.join(complete_folder, '02 - 用户需求分析.md')
+complete_step2_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, framework/complete, type/concept, step/2]
+    aliases: [用户需求分析, User Needs Analysis]
+    ---
+    # 2. 用户需求分析 (完整框架)
+
+    [[01 - 行业与市场认知|上一步: 市场认知]] | [[00 - 完整产品管理框架概览|返回 完整框架概览]] | [[03 - 产品设计与方案构思|下一步: 产品设计]]
+
+    ## 概述
+
+    在了解宏观市场后，需要深入理解目标用户的具体需求和痛点。这是产品设计的核心输入，确保产品真正解决用户的问题并创造价值。
+
+    ## 核心要素
+
+    1.  **用户画像 & 使用场景 (User Persona & Scenarios)**
+        *   **用户画像 ([[User Persona]])**: 创建典型用户的虚拟代表，包含人口统计学特征、行为习惯、目标、动机、痛点等。例如，为电商 AI 助理定义不同的买家画像（价格敏感型、效率优先型、冲动购物型）和卖家画像（新手卖家、品牌商家）。
+        *   **使用场景 ([[Use Case]] / Scenario)**: 描述用户在特定情境下如何与产品（或现有解决方案）互动以达成目标。例如：
+            *   买家场景：查询订单物流、咨询退货政策、寻找特定类型商品、比较商品优劣、了解促销活动。
+            *   卖家场景：设置自动回复规则、查看客服接待数据、处理批量售后咨询。
+    2.  **痛点深挖 (Pain Point Deep Dive)**
+        *   识别用户在特定场景下遇到的具体困难、挫折、不满或效率低下的地方。
+        *   使用方法如：
+            *   **用户访谈 ([[User Interview]])**: 直接与用户交流，了解他们的经历和感受。
+            *   **问卷调查 ([[Survey]])**: 大范围收集用户意见和偏好。
+            *   **数据分析**: 分析用户行为数据（如点击流、搜索词、放弃率），发现问题点。
+            *   **[[5 Whys]] 法**: 连续追问“为什么”，探究问题的根本原因。例如：用户频繁联系人工客服 -> 为什么？-> AI 回答不准确 -> 为什么？-> 知识库未及时更新 -> 为什么？...
+    3.  **需求提炼与价值假设 (Requirement Elicitation & Value Hypothesis)**
+        *   将用户痛点转化为具体的产品需求。区分“想要” (Want) 和“需要” (Need)。
+        *   明确产品能提供的核心价值，形成价值假设。例如：“通过提供 24/7 的即时 AI 问答服务，我们可以将用户查询等待时间减少 80%，并将用户满意度提升 15%。”
+        *   对需求进行优先级排序（[[需求优先级排序]]）。
+
+    ## 示例：AI 电商助理
+
+    *   **用户画像 & 场景**:
+        *   画像：小明，25岁，都市白领，网购频繁，注重效率，对新科技接受度高。
+        *   场景：小明在晚上 11 点想查询刚买的鞋子发货了没，但人工客服已下班。
+    *   **痛点深挖**:
+        *   痛点：无法在非工作时间获得及时的物流信息，感到焦虑。现有自助查询入口不明显或信息更新不及时。
+        *   [[5 Whys]]：为何焦虑？ -> 想尽快收到货 -> 为何想快？ -> 周末要穿 -> 为何重要？ -> 要参加活动... (理解用户真实动机)
+    *   **需求提炼 & 价值假设**:
+        *   需求：提供 24/7 可用的、准确的订单物流状态查询功能。
+        *   价值假设：通过 AI 助理提供全天候即时物流查询，可以解决用户非工作时间查询不便的痛点，提升用户体验和满意度。
+
+    ## 面试价值
+
+    [!tip] 用户中心思维
+    展现你能够真正站在用户角度思考问题，通过系统的方法挖掘用户的深层需求和痛点，并将其转化为有价值的产品解决方案。
+
+    ## 相关概念
+
+    *   [[用户研究]]
+    *   [[用户画像]] (`[[User Persona]]`)
+    *   [[用户旅程图]] (`[[User Journey Map]]`)
+    *   [[痛点]]
+    *   [[用户故事]] (`[[User Story]]`)
+    *   [[需求文档]] (`[[Requirements Document]]`)
+    *   [[需求优先级排序]]
+    *   [[5 Whys]]
+    *   [[MVP 框架/01 - 用户痛点价值 (MVP)|用户痛点价值 (MVP)]]
+""")
+
+complete_step3_path = os.path.join(complete_folder, '03 - 产品设计与方案构思.md')
+complete_step3_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, framework/complete, type/concept, step/3]
+    aliases: [产品设计, 解决方案设计, Product Design]
+    ---
+    # 3. 产品设计与方案构思 (完整框架)
+
+    [[02 - 用户需求分析|上一步: 用户需求分析]] | [[00 - 完整产品管理框架概览|返回 完整框架概览]] | [[04 - 技术与实现|下一步: 技术与实现]]
+
+    ## 概述
+
+    基于对市场和用户的理解，这一步的核心是将[[02 - 用户需求分析|用户需求]]转化为具体的产品功能、流程和界面设计方案。这是将想法变为可感知、可交互的产品的关键环节。
+
+    ## 核心要素
+
+    1.  **功能规划 (Feature Planning)**
+        *   定义产品的核心功能模块和具体功能点。
+        *   **核心主线功能**: 支撑产品核心价值的必备功能（例如 AI 电商助理的问答、推荐）。
+        *   **附加/辅助功能**: 增强用户体验或扩展应用场景的功能（例如个性化问候、消息推送、多轮对话管理）。
+        *   **[[功能优先级排序]]**: 根据用户价值、业务目标、开发成本等因素确定功能的开发顺序（例如使用 [[RICE 模型]], [[MoSCoW 方法]]）。
+        *   创建[[产品路线图]] (`[[Product Roadmap]]`)，规划不同版本的功能发布计划。
+    2.  **用户流程设计 (User Flow / Journey Design)**
+        *   设计用户完成特定任务所需经过的步骤和界面交互流程。
+        *   绘制[[用户流程图]] (`[[User Flow Diagram]]`) 或[[用户旅程图]] (`[[User Journey Map]]`) 来可视化用户路径。
+        *   关注流程的顺畅性、易用性和效率，识别潜在的断点或障碍。
+        *   例如：用户打开 App -> 点击 AI 助手图标 -> 输入问题 -> 系统处理并显示答案 -> 用户追问或点击推荐商品 -> ... -> 评价对话满意度。
+    3.  **信息架构 (Information Architecture - IA)**
+        *   组织和构建产品内的信息，使其易于用户理解和查找。
+        *   对于 AI 产品，这可能涉及：
+            *   **输入数据**: AI 模型需要哪些信息来理解用户意图和上下文？（例如：用户问题文本、历史对话、用户信息、商品知识库、订单数据等）
+            *   **知识库结构**: 如何组织商品信息、FAQ、政策文档等，以便 AI 有效检索？
+            *   **输出呈现**: 如何以清晰、结构化的方式向用户展示 AI 的回答或推荐？（例如：文本、卡片、按钮、链接）
+    4.  **交互与界面设计 (Interaction & UI Design)**
+        *   **交互设计 (IxD)**: 定义用户如何与产品进行互动（点击、滑动、输入等），确保交互符合用户直觉和习惯。
+        *   **用户界面 (UI)**: 设计产品的视觉外观，包括布局、颜色、字体、图标等，确保美观、一致且信息传达清晰。
+        *   产出物可能包括：线框图 ([[Wireframe]])、交互原型 ([[Prototype]])、视觉设计稿 ([[Mockup]])。
+        *   需要与[[设计师]]紧密合作。
+
+    ## 示例：AI 电商助理
+
+    *   **功能规划**:
+        *   核心：自然语言问答（覆盖商品、订单、售后）、基于对话上下文的商品推荐。
+        *   附加：用户意图识别不清时的主动澄清、满意度评价收集、常用问题快捷入口。
+    *   **用户流程**:
+        *   绘制用户从提问到获得满意答案（或转人工）的详细流程图。考虑各种分支情况（如问题模糊、找不到答案、用户不满意）。
+    *   **信息架构**:
+        *   输入：用户ID、当前页面上下文、聊天历史、结构化商品数据库、订单数据库、FAQ 知识库。
+        *   输出：纯文本回答、带按钮的卡片式回答（如物流节点）、商品推荐卡片列表。
+    *   **交互与界面**:
+        *   设计聊天窗口界面，输入框样式，加载状态提示，消息气泡样式，答案中可点击元素的交互方式。
+
+    ## 面试价值
+
+    [!tip] 体现产品 Sense
+    这部分能够集中体现你的产品思维、逻辑能力和对用户体验的关注。即使没有设计背景，也应能清晰阐述功能规划思路、用户流程和关键的交互考虑点。展现你对业务流程（如电商）和相关技术（如 AI）的理解。
+
+    ## 相关概念
+
+    *   [[用户体验]] (UX)
+    *   [[交互设计]] (IxD)
+    *   [[用户界面设计]] (UI)
+    *   [[信息架构]] (IA)
+    *   [[线框图]] (`[[Wireframe]]`)
+    *   [[原型设计]] (`[[Prototype]]`)
+    *   [[用户流程图]] (`[[User Flow]]`)
+    *   [[用户旅程图]] (`[[User Journey Map]]`)
+    *   [[功能优先级排序]]
+    *   [[产品路线图]] (`[[Product Roadmap]]`)
+    *   [[PRD]] (产品需求文档)
+    *   [[MVP 框架/02 - MVP 解决方案|MVP 解决方案]]
+""")
+
+complete_step4_path = os.path.join(complete_folder, '04 - 技术与实现.md')
+complete_step4_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, framework/complete, type/concept, step/4, domain/technology]
+    aliases: [技术实现, Technical Implementation]
+    ---
+    # 4. 技术与实现 (完整框架)
+
+    [[03 - 产品设计与方案构思|上一步: 产品设计]] | [[00 - 完整产品管理框架概览|返回 完整框架概览]] | [[05 - 数据指标与衡量|下一步: 数据衡量]]
+
+    ## 概述
+
+    产品设计方案最终需要通过技术手段实现。产品经理虽然不直接编写代码，但需要理解技术的基本原理、可行性、成本和风险，以便与工程团队有效沟通协作，确保产品能够按时、高质量地落地。
+
+    ## 核心要素
+
+    1.  **技术可行性评估 (Technical Feasibility Assessment)**
+        *   评估产品设计方案在当前技术条件下是否能够实现？
+        *   需要哪些关键技术？（例如：[[自然语言处理]] (NLP)、[[机器学习]] (ML)、[[大语言模型]] (LLM)、数据库技术、API 集成等）
+        *   技术是自研还是使用第三方服务/API？各自的优劣势、成本、风险如何？（例如：自研 [[LLM]] vs 调用 OpenAI API）
+        *   是否存在重大的技术挑战或瓶颈？
+    2.  **技术选型与架构 (Technology Stack & Architecture)**
+        *   （与技术负责人共同决策）选择合适的编程语言、框架、数据库、中间件等。
+        *   设计系统架构，考虑可扩展性 (Scalability)、可靠性 (Reliability)、性能 (Performance)、安全性 (Security) 等方面。
+        *   例如：AI 助手的服务是部署在云端还是本地？如何处理高并发请求？[[缓存]]策略是什么？
+    3.  **开发流程与估算 (Development Process & Estimation)**
+        *   理解[[敏捷开发]] (Agile)、瀑布 (Waterfall) 等不同的开发模式。
+        *   与工程团队协作，将产品需求分解为技术任务 (Technical Tasks / Stories)。
+        *   参与工作量估算 (Effort Estimation) 和排期 (Scheduling)。虽然 PM 不做具体估算，但需理解估算逻辑和影响因素。
+    4.  **成本与资源 (Cost & Resources)**
+        *   理解开发所需的人力成本、时间成本。
+        *   考虑技术方案带来的基础设施成本（服务器、API 调用费用、存储费用等）和运维成本。
+        *   评估方案对现有技术资源（人力、算力）的影响。
+    5.  **风险管理 (Risk Management)**
+        *   识别技术实现过程中可能遇到的风险，并制定应对计划。
+        *   **技术风险**: 技术难点无法攻克、第三方服务不稳定、性能不达标等。
+        *   **数据风险**: 数据质量差、数据获取困难、数据隐私与合规问题（如 [[GDPR]], [[数据安全法]]）。
+        *   **模型风险 (AI 特定)**: [[模型偏见]] (Bias)、[[幻觉]] ([[Hallucination]] - 模型胡说八道)、鲁棒性差等。如何检测和缓解这些问题？
+
+    ## 示例：AI 电商助理
+
+    *   **技术可行性**:
+        *   基础问答可用成熟 NLP 技术或 [[LLM]] API 实现。
+        *   实时数据对接（物流、库存）需要稳定的 [[API]] 接口。
+        *   个性化推荐需要结合用户行为数据和 [[推荐算法]]。
+    *   **架构与成本**:
+        *   高并发场景下，需要考虑 [[LLM]] API 的调用成本和延迟，可能需要[[缓存]]常用查询。
+        *   需要打通商品库、订单库、用户画像等多个内部数据系统。
+    *   **风险管理**:
+        *   [[Hallucination]] 风险：如何通过 [[RAG]] (Retrieval-Augmented Generation)、Prompt Engineering、答案审核机制来减少模型输出错误信息？
+        *   隐私风险：用户聊天数据如何脱敏、存储和使用？是否符合[[数据安全]]法规？
+
+    ## 面试价值
+
+    [!tip] 技术理解力与沟通桥梁
+    展现你具备与工程师沟通的基本素养，理解技术实现的复杂度、成本和风险。如果你有技术背景，可以适度深入，但要**简洁明了**，重点放在技术决策对产品和业务的影响上，避免过度陷入纯技术细节。强调你如何作为 PM 推动技术方案服务于产品目标。
+
+    ## 相关概念
+
+    *   [[技术栈]] (`[[Tech Stack]]`)
+    *   [[系统架构]] (`[[System Architecture]]`)
+    *   [[API]] (应用程序接口)
+    *   [[数据库]]
+    *   [[云计算]]
+    *   [[敏捷开发]] (`[[Agile Development]]`)
+    *   [[技术可行性]]
+    *   [[成本效益分析]]
+    *   [[风险管理]]
+    *   [[LLM]] (大语言模型)
+    *   [[NLP]] (自然语言处理)
+    *   [[机器学习]] (ML)
+    *   [[Hallucination]] (模型幻觉)
+    *   [[数据隐私]] & [[数据安全]]
+    *   [[MVP 框架/02 - MVP 解决方案|MVP 解决方案]] (技术可行性部分)
+""")
+
+complete_step5_path = os.path.join(complete_folder, '05 - 数据指标与衡量.md')
+complete_step5_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, framework/complete, type/concept, step/5, domain/data]
+    aliases: [数据指标, 产品衡量, Metrics & Measurement]
+    ---
+    # 5. 数据指标与衡量 (完整框架)
+
+    [[04 - 技术与实现|上一步: 技术实现]] | [[00 - 完整产品管理框架概览|返回 完整框架概览]] | [[06 - 推动与沟通|下一步: 推动沟通]]
+
+    ## 概述
+
+    产品发布上线只是开始，持续的数据跟踪和分析是衡量产品成功、发现问题、驱动迭代的关键。产品经理需要定义合适的指标体系，建立数据监控机制，并基于数据做出明智的决策。
+
+    ## 核心要素
+
+    1.  **指标体系设计 (Metrics Framework Design)**
+        *   **[[北极星指标]] (North Star Metric)**: 定义一个能最好地体现产品核心价值、指引团队方向的唯一关键指标。它应该是领先指标，能预测长期成功。例如，对于 AI 电商助理，北极星指标可能是“用户通过 AI 成功解决问题的次数”或“AI 带来的 GMW 增量”。
+        *   **[[目标与关键结果]] (OKR - Objectives and Key Results)**: 设定清晰的、有挑战性的目标 (Objective)，并用 3-5 个具体的、可衡量的关键结果 (Key Result) 来追踪目标的达成进度。
+        *   **层级化指标 (Hierarchical Metrics)**:
+            *   **一级指标 (Tier 1 / Strategic)**: 关注整体业务影响，如 [[用户增长]]、[[营收]]、[[利润]]、[[市场份额]]。
+            *   **二级指标 (Tier 2 / Product)**: 关注产品本身表现，如 [[用户活跃度]] (DAU/MAU)、[[留存率]] (Retention)、[[转化率]] (Conversion)、[[用户满意度]] (CSAT/NPS)。
+            *   **三级指标 (Tier 3 / Feature)**: 关注具体功能的使用情况，如特定按钮点击率、任务完成时间、功能使用频率。
+        *   **[[HEART 框架]]**: Google 提出的用户体验度量框架，从 Happiness（愉悦度）、Engagement（参与度）、Adoption（接受度）、Retention（留存度）、Task Success（任务完成度）五个维度衡量。
+        *   **[[AARRR 模型]]**: 常用于用户生命周期分析，包括 Acquisition（获取）、Activation（激活）、Retention（留存）、Revenue（收入）、Referral（推荐）。
+    2.  **数据采集与埋点 (Data Collection & Tracking)**
+        *   与开发团队合作，在产品中进行[[数据埋点]]，确保能够收集到所需的原始行为数据。
+        *   定义清晰的事件 (Event) 和属性 (Property)。
+        *   确保数据的准确性、完整性和及时性。
+    3.  **数据分析与解读 (Data Analysis & Interpretation)**
+        *   使用数据分析工具（如 SQL, Python, Tableau, Mixpanel, Google Analytics 等）处理和分析数据。
+        *   **描述性分析**: 发生了什么？（例如：DAU 下降了 10%）
+        *   **诊断性分析**: 为什么发生？（例如：通过分群分析，发现是新注册用户留存率大幅下降导致 DAU 下降）
+        *   **预测性分析**: 将会发生什么？（例如：根据当前趋势预测本季度营收）
+        *   **指导性分析**: 应该做什么？（例如：建议优化新用户引导流程以提升留存率）
+        *   进行[[A/B 测试]]，科学地验证产品改动的影响。
+    4.  **数据可视化与报告 (Data Visualization & Reporting)**
+        *   使用图表（折线图、柱状图、饼图、漏斗图等）将数据结果可视化，使其易于理解。
+        *   建立 [[Dashboard]] (数据仪表盘) 进行日常监控。
+        *   定期输出数据分析报告，向团队和[[利益相关者管理|利益相关者]]同步进展、洞察和建议。
+
+    ## 示例：AI 电商助理
+
+    *   **北极星指标**: AI 驱动的[[GMV]] (成交总额)。
+    *   **关键 [[KPI]]**:
+        *   AI 对话覆盖率 (用户咨询中 AI 响应的比例)
+        *   AI 对话解决率
+        *   用户满意度 (CSAT)
+        *   从 AI 推荐到商品详情页的点击率 (CTR)
+        *   从 AI 推荐到下单的[[转化率]]
+        *   人工客服接起率的变化
+    *   **数据分析流程**:
+        *   **日常监控**: [[Dashboard]] 监控核心 KPI 波动。
+        *   **迭代依据**: [[A/B 测试]]对比不同 AI 回答策略或推荐算法的效果；分析用户反馈和低分对话，定位改进点。
+        *   **深入分析**: 分析不同用户群体（新/老用户、高/低价值用户）与 AI 互动模式的差异。
+
+    ## 面试价值
+
+    [!tip] 数据驱动思维
+    展现你具备用数据说话的能力。强调你如何定义指标、收集数据、分析问题并基于数据做出产品决策。即使没有复杂的分析技能，也应能清晰阐述你的数据思维逻辑和对关键指标的关注。
+
+    ## 相关概念
+
+    *   [[数据分析]]
+    *   [[数据埋点]]
+    *   [[北极星指标]] (`[[North Star Metric]]`)
+    *   [[KPI]] (关键绩效指标)
+    *   [[OKR]] (目标与关键结果)
+    *   [[A/B 测试]]
+    *   [[用户分群]] (`[[Cohort Analysis]]`)
+    *   [[漏斗分析]] (`[[Funnel Analysis]]`)
+    *   [[留存分析]] (`[[Retention Analysis]]`)
+    *   [[Dashboard]]
+    *   [[数据可视化]]
+    *   [[HEART 框架]]
+    *   [[AARRR 模型]]
+    *   [[MVP 框架/03 - MVP 数据验证|MVP 数据验证]]
+""")
+
+complete_step6_path = os.path.join(complete_folder, '06 - 推动与沟通.md')
+complete_step6_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, framework/complete, type/concept, step/6, skill/communication, skill/collaboration]
+    aliases: [推动沟通, Stakeholder Management, Collaboration]
+    ---
+    # 6. 推动与沟通 (完整框架)
+
+    [[05 - 数据指标与衡量|上一步: 数据衡量]] | [[00 - 完整产品管理框架概览|返回 完整框架概览]] | [[07 - 迭代与成长|下一步: 迭代成长]]
+
+    ## 概述
+
+    产品经理通常不直接管理团队成员，但需要通过有效的沟通、协调和影响力，推动跨职能团队（工程、设计、测试、运营、市场、法务等）共同协作，将产品愿景转化为现实。这是 PM 最核心的软技能之一。
+
+    ## 核心要素
+
+    1.  **跨团队协作 (Cross-Functional Collaboration)**
+        *   与不同职能的团队成员建立良好的合作关系。
+        *   **工程师 (Engineering)**: 沟通需求细节、技术方案、排期、风险。
+        *   **设计师 (Design)**: 沟通用户需求、产品目标、交互逻辑、视觉风格。
+        *   **测试 (QA/Testing)**: 沟通测试用例、Bug 优先级、上线标准。
+        *   **运营 (Operations)**: 沟通产品功能、上线节奏、推广策略、用户反馈收集。
+        *   **市场/销售 (Marketing/Sales)**: 沟通产品价值、目标用户、市场定位、销售支持。
+        *   **数据分析师 (Data Analyst)**: 沟通数据需求、指标定义、分析结果解读。
+        *   **法务/合规 (Legal/Compliance)**: 沟通涉及隐私、安全、版权等合规性问题。
+    2.  **沟通策略 (Communication Strategy)**
+        *   针对不同的沟通对象和场景，采用合适的沟通方式（会议、邮件、即时消息、文档）。
+        *   清晰、简洁、准确地传递信息，确保信息对称。
+        *   积极倾听，理解他人观点和诉求。
+        *   向上管理 (Managing Up): 向领导汇报进展、风险、寻求资源和支持。
+        *   横向协调 (Managing Sideways): 与同级跨部门同事协作。
+    3.  **会议与文档 (Meetings & Documentation)**
+        *   **高效会议**: 明确会议目标、议程、参与人；控制时长；形成会议纪要和行动项 (Action Items)。
+        *   **关键文档**:
+            *   [[MRD]] (市场需求文档): 阐述市场机会、目标用户、市场需求。
+            *   [[PRD]] (产品需求文档): 详细描述产品功能、逻辑、交互、数据需求等，是与研发、测试沟通的主要依据。
+            *   [[产品路线图]] (`[[Product Roadmap]]`): 展示产品的中长期规划。
+            *   [[用户故事]] (`[[User Story]]`): 以用户视角描述需求。
+            *   [[发布计划]] (`[[Release Plan]]`): 明确版本内容和时间节点。
+            *   [[复盘文档]] (`[[Retrospective Document]]`): 总结项目经验教训。
+        *   文档应结构清晰、易于理解、及时更新。
+    4.  **[[利益相关者管理]] (Stakeholder Management)**
+        *   识别关键利益相关者（老板、业务方、核心用户、合作伙伴等）。
+        *   理解他们的期望、诉求和对产品的影响力。
+        *   主动与利益相关者沟通，同步信息，管理预期，争取支持。
+        *   处理不同利益相关者之间的冲突和诉求差异。
+    5.  **冲突解决与谈判 (Conflict Resolution & Negotiation)**
+        *   在资源有限、意见不一的情况下，需要具备解决冲突和谈判的能力。
+        *   聚焦问题本身，而非个人立场。
+        *   寻求共赢 (Win-Win) 的解决方案。
+        *   在必要时做出取舍和妥协，但要坚守产品核心原则和目标。
+
+    ## 示例：AI 电商助理
+
+    *   **跨团队协作**: 与算法工程师讨论模型效果和优化方向；与前端工程师确认交互细节；与运营沟通上线后的推广活动；与法务确认数据使用合规性。
+    *   **会议与文档**: 撰写清晰的 [[PRD]] 描述 AI 回答不同问题的逻辑和所需数据源；组织每周站会同步进度；向管理层汇报项目 [[里程碑]] 和 [[KPI]] 数据。
+    *   **利益相关者管理**: 向电商业务负责人展示 AI 助理如何提升转化率和降低客服成本；向用户研究团队反馈用户对 AI 的核心诉求。
+
+    ## 面试价值
+
+    [!important] 考察落地能力
+    面试官非常关心你“是否能把想法变成现实”。展现你的沟通协调能力、处理复杂人际关系和推动项目落地的经验（即使是模拟或小型项目经验）至关重要。用具体事例说明你如何与不同角色的人协作、如何解决冲突、如何撰写关键文档。
+
+    ## 相关概念
+
+    *   [[跨职能团队]] (`[[Cross-Functional Team]]`)
+    *   [[沟通技巧]]
+    *   [[利益相关者管理]] (`[[Stakeholder Management]]`)
+    *   [[冲突解决]]
+    *   [[谈判技巧]]
+    *   [[会议管理]]
+    *   [[PRD]] (产品需求文档)
+    *   [[MRD]] (市场需求文档)
+    *   [[产品路线图]] (`[[Product Roadmap]]`)
+    *   [[敏捷开发]] (`[[Agile Development]]`) 中的沟通仪式（站会、评审会、复盘会）
+""")
+
+complete_step7_path = os.path.join(complete_folder, '07 - 迭代与成长.md')
+complete_step7_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, framework/complete, type/concept, step/7, process/iteration, process/growth]
+    aliases: [迭代成长, Continuous Improvement, Product Evolution]
+    ---
+    # 7. 迭代与成长 (完整框架)
+
+    [[06 - 推动与沟通|上一步: 推动沟通]] | [[00 - 完整产品管理框架概览|返回 完整框架概览]]
+
+    ## 概述
+
+    产品发布不是终点，而是新一轮学习和改进的开始。持续迭代是产品保持竞争力、满足用户不断变化的需求、实现长期增长的关键。这要求产品经理具备[[用户反馈闭环]]、[[数据驱动决策]]和[[产品战略]]思考能力。
+
+    ## 核心要素
+
+    1.  **[[用户反馈闭环]] (User Feedback Loop)**
+        *   建立系统性的机制来收集、整理、分析和响应用户反馈。
+        *   **反馈渠道**: 应用内反馈入口、用户社区/论坛、社交媒体、应用商店评论、客服记录、用户调研（问卷/访谈）、NPS/CSAT 评分等。
+        *   **反馈处理**: 对反馈进行分类、打标签、统计频率、分析根本原因。
+        *   **闭环**: 将有价值的反馈纳入产品改进计划（[[产品待办列表]] `[[Product Backlog]]`），并将改进结果告知用户（如果可能），形成正向循环。
+    2.  **持续改进与优化 (Continuous Improvement & Optimization)**
+        *   基于[[05 - 数据指标与衡量|数据分析]]和用户反馈，识别产品中的问题和机会点。
+        *   **问题修复 (Bug Fixing)**: 优先处理影响核心流程或用户体验的 Bug。
+        *   **体验优化 (UX Optimization)**: 改进现有功能的易用性、流程顺畅度、性能表现等。例如，优化 AI 回答的加载速度，改进模糊问题下的澄清引导。
+        *   **[[A/B 测试]]驱动优化**: 通过实验验证小的改动对关键指标的影响。
+    3.  **创新与扩展 (Innovation & Expansion)**
+        *   **功能扩展**: 在核心功能稳定的基础上，根据用户需求和市场机会，探索和开发新的功能或模块。例如，AI 电商助理从售后问答扩展到售前导购、智能推荐、[[语音交互]]。
+        *   **市场扩展**: 将产品推向新的用户群体或地域市场。
+        *   **模式创新**: 探索新的商业模式或服务模式。
+        *   **技术驱动创新**: 利用新兴技术（如更强的 [[LLM]]、[[多模态 AI]]）为产品带来突破性体验。
+    4.  **产品复盘与学习 (Product Review & Learning)**
+        *   定期对产品迭代的效果、项目过程进行[[复盘]] (`[[Retrospective]]`)。
+        *   **成功复盘**: 哪些做得好？为什么成功？如何复制？
+        *   **失败复盘**: 哪些没达到预期？根本原因是什么？可以吸取哪些教训？
+        *   将复盘的结论和经验应用到后续的产品工作中。
+    5.  **长期愿景与[[产品战略]] (Long-term Vision & Product Strategy)**
+        *   思考产品的长期发展方向和目标。
+        *   根据市场变化、技术趋势、公司战略，动态调整[[产品路线图]]和优先级。
+        *   确保短期迭代服务于长期愿景。
+
+    ## 示例：AI 电商助理
+
+    *   **用户反馈闭环**: 建立用户反馈标签体系（如“回答不准”、“功能建议”、“体验问题”），定期分析高频反馈，纳入 Backlog。
+    *   **持续改进**: 通过 [[A/B 测试]]验证不同的商品推荐卡片样式对点击率的影响；优化模型以提高对特定领域（如服装尺码）问题的理解准确率。
+    *   **创新与扩展**: 探索将 AI 助理接入直播间，实时回答用户关于主播讲解商品的问题；开发基于用户购买历史和浏览行为的个性化促销推送功能。
+    *   **复盘与学习**: 复盘上个季度 AI 驱动 GMV 未达预期的原因，发现是推荐商品与用户意图匹配度不高，决定在下季度重点优化推荐算法。
+
+    ## 面试价值
+
+    [!tip] 展示成长思维和长远规划
+    表达你不仅关注产品的当前状态，更懂得如何通过持续学习、用户反馈和数据分析来驱动产品的长期发展和成功。展现你对产品生命周期的理解，以及不断优化和创新的意识。
+
+    ## 相关概念
+
+    *   [[用户反馈]]
+    *   [[用户反馈闭环]]
+    *   [[数据驱动决策]]
+    *   [[A/B 测试]]
+    *   [[产品迭代]]
+    *   [[持续改进]] (`[[Continuous Improvement]]`)
+    *   [[产品创新]]
+    *   [[产品复盘]] (`[[Retrospective]]`)
+    *   [[产品路线图]] (`[[Product Roadmap]]`)
+    *   [[产品战略]]
+    *   [[产品生命周期]]
+    *   [[MVP 框架/04 - MVP 迭代优化|MVP 迭代优化]]
+""")
+
+
+# 4. Interview Prep & Learning
+interview_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Interview Simulation', 'Product Manager Interview')
+
+interview_prep_path = os.path.join(interview_folder, '02 - 产品管理框架面试准备与深造.md')
+interview_prep_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, process/interview, type/guide, skill/preparation, skill/learning]
+    aliases: [产品经理面试准备, PM面试框架应用, 产品经理学习路径]
+    ---
+    # 产品管理框架面试准备与后续深造
+
+    [[../00 - 产品经理面试概览|返回 产品经理面试概览]] (Placeholder Link)
+
+    ## 概述
+
+    本篇内容结合 [[../../Concepts/Product Management/MVP 框架/00 - MVP 框架概览|MVP 思维框架]] 和 [[../../Concepts/Product Management/完整框架/00 - 完整产品管理框架概览|完整产品管理框架]]，提供针对产品经理面试的冲刺攻略、面试技巧，以及面试成功后的长期学习和成长建议。
+
+    ## Part C1: 面试前冲刺攻略 (快速上手)
+
+    1.  **准备 1-2 个典型产品案例**
+        *   选择一个你熟悉或感兴趣的产品（最好与目标公司业务相关，例如 AI 电商客服/助理）。
+        *   分别用 [[../../Concepts/Product Management/MVP 框架/00 - MVP 框架概览|MVP 框架 (4步法)]] 和 [[../../Concepts/Product Management/完整框架/00 - 完整产品管理框架概览|完整框架 (7步法)]] 的思路，梳理分析这个产品的设计或改进方案。
+        *   **MVP 思路**: 快速定位核心 [[../../Concepts/Product Management/MVP 框架/01 - 用户痛点价值 (MVP)|用户痛点]] -> 设计[[../../Concepts/Product Management/MVP 框架/02 - MVP 解决方案|最小可行解决方案]] -> 定义[[../../Concepts/Product Management/MVP 框架/03 - MVP 数据验证|关键验证指标]] -> 规划[[../../Concepts/Product Management/MVP 框架/04 - MVP 迭代优化|快速迭代]]方向。
+        *   **完整思路**: 结合[[../../Concepts/Product Management/完整框架/01 - 行业与市场认知|市场环境]]、[[../../Concepts/Product Management/完整框架/02 - 用户需求分析|深度用户需求]]、[[../../Concepts/Product Management/完整框架/03 - 产品设计与方案构思|详细方案设计]]、[[../../Concepts/Product Management/完整框架/04 - 技术与实现|技术可行性]]、[[../../Concepts/Product Management/完整框架/05 - 数据指标与衡量|全面数据衡量]]、[[../../Concepts/Product Management/完整框架/06 - 推动与沟通|跨团队沟通]]、[[../../Concepts/Product Management/完整框架/07 - 迭代与成长|长期迭代]]。
+    2.  **预演回答 (Mock Interview)**
+        *   模拟面试官提问：“如果让你来设计一个 XX 产品，你会怎么做？”、“你觉得 XX 产品可以如何改进？”、“你认为 XX 产品成功的关键是什么？”
+        *   对着镜子、录音或找人模拟面试，练习用框架化的思路清晰、有条理地回答。注意控制时间。
+    3.  **关注数据与 ROI (Return on Investment)**
+        *   在阐述方案时，尽可能用**数据目标**或**商业价值 (ROI)** 来支撑你的逻辑。
+        *   例如：“我们设计这个功能的目的是将用户转化率提升 X%”、“通过这个优化，预计可以降低 Y% 的客服成本”。
+        *   这能体现你的商业意识和结果导向思维。
+
+    ## Part C2: 面试当天小技巧
+
+    1.  **逻辑清晰 (Structured Thinking)**
+        *   回答问题时，先思考，再开口。可以先简要说明你的回答框架（例如：“关于这个问题，我将从用户、方案、数据验证三个方面来谈...”）。
+        *   优先使用 [[../../Concepts/Product Management/MVP 框架/00 - MVP 框架概览|MVP 框架]] 快速切入核心，如果面试官追问细节，再适时引入[[../../Concepts/Product Management/完整框架/00 - 完整产品管理框架概览|完整框架]]中的相关模块。
+    2.  **语言简洁 (Concise Communication)**
+        *   避免冗长、跑题。用简单、直接的语言表达核心观点。
+        *   如果是技术背景，避免过多使用对方可能不熟悉的[[术语]]，除非面试官也是技术出身。重点在于讲清楚“是什么”、“为什么”、“怎么做”、“效果如何”。
+    3.  **结合公司背景 (Contextualization)**
+        *   提前研究目标公司的产品、业务和战略。
+        *   在回答问题时，尝试将你的思考与该公司的具体情况相结合。例如，谈及字节电商 AI 助理时，可以提及其与抖音内容生态、推荐算法结合的可能性。
+        *   表达你对公司业务的理解和热情。
+
+    ## Part C3: 后续深造 (长期成长)
+
+    面试成功只是起点，持续学习和实践是成为优秀产品经理的关键。
+
+    1.  **深入学习行业知识 (Industry Expertise)**
+        *   持续关注你所在领域（如电商、AI、社交、教育等）的行业动态、[[市场趋势]]、[[新技术]]发布、[[竞品分析|竞争对手]]动向。
+        *   阅读行业报告、科技媒体、专业博客。
+    2.  **系统学习产品理论 & 案例 (PM Knowledge & Case Studies)**
+        *   阅读经典产品管理书籍，构建系统性知识体系。推荐书籍：
+            *   `[[Inspired]]` (Marty Cagan) - 产品探索与定义
+            *   `[[Hooked]]` (Nir Eyal) - 用户习惯养成
+            *   `[[The Lean Startup]]` (Eric Ries) - [[精益创业]]与 [[MVP 框架/00 - MVP 框架概览|MVP]]
+            *   `[[Crossing the Chasm]]` (Geoffrey A. Moore) - 技术产品市场推广周期
+            *   `[[Don't Make Me Think]]` (Steve Krug) - [[网页可用性]]
+        *   分析成功的和失败的产品案例，学习经验教训。
+    3.  **实践、反思与复盘 (Practice, Reflection & Retrospective)**
+        *   在实习或实际工作中，积极参与产品设计的各个环节。
+        *   每完成一个项目或一个重要功能，主动进行[[复盘]]：
+            *   目标是否达成？哪些做得好，哪些可以改进？
+            *   用户反馈如何？数据表现怎么样？
+            *   团队协作中遇到了哪些问题？如何解决的？
+            *   从中学到了什么？下次如何做得更好？
+        *   将反思的结论应用到下一次实践中。
+    4.  **提升软技能 (Soft Skills Development)**
+        *   持续锻炼[[沟通技巧]]、[[跨职能团队|跨团队协作]]能力、[[演示表达]]能力、[[谈判技巧]]、[[冲突解决]]能力、[[领导力]]。
+
+    ## 结语
+
+    *   [[../../Concepts/Product Management/MVP 框架/00 - MVP 框架概览|MVP 框架]] 是你面试时的**快速反应武器**，保证回答不跑偏、有重点。
+    *   [[../../Concepts/Product Management/完整框架/00 - 完整产品管理框架概览|完整框架]] 是你展现**专业深度和系统思维**的后盾，应对深入提问。
+    *   后续的**持续学习和实践反思**，则是你从合格走向优秀的必经之路。
+
+    灵活运用这些框架和方法，祝你在面试中脱颖而出，并在产品经理的道路上不断成长！
+
+    ## 相关概念
+
+    *   [[面试技巧]]
+    *   [[STAR 原则]] (面试行为问题回答)
+    *   [[产品案例分析]]
+    *   [[职业发展]]
+    *   [[终身学习]]
+""")
+
+
+# --- Main Script Logic ---
+def main():
+    print("Starting Obsidian Knowledge Base Generation...")
+    print(f"Target Root Directory: {os.path.abspath(TARGET_ROOT_DIRECTORY)}")
+    print(f"Overwrite Existing Files: {OVERWRITE_EXISTING}")
+
+    files_to_create = {
+        pm_overview_path: pm_overview_content,
+
+        mvp_overview_path: mvp_overview_content,
+        mvp_step1_path: mvp_step1_content,
+        mvp_step2_path: mvp_step2_content,
+        mvp_step3_path: mvp_step3_content,
+        mvp_step4_path: mvp_step4_content,
+
+        complete_overview_path: complete_overview_content,
+        complete_step1_path: complete_step1_content,
+        complete_step2_path: complete_step2_content,
+        complete_step3_path: complete_step3_content,
+        complete_step4_path: complete_step4_content,
+        complete_step5_path: complete_step5_content,
+        complete_step6_path: complete_step6_content,
+        complete_step7_path: complete_step7_content,
+
+        interview_prep_path: interview_prep_content,
+    }
+
+    for filepath, content in files_to_create.items():
+        if not OVERWRITE_EXISTING and os.path.exists(filepath):
+            print(f"Skipping existing file: {filepath}")
+            continue
+        write_file(filepath, content)
+
+    print("\nObsidian Knowledge Base Generation Complete.")
 
 if __name__ == "__main__":
-    # Ensure the root directory exists (optional, useful if ROOT_DIR is not '.')
-    if not os.path.exists(ROOT_DIR):
-        os.makedirs(ROOT_DIR)
-        print(f"Created root directory: {os.path.abspath(ROOT_DIR)}")
-        
-    create_notes()
+    main()
