@@ -7,19 +7,19 @@
       (function () {
         const isGithub = location.hostname.includes("github.io");
         const repo = location.pathname.split("/")[1]; // e.g., 'my-repo'
-        const target = isGithub ? `/${repo}/interview/index.html` : "interview/index.html";
+        const target = isGithub ? `/${repo}/interview/index.md.html` : "interview/index.md.html";
         window.location.replace(target);
       })();
     </script>
   </head>
   <body>
-    <p>If you are not redirected, <a id="manual-link" href="interview/index.html">click here</a>.</p>
+    <p>If you are not redirected, <a id="manual-link" href="interview/index.md.html">click here</a>.</p>
     <script>
       // Update fallback link just in case
       const repo = location.pathname.split("/")[1];
       const isGithub = location.hostname.includes("github.io");
       if (isGithub) {
-        document.getElementById("manual-link").href = `/${repo}/interview/index.html`;
+        document.getElementById("manual-link").href = `/${repo}/interview/index.md.html`;
       }
     </script>
   </body>
