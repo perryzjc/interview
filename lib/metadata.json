@@ -1,0 +1,1089 @@
+{
+  "vaultName": "Interview",
+  "lastExport": 1744830850365,
+  "pluginVersion": "1.8.01",
+  "validBodyClasses": "publish css-settings-manager theme-dark show-inline-title show-ribbon is-fullscreen obsidian-themepocalypse",
+  "useCustomHeadContent": false,
+  "useCustomFavicon": false,
+  "files": [
+    "Interview/Concepts/AI & ML/Core Technologies/Transformer 模型.md",
+    "Interview/Concepts/AI & ML/Core Technologies/向量数据库.md",
+    "Interview/Concepts/AI & ML/Core Technologies/嵌入 (Embedding).md",
+    "Interview/Concepts/AI & ML/Core Technologies/微调 (Fine-tuning).md",
+    "Interview/Concepts/AI & ML/Core Technologies/机器学习 (ML).md",
+    "Interview/Concepts/AI & ML/Core Technologies/深度学习.md",
+    "Interview/Concepts/AI & ML/Core Technologies/自然语言处理 (NLP).md",
+    "Interview/Concepts/AI & ML/Evaluation/基准测试 (Benchmark).md",
+    "Interview/Concepts/AI & ML/Information Retrieval/信息检索.md",
+    "Interview/Concepts/AI & ML/Information Retrieval/相似性搜索.md",
+    "Interview/Concepts/AI & ML/Information Retrieval/近似最近邻搜索 (ANN).md",
+    "Interview/Concepts/AI & ML/Infrastructure/API (应用程序接口).md",
+    "Interview/Concepts/AI & ML/Models/Claude 模型系列.md",
+    "Interview/Concepts/AI & ML/Models/Gemini 模型系列.md",
+    "Interview/Concepts/AI & ML/Models/GPT 模型系列.md",
+    "Interview/Concepts/AI & ML/Models/LLaMA 模型系列.md",
+    "Interview/Concepts/AI & ML/Models/主流 LLM 模型概览.md",
+    "Interview/Concepts/AI & ML/00 - AI 与机器学习概览.md",
+    "Interview/Concepts/AI & ML/大型语言模型 (LLM).md",
+    "Interview/Concepts/AI & ML/开源 vs 闭源模型.md",
+    "Interview/Concepts/AI & ML/提示工程 (Prompt Engineering).md",
+    "Interview/Concepts/AI & ML/检索增强生成 (RAG).md",
+    "Interview/Concepts/AI & ML/模型幻觉 (Hallucination).md",
+    "Interview/Concepts/AI & ML/模型鲁棒性 (Robustness).md",
+    "Interview/Concepts/Fundamentals/向量 (Vector).md",
+    "Interview/Concepts/Fundamentals/数据库.md",
+    "Interview/Concepts/Product Management/MVP 框架/00 - MVP 框架概览.md",
+    "Interview/Concepts/Product Management/MVP 框架/01 - 用户痛点价值 (MVP).md",
+    "Interview/Concepts/Product Management/MVP 框架/02 - MVP 解决方案.md",
+    "Interview/Concepts/Product Management/MVP 框架/03 - MVP 数据验证.md",
+    "Interview/Concepts/Product Management/MVP 框架/04 - MVP 迭代优化.md",
+    "Interview/Concepts/Product Management/产品战略与规划/产品路线图.md",
+    "Interview/Concepts/Product Management/产品战略与规划/价值主张.md",
+    "Interview/Concepts/Product Management/产品设计/MoSCoW 方法.md",
+    "Interview/Concepts/Product Management/产品设计/RICE 模型.md",
+    "Interview/Concepts/Product Management/产品设计/功能优先级排序.md",
+    "Interview/Concepts/Product Management/产品设计/可用性.md",
+    "Interview/Concepts/Product Management/产品设计/用户体验 (UX).md",
+    "Interview/Concepts/Product Management/基础概念/产品生命周期.md",
+    "Interview/Concepts/Product Management/基础概念/用户画像.md",
+    "Interview/Concepts/Product Management/基础概念/痛点.md",
+    "Interview/Concepts/Product Management/完整框架/00 - 完整产品管理框架概览.md",
+    "Interview/Concepts/Product Management/完整框架/01 - 行业与市场认知.md",
+    "Interview/Concepts/Product Management/完整框架/02 - 用户需求分析.md",
+    "Interview/Concepts/Product Management/完整框架/03 - 产品设计与方案构思.md",
+    "Interview/Concepts/Product Management/完整框架/04 - 技术与实现.md",
+    "Interview/Concepts/Product Management/完整框架/05 - 数据指标与衡量.md",
+    "Interview/Concepts/Product Management/完整框架/06 - 推动与沟通.md",
+    "Interview/Concepts/Product Management/完整框架/07 - 迭代与成长.md",
+    "Interview/Concepts/Product Management/市场与行业分析/市场定位.md",
+    "Interview/Concepts/Product Management/市场与行业分析/竞品分析.md",
+    "Interview/Concepts/Product Management/应用案例 - AI 助手/00 - AI 购物助手案例分析 (Rufus 启发).md",
+    "Interview/Concepts/Product Management/应用案例 - AI 助手/01 - Rufus 类助手 MVP 框架应用.md",
+    "Interview/Concepts/Product Management/应用案例 - AI 助手/02 - Rufus 类助手完整框架应用.md",
+    "Interview/Concepts/Product Management/开发流程/产品待办列表 (Product Backlog).md",
+    "Interview/Concepts/Product Management/开发流程/产品负责人 (Product Owner).md",
+    "Interview/Concepts/Product Management/开发流程/敏捷开发.md",
+    "Interview/Concepts/Product Management/数据分析与实验/00 - 数据分析概览.md",
+    "Interview/Concepts/Product Management/数据分析与实验/A_B 测试.md",
+    "Interview/Concepts/Product Management/数据分析与实验/KPI.md",
+    "Interview/Concepts/Product Management/数据分析与实验/OKR.md",
+    "Interview/Concepts/Product Management/数据分析与实验/北极星指标.md",
+    "Interview/Concepts/Product Management/数据分析与实验/留存率.md",
+    "Interview/Concepts/Product Management/数据分析与实验/转化率.md",
+    "Interview/Concepts/Product Management/文档与交付物/PRD 产品需求文档.md",
+    "Interview/Concepts/Product Management/核心技能/PM 对 LLM 的理解深度.md",
+    "Interview/Concepts/Product Management/核心技能/冲突解决.md",
+    "Interview/Concepts/Product Management/核心技能/沟通技巧.md",
+    "Interview/Concepts/Product Management/核心技能/讲故事能力.md",
+    "Interview/Concepts/Product Management/核心技能/量化思维.md",
+    "Interview/Concepts/Product Management/沟通协作/利益相关者管理.md",
+    "Interview/Concepts/Product Management/沟通协作/跨职能团队.md",
+    "Interview/Concepts/Product Management/用户研究/00 - 用户研究概览.md",
+    "Interview/Concepts/Product Management/用户研究/用户反馈.md",
+    "Interview/Concepts/Product Management/用户研究/用户访谈.md",
+    "Interview/Concepts/Product Management/00 - 产品管理框架概览.md",
+    "Interview/Interview Simulation/Product Manager Interview/Asking Questions/05 - 提问面试官环节准备.md",
+    "Interview/Interview Simulation/Product Manager Interview/Behavioral Simulation/02 - 行为面试问题模拟 (STAR 练习).md",
+    "Interview/Interview Simulation/Product Manager Interview/Preparation Guide/00 - 面试准备指南与行动计划.md",
+    "Interview/Interview Simulation/Product Manager Interview/Preparation Guide/01 - AI PM 面试冲刺学习计划 (推荐顺序).md",
+    "Interview/Interview Simulation/Product Manager Interview/Product Design Simulation/03 - 产品设计问题模拟 (AI 购物助手).md",
+    "Interview/Interview Simulation/Product Manager Interview/Self Introduction/01 - 自我介绍准备 (PM - AI方向).md",
+    "Interview/Interview Simulation/Product Manager Interview/Simulation Scenarios/00 - 模拟面试场景入口.md",
+    "Interview/Interview Simulation/Product Manager Interview/Simulation Scenarios/01 - AI 助手面试模拟 (MVP 快速版).md",
+    "Interview/Interview Simulation/Product Manager Interview/Simulation Scenarios/02 - AI 助手面试模拟 (综合深入版).md",
+    "Interview/Interview Simulation/Product Manager Interview/Technical Deep Dive/06 - AI助手技术剖析与PM面试准备FAQ.md",
+    "Interview/Interview Simulation/Product Manager Interview/Technical Simulation/04 - AI 技术理解问题模拟.md",
+    "Interview/Interview Simulation/Product Manager Interview/技巧与方法/STAR 原则.md",
+    "Interview/Interview Simulation/Product Manager Interview/技巧与方法/行为面试问题.md",
+    "Interview/Interview Simulation/Product Manager Interview/技巧与方法/面试技巧.md",
+    "Interview/Interview Simulation/Product Manager Interview/案例分析与模拟/01 - 设计 AI 购物助手 (面试模拟).md",
+    "Interview/Interview Simulation/Product Manager Interview/02 - 产品管理框架面试准备与深造.md",
+    "Interview/index.md.md",
+    "lib/scripts/graph-wasm.wasm",
+    "lib/fonts/94f2f163d4b698242fef.otf",
+    "lib/fonts/72505e6a122c6acd5471.woff2",
+    "lib/fonts/2d5198822ab091ce4305.woff2",
+    "lib/fonts/c8ba52b05a9ef10f4758.woff2",
+    "lib/fonts/cb10ffd7684cd9836a05.woff2",
+    "lib/fonts/b5f0f109bc88052d4000.woff2",
+    "lib/fonts/cbe0ae49c52c920fd563.woff2",
+    "lib/fonts/535a6cf662596b3bd6a6.woff2",
+    "lib/fonts/70cc7ff27245e82ad414.ttf",
+    "lib/fonts/454577c22304619db035.ttf",
+    "lib/fonts/52ac8f3034507f1d9e53.ttf",
+    "lib/fonts/05b618077343fbbd92b7.ttf",
+    "lib/fonts/4bb6ac751d1c5478ff3a.woff2",
+    "lib/media/6155340132a851f6089e.svg",
+    "lib/fonts/mathjax_zero.woff",
+    "lib/fonts/mathjax_main-regular.woff",
+    "lib/fonts/mathjax_main-bold.woff",
+    "lib/fonts/mathjax_math-italic.woff",
+    "lib/fonts/mathjax_main-italic.woff",
+    "lib/fonts/mathjax_math-bolditalic.woff",
+    "lib/fonts/mathjax_size1-regular.woff",
+    "lib/fonts/mathjax_size2-regular.woff",
+    "lib/fonts/mathjax_size3-regular.woff",
+    "lib/fonts/mathjax_size4-regular.woff",
+    "lib/fonts/mathjax_ams-regular.woff",
+    "lib/fonts/mathjax_calligraphic-regular.woff",
+    "lib/fonts/mathjax_calligraphic-bold.woff",
+    "lib/fonts/mathjax_fraktur-regular.woff",
+    "lib/fonts/mathjax_fraktur-bold.woff",
+    "lib/fonts/mathjax_sansserif-regular.woff",
+    "lib/fonts/mathjax_sansserif-bold.woff",
+    "lib/fonts/mathjax_sansserif-italic.woff",
+    "lib/fonts/mathjax_script-regular.woff",
+    "lib/fonts/mathjax_typewriter-regular.woff",
+    "lib/fonts/mathjax_vector-regular.woff",
+    "lib/fonts/mathjax_vector-bold.woff",
+    "lib/html/file-tree.html",
+    "lib/scripts/webpage.js",
+    "lib/scripts/graph-view.js",
+    "lib/scripts/graph-wasm.js",
+    "lib/scripts/graph-render-worker.js",
+    "lib/scripts/tinycolor.js",
+    "lib/scripts/pixi.js",
+    "lib/scripts/minisearch.js",
+    "lib/media/favicon.png",
+    "lib/scripts/graph-data.js",
+    "lib/styles/obsidian.css",
+    "lib/styles/other-plugins.css",
+    "lib/styles/theme.css",
+    "lib/styles/global-variable-styles.css",
+    "lib/styles/main-styles.css",
+    "lib/styles/snippets.css"
+  ],
+  "mainDependencies": [
+    "lib/scripts/graph-wasm.wasm",
+    "lib/fonts/94f2f163d4b698242fef.otf",
+    "lib/fonts/72505e6a122c6acd5471.woff2",
+    "lib/fonts/2d5198822ab091ce4305.woff2",
+    "lib/fonts/c8ba52b05a9ef10f4758.woff2",
+    "lib/fonts/cb10ffd7684cd9836a05.woff2",
+    "lib/fonts/b5f0f109bc88052d4000.woff2",
+    "lib/fonts/cbe0ae49c52c920fd563.woff2",
+    "lib/fonts/535a6cf662596b3bd6a6.woff2",
+    "lib/fonts/70cc7ff27245e82ad414.ttf",
+    "lib/fonts/454577c22304619db035.ttf",
+    "lib/fonts/52ac8f3034507f1d9e53.ttf",
+    "lib/fonts/05b618077343fbbd92b7.ttf",
+    "lib/fonts/4bb6ac751d1c5478ff3a.woff2",
+    "lib/media/6155340132a851f6089e.svg",
+    "lib/fonts/mathjax_zero.woff",
+    "lib/fonts/mathjax_main-regular.woff",
+    "lib/fonts/mathjax_main-bold.woff",
+    "lib/fonts/mathjax_math-italic.woff",
+    "lib/fonts/mathjax_main-italic.woff",
+    "lib/fonts/mathjax_math-bolditalic.woff",
+    "lib/fonts/mathjax_size1-regular.woff",
+    "lib/fonts/mathjax_size2-regular.woff",
+    "lib/fonts/mathjax_size3-regular.woff",
+    "lib/fonts/mathjax_size4-regular.woff",
+    "lib/fonts/mathjax_ams-regular.woff",
+    "lib/fonts/mathjax_calligraphic-regular.woff",
+    "lib/fonts/mathjax_calligraphic-bold.woff",
+    "lib/fonts/mathjax_fraktur-regular.woff",
+    "lib/fonts/mathjax_fraktur-bold.woff",
+    "lib/fonts/mathjax_sansserif-regular.woff",
+    "lib/fonts/mathjax_sansserif-bold.woff",
+    "lib/fonts/mathjax_sansserif-italic.woff",
+    "lib/fonts/mathjax_script-regular.woff",
+    "lib/fonts/mathjax_typewriter-regular.woff",
+    "lib/fonts/mathjax_vector-regular.woff",
+    "lib/fonts/mathjax_vector-bold.woff",
+    "lib/html/file-tree.html",
+    "lib/scripts/webpage.js",
+    "lib/scripts/graph-view.js",
+    "lib/scripts/graph-wasm.js",
+    "lib/scripts/graph-render-worker.js",
+    "lib/scripts/tinycolor.js",
+    "lib/scripts/pixi.js",
+    "lib/scripts/minisearch.js",
+    "lib/media/favicon.png",
+    "lib/scripts/graph-data.js",
+    "lib/styles/obsidian.css",
+    "lib/styles/other-plugins.css",
+    "lib/styles/theme.css",
+    "lib/styles/global-variable-styles.css",
+    "lib/styles/main-styles.css",
+    "lib/styles/snippets.css"
+  ],
+  "fileInfo": {
+    "Interview/Concepts/AI & ML/Core Technologies/Transformer 模型.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6273,
+      "exportedPath": "interview/concepts/ai-&-ml/core-technologies/transformer-模型.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Core Technologies/向量数据库.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6788,
+      "exportedPath": "interview/concepts/ai-&-ml/core-technologies/向量数据库.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Core Technologies/嵌入 (Embedding).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6362,
+      "exportedPath": "interview/concepts/ai-&-ml/core-technologies/嵌入-(embedding).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Core Technologies/微调 (Fine-tuning).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 8914,
+      "exportedPath": "interview/concepts/ai-&-ml/core-technologies/微调-(fine-tuning).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Core Technologies/机器学习 (ML).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6202,
+      "exportedPath": "interview/concepts/ai-&-ml/core-technologies/机器学习-(ml).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Core Technologies/深度学习.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6212,
+      "exportedPath": "interview/concepts/ai-&-ml/core-technologies/深度学习.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Core Technologies/自然语言处理 (NLP).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5442,
+      "exportedPath": "interview/concepts/ai-&-ml/core-technologies/自然语言处理-(nlp).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Evaluation/基准测试 (Benchmark).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6105,
+      "exportedPath": "interview/concepts/ai-&-ml/evaluation/基准测试-(benchmark).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Information Retrieval/信息检索.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4766,
+      "exportedPath": "interview/concepts/ai-&-ml/information-retrieval/信息检索.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Information Retrieval/相似性搜索.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4262,
+      "exportedPath": "interview/concepts/ai-&-ml/information-retrieval/相似性搜索.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Information Retrieval/近似最近邻搜索 (ANN).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5005,
+      "exportedPath": "interview/concepts/ai-&-ml/information-retrieval/近似最近邻搜索-(ann).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Infrastructure/API (应用程序接口).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5525,
+      "exportedPath": "interview/concepts/ai-&-ml/infrastructure/api-(应用程序接口).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Models/Claude 模型系列.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4761,
+      "exportedPath": "interview/concepts/ai-&-ml/models/claude-模型系列.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Models/Gemini 模型系列.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5017,
+      "exportedPath": "interview/concepts/ai-&-ml/models/gemini-模型系列.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Models/GPT 模型系列.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4463,
+      "exportedPath": "interview/concepts/ai-&-ml/models/gpt-模型系列.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Models/LLaMA 模型系列.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4254,
+      "exportedPath": "interview/concepts/ai-&-ml/models/llama-模型系列.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/Models/主流 LLM 模型概览.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5142,
+      "exportedPath": "interview/concepts/ai-&-ml/models/主流-llm-模型概览.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/00 - AI 与机器学习概览.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 3073,
+      "exportedPath": "interview/concepts/ai-&-ml/00-ai-与机器学习概览.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/大型语言模型 (LLM).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6574,
+      "exportedPath": "interview/concepts/ai-&-ml/大型语言模型-(llm).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/开源 vs 闭源模型.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6340,
+      "exportedPath": "interview/concepts/ai-&-ml/开源-vs-闭源模型.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/提示工程 (Prompt Engineering).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5788,
+      "exportedPath": "interview/concepts/ai-&-ml/提示工程-(prompt-engineering).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/检索增强生成 (RAG).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6591,
+      "exportedPath": "interview/concepts/ai-&-ml/检索增强生成-(rag).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/模型幻觉 (Hallucination).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5647,
+      "exportedPath": "interview/concepts/ai-&-ml/模型幻觉-(hallucination).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/AI & ML/模型鲁棒性 (Robustness).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4729,
+      "exportedPath": "interview/concepts/ai-&-ml/模型鲁棒性-(robustness).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Fundamentals/向量 (Vector).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 2886,
+      "exportedPath": "interview/concepts/fundamentals/向量-(vector).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Fundamentals/数据库.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4806,
+      "exportedPath": "interview/concepts/fundamentals/数据库.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/MVP 框架/00 - MVP 框架概览.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 1703,
+      "exportedPath": "interview/concepts/product-management/mvp-框架/00-mvp-框架概览.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/MVP 框架/01 - 用户痛点价值 (MVP).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 1895,
+      "exportedPath": "interview/concepts/product-management/mvp-框架/01-用户痛点价值-(mvp).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/MVP 框架/02 - MVP 解决方案.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 2380,
+      "exportedPath": "interview/concepts/product-management/mvp-框架/02-mvp-解决方案.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/MVP 框架/03 - MVP 数据验证.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 3086,
+      "exportedPath": "interview/concepts/product-management/mvp-框架/03-mvp-数据验证.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/MVP 框架/04 - MVP 迭代优化.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 3548,
+      "exportedPath": "interview/concepts/product-management/mvp-框架/04-mvp-迭代优化.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/产品战略与规划/产品路线图.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5353,
+      "exportedPath": "interview/concepts/product-management/产品战略与规划/产品路线图.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/产品战略与规划/价值主张.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4445,
+      "exportedPath": "interview/concepts/product-management/产品战略与规划/价值主张.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/产品设计/MoSCoW 方法.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5301,
+      "exportedPath": "interview/concepts/product-management/产品设计/moscow-方法.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/产品设计/RICE 模型.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6309,
+      "exportedPath": "interview/concepts/product-management/产品设计/rice-模型.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/产品设计/功能优先级排序.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6029,
+      "exportedPath": "interview/concepts/product-management/产品设计/功能优先级排序.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/产品设计/可用性.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4459,
+      "exportedPath": "interview/concepts/product-management/产品设计/可用性.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/产品设计/用户体验 (UX).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5072,
+      "exportedPath": "interview/concepts/product-management/产品设计/用户体验-(ux).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/基础概念/产品生命周期.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5949,
+      "exportedPath": "interview/concepts/product-management/基础概念/产品生命周期.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/基础概念/用户画像.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 3788,
+      "exportedPath": "interview/concepts/product-management/基础概念/用户画像.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/基础概念/痛点.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4020,
+      "exportedPath": "interview/concepts/product-management/基础概念/痛点.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/完整框架/00 - 完整产品管理框架概览.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 2405,
+      "exportedPath": "interview/concepts/product-management/完整框架/00-完整产品管理框架概览.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/完整框架/01 - 行业与市场认知.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 3146,
+      "exportedPath": "interview/concepts/product-management/完整框架/01-行业与市场认知.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/完整框架/02 - 用户需求分析.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 3998,
+      "exportedPath": "interview/concepts/product-management/完整框架/02-用户需求分析.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/完整框架/03 - 产品设计与方案构思.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4683,
+      "exportedPath": "interview/concepts/product-management/完整框架/03-产品设计与方案构思.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/完整框架/04 - 技术与实现.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4602,
+      "exportedPath": "interview/concepts/product-management/完整框架/04-技术与实现.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/完整框架/05 - 数据指标与衡量.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5144,
+      "exportedPath": "interview/concepts/product-management/完整框架/05-数据指标与衡量.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/完整框架/06 - 推动与沟通.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4995,
+      "exportedPath": "interview/concepts/product-management/完整框架/06-推动与沟通.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/完整框架/07 - 迭代与成长.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4543,
+      "exportedPath": "interview/concepts/product-management/完整框架/07-迭代与成长.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/市场与行业分析/市场定位.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5573,
+      "exportedPath": "interview/concepts/product-management/市场与行业分析/市场定位.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/市场与行业分析/竞品分析.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6165,
+      "exportedPath": "interview/concepts/product-management/市场与行业分析/竞品分析.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/应用案例 - AI 助手/00 - AI 购物助手案例分析 (Rufus 启发).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 3752,
+      "exportedPath": "interview/concepts/product-management/应用案例-ai-助手/00-ai-购物助手案例分析-(rufus-启发).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/应用案例 - AI 助手/01 - Rufus 类助手 MVP 框架应用.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6948,
+      "exportedPath": "interview/concepts/product-management/应用案例-ai-助手/01-rufus-类助手-mvp-框架应用.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/应用案例 - AI 助手/02 - Rufus 类助手完整框架应用.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 13073,
+      "exportedPath": "interview/concepts/product-management/应用案例-ai-助手/02-rufus-类助手完整框架应用.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/开发流程/产品待办列表 (Product Backlog).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5058,
+      "exportedPath": "interview/concepts/product-management/开发流程/产品待办列表-(product-backlog).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/开发流程/产品负责人 (Product Owner).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5562,
+      "exportedPath": "interview/concepts/product-management/开发流程/产品负责人-(product-owner).html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/开发流程/敏捷开发.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6496,
+      "exportedPath": "interview/concepts/product-management/开发流程/敏捷开发.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/数据分析与实验/00 - 数据分析概览.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4601,
+      "exportedPath": "interview/concepts/product-management/数据分析与实验/00-数据分析概览.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/数据分析与实验/A_B 测试.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6770,
+      "exportedPath": "interview/concepts/product-management/数据分析与实验/a_b-测试.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/数据分析与实验/KPI.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6132,
+      "exportedPath": "interview/concepts/product-management/数据分析与实验/kpi.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/数据分析与实验/OKR.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5650,
+      "exportedPath": "interview/concepts/product-management/数据分析与实验/okr.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/数据分析与实验/北极星指标.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5959,
+      "exportedPath": "interview/concepts/product-management/数据分析与实验/北极星指标.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/数据分析与实验/留存率.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5567,
+      "exportedPath": "interview/concepts/product-management/数据分析与实验/留存率.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/数据分析与实验/转化率.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5047,
+      "exportedPath": "interview/concepts/product-management/数据分析与实验/转化率.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/文档与交付物/PRD 产品需求文档.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 7326,
+      "exportedPath": "interview/concepts/product-management/文档与交付物/prd-产品需求文档.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/核心技能/PM 对 LLM 的理解深度.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5601,
+      "exportedPath": "interview/concepts/product-management/核心技能/pm-对-llm-的理解深度.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/核心技能/冲突解决.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6574,
+      "exportedPath": "interview/concepts/product-management/核心技能/冲突解决.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/核心技能/沟通技巧.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5478,
+      "exportedPath": "interview/concepts/product-management/核心技能/沟通技巧.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/核心技能/讲故事能力.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5401,
+      "exportedPath": "interview/concepts/product-management/核心技能/讲故事能力.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/核心技能/量化思维.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5477,
+      "exportedPath": "interview/concepts/product-management/核心技能/量化思维.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/沟通协作/利益相关者管理.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6525,
+      "exportedPath": "interview/concepts/product-management/沟通协作/利益相关者管理.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/沟通协作/跨职能团队.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5311,
+      "exportedPath": "interview/concepts/product-management/沟通协作/跨职能团队.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/用户研究/00 - 用户研究概览.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 3861,
+      "exportedPath": "interview/concepts/product-management/用户研究/00-用户研究概览.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/用户研究/用户反馈.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4307,
+      "exportedPath": "interview/concepts/product-management/用户研究/用户反馈.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/用户研究/用户访谈.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6756,
+      "exportedPath": "interview/concepts/product-management/用户研究/用户访谈.html",
+      "dependencies": []
+    },
+    "Interview/Concepts/Product Management/00 - 产品管理框架概览.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 1699,
+      "exportedPath": "interview/concepts/product-management/00-产品管理框架概览.html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/Asking Questions/05 - 提问面试官环节准备.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4870,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/asking-questions/05-提问面试官环节准备.html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/Behavioral Simulation/02 - 行为面试问题模拟 (STAR 练习).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6871,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/behavioral-simulation/02-行为面试问题模拟-(star-练习).html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/Preparation Guide/00 - 面试准备指南与行动计划.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5898,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/preparation-guide/00-面试准备指南与行动计划.html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/Preparation Guide/01 - AI PM 面试冲刺学习计划 (推荐顺序).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 11530,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/preparation-guide/01-ai-pm-面试冲刺学习计划-(推荐顺序).html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/Product Design Simulation/03 - 产品设计问题模拟 (AI 购物助手).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 4637,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/product-design-simulation/03-产品设计问题模拟-(ai-购物助手).html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/Self Introduction/01 - 自我介绍准备 (PM - AI方向).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5526,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/self-introduction/01-自我介绍准备-(pm-ai方向).html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/Simulation Scenarios/00 - 模拟面试场景入口.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 3194,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/simulation-scenarios/00-模拟面试场景入口.html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/Simulation Scenarios/01 - AI 助手面试模拟 (MVP 快速版).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 14323,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/simulation-scenarios/01-ai-助手面试模拟-(mvp-快速版).html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/Simulation Scenarios/02 - AI 助手面试模拟 (综合深入版).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 23740,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/simulation-scenarios/02-ai-助手面试模拟-(综合深入版).html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/Technical Deep Dive/06 - AI助手技术剖析与PM面试准备FAQ.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 11823,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/technical-deep-dive/06-ai助手技术剖析与pm面试准备faq.html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/Technical Simulation/04 - AI 技术理解问题模拟.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 7667,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/technical-simulation/04-ai-技术理解问题模拟.html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/技巧与方法/STAR 原则.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5744,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/技巧与方法/star-原则.html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/技巧与方法/行为面试问题.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5841,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/技巧与方法/行为面试问题.html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/技巧与方法/面试技巧.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6286,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/技巧与方法/面试技巧.html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/案例分析与模拟/01 - 设计 AI 购物助手 (面试模拟).md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 8453,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/案例分析与模拟/01-设计-ai-购物助手-(面试模拟).html",
+      "dependencies": []
+    },
+    "Interview/Interview Simulation/Product Manager Interview/02 - 产品管理框架面试准备与深造.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 6004,
+      "exportedPath": "interview/interview-simulation/product-manager-interview/02-产品管理框架面试准备与深造.html",
+      "dependencies": []
+    },
+    "Interview/index.md.md": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 25,
+      "exportedPath": "interview/index.md.html",
+      "dependencies": []
+    },
+    "lib/scripts/graph-wasm.wasm": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 23377,
+      "exportedPath": "lib/scripts/graph-wasm.wasm",
+      "dependencies": []
+    },
+    "lib/fonts/94f2f163d4b698242fef.otf": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 66800,
+      "exportedPath": "lib/fonts/94f2f163d4b698242fef.otf",
+      "dependencies": []
+    },
+    "lib/fonts/72505e6a122c6acd5471.woff2": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 104232,
+      "exportedPath": "lib/fonts/72505e6a122c6acd5471.woff2",
+      "dependencies": []
+    },
+    "lib/fonts/2d5198822ab091ce4305.woff2": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 104332,
+      "exportedPath": "lib/fonts/2d5198822ab091ce4305.woff2",
+      "dependencies": []
+    },
+    "lib/fonts/c8ba52b05a9ef10f4758.woff2": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 98868,
+      "exportedPath": "lib/fonts/c8ba52b05a9ef10f4758.woff2",
+      "dependencies": []
+    },
+    "lib/fonts/cb10ffd7684cd9836a05.woff2": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 106876,
+      "exportedPath": "lib/fonts/cb10ffd7684cd9836a05.woff2",
+      "dependencies": []
+    },
+    "lib/fonts/b5f0f109bc88052d4000.woff2": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 105804,
+      "exportedPath": "lib/fonts/b5f0f109bc88052d4000.woff2",
+      "dependencies": []
+    },
+    "lib/fonts/cbe0ae49c52c920fd563.woff2": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 106108,
+      "exportedPath": "lib/fonts/cbe0ae49c52c920fd563.woff2",
+      "dependencies": []
+    },
+    "lib/fonts/535a6cf662596b3bd6a6.woff2": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 111708,
+      "exportedPath": "lib/fonts/535a6cf662596b3bd6a6.woff2",
+      "dependencies": []
+    },
+    "lib/fonts/70cc7ff27245e82ad414.ttf": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 192740,
+      "exportedPath": "lib/fonts/70cc7ff27245e82ad414.ttf",
+      "dependencies": []
+    },
+    "lib/fonts/454577c22304619db035.ttf": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 161376,
+      "exportedPath": "lib/fonts/454577c22304619db035.ttf",
+      "dependencies": []
+    },
+    "lib/fonts/52ac8f3034507f1d9e53.ttf": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 191568,
+      "exportedPath": "lib/fonts/52ac8f3034507f1d9e53.ttf",
+      "dependencies": []
+    },
+    "lib/fonts/05b618077343fbbd92b7.ttf": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 155288,
+      "exportedPath": "lib/fonts/05b618077343fbbd92b7.ttf",
+      "dependencies": []
+    },
+    "lib/fonts/4bb6ac751d1c5478ff3a.woff2": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 7876,
+      "exportedPath": "lib/fonts/4bb6ac751d1c5478ff3a.woff2",
+      "dependencies": []
+    },
+    "lib/media/6155340132a851f6089e.svg": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 315,
+      "exportedPath": "lib/media/6155340132a851f6089e.svg",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_zero.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 1368,
+      "exportedPath": "lib/fonts/mathjax_zero.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_main-regular.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 34160,
+      "exportedPath": "lib/fonts/mathjax_main-regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_main-bold.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 34464,
+      "exportedPath": "lib/fonts/mathjax_main-bold.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_math-italic.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 19360,
+      "exportedPath": "lib/fonts/mathjax_math-italic.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_main-italic.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 20832,
+      "exportedPath": "lib/fonts/mathjax_main-italic.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_math-bolditalic.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 19776,
+      "exportedPath": "lib/fonts/mathjax_math-bolditalic.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_size1-regular.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5792,
+      "exportedPath": "lib/fonts/mathjax_size1-regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_size2-regular.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5464,
+      "exportedPath": "lib/fonts/mathjax_size2-regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_size3-regular.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 3244,
+      "exportedPath": "lib/fonts/mathjax_size3-regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_size4-regular.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5148,
+      "exportedPath": "lib/fonts/mathjax_size4-regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_ams-regular.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 40808,
+      "exportedPath": "lib/fonts/mathjax_ams-regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_calligraphic-regular.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 9600,
+      "exportedPath": "lib/fonts/mathjax_calligraphic-regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_calligraphic-bold.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 9908,
+      "exportedPath": "lib/fonts/mathjax_calligraphic-bold.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_fraktur-regular.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 21480,
+      "exportedPath": "lib/fonts/mathjax_fraktur-regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_fraktur-bold.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 22340,
+      "exportedPath": "lib/fonts/mathjax_fraktur-bold.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_sansserif-regular.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 12660,
+      "exportedPath": "lib/fonts/mathjax_sansserif-regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_sansserif-bold.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 15944,
+      "exportedPath": "lib/fonts/mathjax_sansserif-bold.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_sansserif-italic.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 14628,
+      "exportedPath": "lib/fonts/mathjax_sansserif-italic.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_script-regular.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 11852,
+      "exportedPath": "lib/fonts/mathjax_script-regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_typewriter-regular.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 17604,
+      "exportedPath": "lib/fonts/mathjax_typewriter-regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_vector-regular.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 1136,
+      "exportedPath": "lib/fonts/mathjax_vector-regular.woff",
+      "dependencies": []
+    },
+    "lib/fonts/mathjax_vector-bold.woff": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 1116,
+      "exportedPath": "lib/fonts/mathjax_vector-bold.woff",
+      "dependencies": []
+    },
+    "lib/html/file-tree.html": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 56688,
+      "exportedPath": "lib/html/file-tree.html",
+      "dependencies": []
+    },
+    "lib/scripts/webpage.js": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 47290,
+      "exportedPath": "lib/scripts/webpage.js",
+      "dependencies": []
+    },
+    "lib/scripts/graph-view.js": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 15519,
+      "exportedPath": "lib/scripts/graph-view.js",
+      "dependencies": []
+    },
+    "lib/scripts/graph-wasm.js": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 14021,
+      "exportedPath": "lib/scripts/graph-wasm.js",
+      "dependencies": []
+    },
+    "lib/scripts/graph-render-worker.js": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5179,
+      "exportedPath": "lib/scripts/graph-render-worker.js",
+      "dependencies": []
+    },
+    "lib/scripts/tinycolor.js": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 29832,
+      "exportedPath": "lib/scripts/tinycolor.js",
+      "dependencies": []
+    },
+    "lib/scripts/pixi.js": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 449509,
+      "exportedPath": "lib/scripts/pixi.js",
+      "dependencies": []
+    },
+    "lib/scripts/minisearch.js": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 29422,
+      "exportedPath": "lib/scripts/minisearch.js",
+      "dependencies": []
+    },
+    "lib/media/favicon.png": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 1105,
+      "exportedPath": "lib/media/favicon.png",
+      "dependencies": []
+    },
+    "lib/scripts/graph-data.js": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 14217,
+      "exportedPath": "lib/scripts/graph-data.js",
+      "dependencies": []
+    },
+    "lib/styles/obsidian.css": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 137466,
+      "exportedPath": "lib/styles/obsidian.css",
+      "dependencies": []
+    },
+    "lib/styles/other-plugins.css": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 5056021,
+      "exportedPath": "lib/styles/other-plugins.css",
+      "dependencies": []
+    },
+    "lib/styles/theme.css": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 9654,
+      "exportedPath": "lib/styles/theme.css",
+      "dependencies": []
+    },
+    "lib/styles/global-variable-styles.css": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 262,
+      "exportedPath": "lib/styles/global-variable-styles.css",
+      "dependencies": []
+    },
+    "lib/styles/main-styles.css": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 23130,
+      "exportedPath": "lib/styles/main-styles.css",
+      "dependencies": []
+    },
+    "lib/styles/snippets.css": {
+      "modifiedTime": 1744830850365,
+      "sourceSize": 525,
+      "exportedPath": "lib/styles/snippets.css",
+      "dependencies": []
+    }
+  }
+}
