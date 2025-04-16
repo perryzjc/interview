@@ -16,75 +16,475 @@ def write_file(filepath, content):
     except IOError as e:
         print(f"Error writing file {filepath}: {e}")
 
-# --- Knowledge Base Content Definitions (Part 4 - AI/LLM Focus for Interview Prep) ---
+# --- Knowledge Base Content Definitions (Part 5 - AI Core Tech & Model Landscape) ---
 
-# Concepts/AI & ML
+# Concepts/AI & ML/Core Technologies
 ai_ml_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML')
+ai_core_tech_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML', 'Core Technologies')
+llm_path = os.path.join(ai_ml_folder, '大型语言模型 (LLM).md')
 
-ai_ml_overview_path = os.path.join(ai_ml_folder, '00 - AI 与机器学习概览.md')
-ai_ml_overview_content = textwrap.dedent("""\
+transformer_path = os.path.join(ai_core_tech_folder, 'Transformer 模型.md')
+transformer_content = textwrap.dedent("""\
     ---
-    tags: [topic/ai_ml, type/overview, concept/foundational]
-    aliases: [AI概览, 机器学习概览, 人工智能基础]
+    tags: [topic/ai_ml, concept/transformer, type/architecture, technology]
+    aliases: [Transformer Architecture, Transformer架构]
     ---
-    # AI 与机器学习概览
+    # Transformer 模型架构
+
+    [[../00 - AI 与机器学习概览|返回 AI 概览]] | [[../大型语言模型 (LLM)|LLM 基础]]
 
     ## 概述
 
-    人工智能 (Artificial Intelligence, AI) 是计算机科学的一个分支，旨在创造能够模拟人类智能行为的机器或系统，例如学习、解决问题、理解语言、感知环境和做出决策。
+    Transformer 是一种**深度学习模型架构**，由 Google 在 2017 年的论文《Attention Is All You Need》中提出。它最初用于机器翻译任务，但其核心机制——**自注意力 (Self-Attention)**——被证明在处理各种序列数据（尤其是自然语言文本）方面非常强大，从而**彻底改变了[[../大型语言模型 (LLM)|自然语言处理 (NLP)]]领域**。
 
-    机器学习 (Machine Learning, ML) 是实现人工智能的一种核心方法。它使计算机系统能够**从数据中学习**规律和模式，而无需进行显式编程。
+    **几乎所有现代的[[../大型语言模型 (LLM)|大型语言模型 (LLM)]]（如 GPT、BERT、LLaMA、Claude 等）都是基于 Transformer 架构构建的。** 理解 Transformer 的核心思想有助于理解 LLM 为何如此强大。
 
-    对于理解像 Amazon Rufus 这样的 AI 购物助手，掌握一些核心的 AI/ML 概念至关重要。本文件夹旨在介绍与 AI 产品经理面试相关的关键技术概念。
+    ## 核心思想：注意力机制 (Attention Mechanism)
 
-    ## 核心概念地图
+    在 Transformer 出现之前，处理序列数据（如句子）的主流模型是 RNN (循环神经网络) 和 LSTM/GRU (长短期记忆网络/门控循环单元)。这些模型按顺序处理单词，难以捕捉句子中**相距较远的词语之间的依赖关系**（例如，“法律” 和 “规定” 在长句中的关联），并且难以**并行计算**（必须处理完前一个词才能处理下一个）。
+
+    Transformer 架构通过**注意力机制 (Attention Mechanism)**，特别是**自注意力 (Self-Attention)**，解决了这些问题：
+
+    1.  **同时关注所有词**: 对于句子中的**每一个词**，自注意力机制会计算它与句子中**所有其他词**（包括它自己）的**相关性或“注意力权重”**。
+    2.  **加权表示**: 基于这些权重，模型为每个词生成一个新的表示 (Representation)，这个表示融合了句子中所有与之相关词语的信息。**相关性越强的词，其信息对当前词新表示的贡献越大。**
+    3.  **捕捉长距离依赖**: 由于模型可以直接计算任意两个词之间的相关性，无论它们在句子中相距多远，因此能够有效捕捉长距离依赖关系。
+    4.  **并行计算**: 每个词的新表示可以**独立并行计算**，大大提高了训练效率。
+
+    ```mermaid
+     graph LR
+        subgraph "传统 RNN/LSTM (顺序处理)"
+            direction LR
+            W1 --> W2 --> W3 --> W4 --> Output1
+        end
+
+        subgraph "Transformer (自注意力机制 - 并行处理)"
+            direction TB
+            Input["输入句子<br/>(Word1, Word2, Word3, Word4)"] --> Attention{"自注意力层<br/>(计算所有词之间的相关性)"};
+            Attention -- "融合相关词信息" --> Repr["每个词的新表示<br/>(Rep1, Rep2, Rep3, Rep4)"];
+            Repr --> Output2["后续处理/输出"];
+
+            Word1_In[Word1] --> Attention;
+            Word2_In[Word2] --> Attention;
+            Word3_In[Word3] --> Attention;
+            Word4_In[Word4] --> Attention;
+
+            Attention --> Word1_Repr[Rep1];
+            Attention --> Word2_Repr[Rep2];
+            Attention --> Word3_Repr[Rep3];
+            Attention --> Word4_Repr[Rep4];
+
+            style Input fill:#eee,stroke:#333
+            style Repr fill:#ccf,stroke:#333
+        end
+
+        W1 --- Word1_In;
+        W2 --- Word2_In;
+        W3 --- Word3_In;
+        W4 --- Word4_In;
+
+        linkStyle default interpolate basis
+    ```
+    [!info] 直观理解
+    想象一下你在阅读一个长句子：“**苹果**公司昨天发布了新款 **iPhone**，它具有更强的**处理器**和改进的**摄像头**。” 当模型处理 “iPhone” 这个词时，自注意力机制能让它同时关注到 “苹果”（知道是谁发布的）、“处理器”和“摄像头”（知道是 iPhone 的特性），即使这些词语在句子中位置不同。
+
+    ## Transformer 的主要组成部分 (简化)
+
+    *   **[[../Core Technologies/嵌入 (Embedding)|词嵌入 (Embeddings)]]**: 将输入的单词转换为向量表示。
+    *   **位置编码 (Positional Encoding)**: 由于 Transformer 并行处理，本身没有顺序信息，需要加入位置编码来告诉模型单词在句子中的位置。
+    *   **多头自注意力 (Multi-Head Self-Attention)**: 同时从不同角度（不同的“头”）计算注意力权重，捕捉更丰富的依赖关系。
+    *   **前馈神经网络 (Feed-Forward Networks)**: 在注意力层之后对每个位置的表示进行进一步处理。
+    *   **层归一化 (Layer Normalization) & 残差连接 (Residual Connections)**: 帮助模型训练更稳定、更深入。
+    *   **编码器 (Encoder) & 解码器 (Decoder)**:
+        *   原始 Transformer 包含编码器（理解输入序列）和解码器（生成输出序列），适用于机器翻译等 Seq2Seq 任务。
+        *   许多 LLM（如 GPT 系列）主要使用**解码器**部分 (Decoder-only)，专注于根据前面的文本生成后续文本。
+        *   有些模型（如 BERT）主要使用**编码器**部分 (Encoder-only)，专注于理解文本，适用于文本分类、命名实体识别等任务。
+
+    ## 对产品经理的意义
+
+    *   **理解能力基础**: Transformer 的注意力机制是 LLM 能够理解上下文、把握语义关系、处理长文本的关键。
+    *   **生成能力基础**: 基于 Transformer 的解码器架构使得 LLM 能够流畅地生成连贯的文本。
+    *   **效率与规模**: Transformer 的并行计算能力使得训练更大规模的模型成为可能，从而带来了能力的涌现。
+    *   **局限性提示**: 理解其基于模式匹配和概率生成，有助于理解[[../模型幻觉 (Hallucination)|幻觉]]等局限性的来源（它不具备真正的逻辑推理或世界模型）。
+
+    ## 总结
+
+    Transformer 架构及其核心的自注意力机制是理解现代 [[../大型语言模型 (LLM)|LLM]] 工作原理的基础。产品经理不需要深入了解其数学细节，但理解其**核心思想（如何通过注意力捕捉依赖关系）**以及**它带来的优势（处理长距离依赖、并行计算）**，对于理解 LLM 的能力边界、评估相关技术方案非常有帮助。
+
+    ## 相关概念
+
+    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
+    *   [[注意力机制]]
+    *   [[自注意力]]
+    *   [[../Core Technologies/嵌入 (Embedding)|嵌入 (Embedding)]]
+    *   [[自然语言处理 (NLP)]]
+    *   [[深度学习]]
+    *   [[编码器-解码器架构]]
+""")
+
+embedding_path = os.path.join(ai_core_tech_folder, '嵌入 (Embedding).md')
+embedding_content = textwrap.dedent("""\
+    ---
+    tags: [topic/ai_ml, concept/embedding, type/technique, technology]
+    aliases: [Embedding, 词嵌入, 文本嵌入, 向量表示]
+    ---
+    # 嵌入 (Embedding)
+
+    [[../00 - AI 与机器学习概览|返回 AI 概览]]
+
+    ## 概述
+
+    嵌入 (Embedding) 是一种在机器学习（特别是自然语言处理 NLP 和推荐系统）中广泛使用的技术，指的是将**离散的、高维的输入（如单词、句子、用户、商品）表示为低维的、稠密的、连续的向量 (Vector)**。
+
+    这个向量被称为**嵌入向量 (Embedding Vector)**，其核心思想是**捕捉输入的语义信息**。在向量空间中，**语义上相似的输入，其对应的嵌入向量在空间中的距离也更近**。
+
+    [!info] 直观理解
+    想象一个巨大的多维空间（远超三维）。Embedding 技术就像给每个词（或句子、商品）在这个空间里找到一个坐标点。意思相近的词（比如“国王”和“女王”）它们的坐标点会很接近；而意思不同的词（比如“国王”和“香蕉”）坐标点会离得很远。甚至可以通过向量运算体现一些关系，比如 `Vector("国王") - Vector("男人") + Vector("女人")` 在空间中可能非常接近 `Vector("女王")`。
+
+    ## 为什么需要 Embedding？
+
+    *   **让机器理解语义**: 计算机无法直接理解文本。通过将词语或句子转换为向量，机器学习模型（如 [[../大型语言模型 (LLM)|LLM]]）才能对其进行数学运算和处理，从而理解语义关系。
+    *   **降维**: 将原本高维稀疏的表示（例如 one-hot 编码，维度等于词表大小）转换为低维稠密的向量，减少计算复杂度，提高模型效率。
+    *   **捕捉相似性**: 可以方便地计算不同输入之间的语义相似度（例如通过计算向量之间的[[余弦相似度]]或[[欧氏距离]]）。这对于[[../检索增强生成 (RAG)|信息检索]]、[[推荐系统]]、[[聚类]]等任务至关重要。
+    *   **作为模型输入**: 嵌入向量通常作为[[../Core Technologies/Transformer 模型|Transformer]]等深度学习模型的初始输入层。
+
+    ## Embedding 的类型
+
+    *   **词嵌入 (Word Embedding)**: 为词汇表中的每个单词生成一个向量。经典算法包括 Word2Vec, GloVe, FastText。缺点是无法处理未登录词 (OOV)，且无法很好地表达一词多义。
+    *   **句子/文本嵌入 (Sentence/Text Embedding)**: 为整个句子或段落生成一个向量表示。常用的方法包括：
+        *   对词嵌入进行平均或加权平均。
+        *   使用 [[../Core Technologies/Transformer 模型|Transformer]] 的编码器（如 BERT, Sentence-BERT）直接生成句子级别的向量。这通常效果更好，能捕捉更复杂的语义。
+
+    ## Embedding 的应用
+
+    *   **[[../大型语言模型 (LLM)|LLM]] 的输入**: LLM 的第一步通常就是将输入的文本转换为嵌入向量。
+    *   **[[../检索增强生成 (RAG)|检索增强生成 (RAG)]]**: 将知识库中的文档块和用户查询都转换为嵌入向量，通过在[[../Core Technologies/向量数据库|向量数据库]]中进行相似度搜索，快速找到最相关的上下文信息。**这是 RAG 的核心机制之一。**
+    *   **语义搜索**: 用户输入查询，系统将其转换为向量，在索引好的文档向量库中查找最相似的文档。
+    *   **[[推荐系统]]**: 将用户和物品（如商品、电影）都嵌入到同一个向量空间，通过计算用户向量与物品向量的相似度来进行推荐。
+    *   **文本分类/聚类**: 将文本转换为嵌入向量后，再输入给分类或聚类模型。
+
+    ## 对产品经理的意义
+
+    *   **理解 AI 能力基础**: 了解 Embedding 是机器理解语言语义的关键一步。
+    *   **理解 RAG 核心**: 明白 Embedding 和[[../Core Technologies/向量数据库|向量数据库]]是实现高效[[../检索增强生成 (RAG)|语义检索]]以支持 RAG 的基础。
+    *   **评估技术方案**: 在讨论语义搜索、推荐系统、RAG 等方案时，能理解 Embedding 在其中的作用和重要性。
+    *   **数据考量**: 知道生成高质量 Embedding 需要大量的训练数据，并且可能需要针对特定领域进行微调。
+
+    ## 总结
+
+    Embedding 是将文本等离散输入转化为机器可理解的、包含语义信息的向量表示的关键技术。它是 [[../大型语言模型 (LLM)|LLM]]、[[../检索增强生成 (RAG)|RAG]]、语义搜索和推荐系统等众多 AI 应用的基石。产品经理理解其基本概念和应用价值，有助于更好地设计 AI 产品和评估相关技术方案。
+
+    ## 相关概念
+
+    *   [[向量 (Vector)]]
+    *   [[向量空间]]
+    *   [[语义相似度]]
+    *   [[余弦相似度]]
+    *   [[Word2Vec]], [[GloVe]] (词嵌入算法)
+    *   [[BERT]], [[Sentence-BERT]] (文本嵌入模型)
+    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
+    *   [[../检索增强生成 (RAG)|检索增强生成 (RAG)]]
+    *   [[../Core Technologies/向量数据库|向量数据库]]
+    *   [[自然语言处理 (NLP)]]
+""")
+
+vector_db_path = os.path.join(ai_core_tech_folder, '向量数据库.md')
+vector_db_content = textwrap.dedent("""\
+    ---
+    tags: [topic/ai_ml, concept/vector_database, type/database, technology]
+    aliases: [Vector Database, 向量库]
+    ---
+    # 向量数据库 (Vector Database)
+
+    [[../00 - AI 与机器学习概览|返回 AI 概览]] | [[../Core Technologies/嵌入 (Embedding)|相关: 嵌入 (Embedding)]] | [[../检索增强生成 (RAG)|相关: RAG]]
+
+    ## 概述
+
+    向量数据库是一种**专门设计用于存储、索引和高效查询高维[[../Core Technologies/嵌入 (Embedding)|嵌入向量 (Embedding Vectors)]]** 的数据库。
+
+    随着[[../Core Technologies/嵌入 (Embedding)|Embedding]]技术在 AI 领域的广泛应用（用于表示文本、图像、音频等的语义信息），如何快速地在海量向量中找到与给定查询向量**最相似**的向量（即[[近似最近邻搜索 (Approximate Nearest Neighbor, ANN)]]）成为了一个关键需求。传统的关系型数据库或文档数据库并不擅长处理这种高维向量的相似性搜索。向量数据库应运而生，填补了这一空白。
+
+    ## 核心功能：相似性搜索
+
+    向量数据库的核心能力是**高效的相似性搜索 (Similarity Search)**。当给定一个查询向量时（例如，用户问题的[[../Core Technologies/嵌入 (Embedding)|嵌入]]），向量数据库能够快速地从数百万甚至数十亿的向量中，找出在向量空间中与其**距离最近**（即语义最相似）的 K 个向量（K-Nearest Neighbors, KNN）。
+
+    常用的相似度/距离度量包括：
+    *   **[[余弦相似度 (Cosine Similarity)]]**: 衡量向量方向的相似性，常用于文本嵌入。
+    *   **[[欧氏距离 (Euclidean Distance)]]**: 衡量向量空间中的直线距离。
+    *   **点积 (Dot Product)**
+
+    为了实现**快速**搜索，向量数据库通常采用**[[近似最近邻搜索 (ANN)]]** 算法（如 HNSW, LSH, IVF 等），这些算法能在可接受的精度损失范围内，极大地提升搜索速度。
+
+    ## 为什么需要向量数据库？(尤其对于 RAG)
+
+    向量数据库是实现高效[[../检索增强生成 (RAG)|检索增强生成 (RAG)]]系统的**关键基础设施**：
+
+    1.  **存储知识库向量**: [[../检索增强生成 (RAG)|RAG]] 需要将外部知识库（文档、网页等）分割成块 (Chunks)，并将每个块转换为[[../Core Technologies/嵌入 (Embedding)|嵌入向量]]存储起来。向量数据库提供了存储这些海量向量的场所。
+    2.  **快速语义检索**: 当用户提问时，RAG 需要将用户问题也转换为[[../Core Technologies/嵌入 (Embedding)|嵌入向量]]，然后在知识库向量中快速找到语义最相关的几个文档块作为[[../检索增强生成 (RAG)|上下文]]。向量数据库的 ANN 搜索能力使得这一步非常高效。
+    3.  **可扩展性**: 能够处理不断增长的向量数据。
+    4.  **元数据过滤**: 通常支持在向量搜索的同时，根据元数据（如文档来源、时间戳、类别标签）进行过滤，提高检索的精确性。
 
     ```mermaid
     graph TD
-        A["AI 与机器学习<br/>(AI & ML)"] --> B["[[大型语言模型 (LLM)|大型语言模型 (LLM)]]<br/>(理解和生成文本的核心)"];
-        A --> C["机器学习基础<br/>(监督/无监督/强化学习)"];
+        subgraph RAG 流程中的向量数据库
+            direction LR
+            A[知识库文档] --> B(文本分块);
+            B --> C{文本嵌入<br/>([[../Core Technologies/嵌入 (Embedding)|Embedding]]);
+            C --> D[(向量数据库<br/>存储文档向量)];
 
-        B --> D["[[提示工程 (Prompt Engineering)|提示工程]]<br/>(如何与 LLM 有效交互)"];
-        B --> E["[[模型幻觉 (Hallucination)|模型幻觉]]<br/>(LLM '胡说八道'的风险)"];
-        B --> F["[[模型鲁棒性 (Robustness)|模型鲁棒性]]<br/>(模型在不同输入下的稳定性)"];
-        B --> G["[[检索增强生成 (RAG)|检索增强生成 (RAG)]]<br/>(结合外部知识库回答问题)"];
-        B --> H["[[开源 vs 闭源模型|开源 vs 闭源模型]]<br/>(模型选择考量)"];
-        B --> I["模型微调 (Fine-tuning)<br/>(针对特定任务优化模型)"];
-
-        subgraph "相关应用与考量"
-            D --> J["AI 助手问答与交互"];
-            E & F --> K["AI 伦理与风险管理"];
-            G --> L["结合领域知识 (如商品信息)"];
-            H --> M["技术选型与成本"];
-            I --> N["模型性能与定制化"];
-            K & L & J --> O["[[../Product Management/应用案例 - AI 助手/00 - AI 购物助手案例分析 (Rufus 启发)|AI 购物助手 (如 Rufus) 应用]]"];
+            E[用户查询] --> F{查询嵌入<br/>([[../Core Technologies/嵌入 (Embedding)|Embedding]]);
+            F -- "查询向量" --> G{向量数据库<br/>(ANN 搜索)};
+            D -- "被搜索" --> G;
+            G -- "Top-K 相似向量<br/>(对应相关文档块)" --> H[检索到的上下文];
+            H --> I[[[../大型语言模型 (LLM)|LLM]] 生成];
         end
-
-        style O fill:#ccf,stroke:#333,stroke-width:2px
+        style D fill:#f9f, stroke:#333
+        style G fill:#f9f, stroke:#333
     ```
 
-    ## 主要概念入口
+    ## 常见的向量数据库
 
-    *   [[大型语言模型 (LLM)|大型语言模型 (LLM)]]
-    *   [[提示工程 (Prompt Engineering)|提示工程 (Prompt Engineering)]]
-    *   [[模型幻觉 (Hallucination)|模型幻觉 (Hallucination)]]
-    *   [[模型鲁棒性 (Robustness)|模型鲁棒性 (Robustness)]]
-    *   [[检索增强生成 (RAG)|检索增强生成 (RAG)]]
-    *   [[开源 vs 闭源模型|开源 vs 闭源模型]]
+    *   **专用向量数据库**: Pinecone, Weaviate, Milvus, Qdrant, Chroma DB 等。它们专门为向量存储和搜索而设计优化。
+    *   **现有数据库扩展**: PostgreSQL (通过 pgvector 扩展), Elasticsearch, Redis 等也增加了向量搜索功能，但可能在性能和功能上与专用库有差异。
 
-    ## 学习建议
+    ## 对产品经理的意义
 
-    对于 AI 产品经理面试，重点在于理解这些概念的**含义、应用场景、优缺点以及它们对产品设计和业务的影响**。不需要深入到算法细节，但需要能够清晰地解释这些概念，并讨论它们在 AI 助手这类产品中的实际应用和挑战。
+    *   **理解 RAG 技术栈**: 知道向量数据库是实现高效 RAG 的关键组件。
+    *   **评估技术方案**: 在讨论需要语义搜索或 RAG 功能的产品时，能够理解引入向量数据库的必要性和相关考量（如选型、成本、性能）。
+    *   **数据管理考量**: 考虑知识库的构建、[[../Core Technologies/嵌入 (Embedding)|Embedding]] 生成、向量数据库的维护和更新策略。
+    *   **性能与成本权衡**: 不同的向量数据库或 ANN 算法在搜索速度、精度、内存消耗、成本等方面有不同的权衡。
 
-    ## 相关产品管理概念
+    ## 总结
 
-    *   [[../Product Management/完整框架/04 - 技术与实现|技术与实现 (完整框架)]]
-    *   [[../Product Management/基础概念/风险管理|风险管理]] (尤其是 AI 相关的风险)
-    *   [[../Product Management/产品设计/功能优先级排序|功能优先级排序]] (考虑技术可行性)
+    向量数据库是 AI 应用（特别是涉及[[../Core Technologies/嵌入 (Embedding)|Embedding]]和语义相似性搜索的应用，如[[../检索增强生成 (RAG)|RAG]]）的重要基础设施。它使得在大规模向量数据中进行快速、高效的相似性搜索成为可能。产品经理理解其作用和价值，有助于更好地规划和设计依赖语义理解和检索能力的 AI 产品。
+
+    ## 相关概念
+
+    *   [[../Core Technologies/嵌入 (Embedding)|嵌入 (Embedding)]]
+    *   [[向量 (Vector)]]
+    *   [[相似性搜索]]
+    *   [[近似最近邻搜索 (ANN)]]
+    *   [[../检索增强生成 (RAG)|检索增强生成 (RAG)]]
+    *   [[信息检索]]
+    *   [[数据库]]
+    *   [[机器学习]]
 """)
 
-llm_path = os.path.join(ai_ml_folder, '大型语言模型 (LLM).md')
-llm_content = textwrap.dedent("""\
+# Concepts/AI & ML/Models
+ai_models_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML', 'Models')
+
+llama_path = os.path.join(ai_models_folder, 'LLaMA 模型系列.md')
+llama_content = textwrap.dedent("""\
+    ---
+    tags: [topic/ai_ml, concept/llm, model/llama, type/open_source_model]
+    aliases: [LLaMA, Llama 2, Llama 3]
+    ---
+    # LLaMA 模型系列
+
+    [[主流 LLM 模型概览|返回 模型概览]] | [[../开源 vs 闭源模型|开源模型]]
+
+    ## 概述
+
+    LLaMA (Large Language Model Meta AI) 是由 **Meta AI (Facebook 的 AI 研究部门)** 开发的一系列**[[../大型语言模型 (LLM)|大型语言模型]]**。LLaMA 系列以其**开源**的特性（特别是 Llama 2 和 Llama 3 对商业使用也相对友好）和**强大的性能**（在同等参数规模下通常表现优异）而备受关注，极大地推动了[[../开源 vs 闭源模型|开源 LLM]]生态的发展。
+
+    ## 主要版本与特点
+
+    *   **LLaMA (原始版本)**: 2023 年初发布，最初仅供研究用途，但权重意外泄露，引发了开源社区的热潮。展示了在相对较小参数规模（7B, 13B, 33B, 65B）下也能达到接近[[../Models/GPT 模型系列|GPT-3]]等更大闭源模型性能的可能性。
+    *   **Llama 2**: 2023 年中发布，是 LLaMA 的重大升级。
+        *   **性能提升**: 在更多数据上训练，性能显著提升。
+        *   **开源且可商用**: 允许商业使用（有一定限制条件，如月活用户超 7 亿需申请许可），极大地促进了其应用落地。
+        *   **不同规模**: 提供 7B, 13B, 70B 等参数规模的模型。
+        *   **Chat 版本**: 提供了经过指令微调和 RLHF (人类反馈强化学习) 优化的对话版本 (Llama 2-Chat)，更擅长遵循指令和进行对话。
+    *   **Llama 3**: 2024 年 4 月发布，是 Llama 系列的最新一代。
+        *   **性能再次飞跃**: 在多个基准测试上表现出色，被认为是当前最强的开源模型之一，尤其在 8B 和 70B 参数级别上，性能可与 [[../Models/GPT 模型系列|GPT-3.5]] 甚至 [[../Models/Gemini 模型系列|Gemini Pro]] 等闭源模型媲美。
+        *   **改进的预训练**: 使用了更大、更高质量的数据集（超过 15T token），并改进了训练方法。
+        *   **更长的上下文窗口**: 支持更长的输入文本。
+        *   **更好的指令遵循能力**: 对话版本 (Llama 3 Instruct) 在理解和遵循复杂指令方面有显著提升。
+        *   **多语言能力提升**: (未来版本会更强)
+        *   **开源可商用**: 延续了 Llama 2 的开放政策。
+
+    ## LLaMA 系列的影响
+
+    *   **推动开源生态**: 为研究人员和开发者提供了强大的、可自由访问和修改的基础模型，催生了大量基于 LLaMA 的微调模型和应用。
+    *   **降低使用门槛**: 使得中小型企业和个人开发者也能用上高性能的 LLM，而无需完全依赖昂贵的闭源 API。
+    *   **促进竞争与创新**: 对闭源模型厂商构成了竞争压力，加速了整个 LLM 领域的发展。
+    *   **数据隐私优势**: [[../开源 vs 闭源模型|允许本地部署]]，满足了对数据隐私要求高的场景。
+
+    ## 对产品经理的意义
+
+    *   **技术选型考量**: 在进行 [[../技术选型|技术选型]] 时，LLaMA 系列是[[../开源 vs 闭源模型|开源路径]]上的重要选项。需要评估其性能、部署成本、维护难度与特定产品需求的匹配度。
+    *   **了解能力边界**: 关注 LLaMA 系列的最新进展和评测报告，了解当前顶级开源模型的真实能力和局限性。
+    *   **社区价值**: 认识到开源社区的存在可以提供丰富的微调模型、工具和解决方案，但也需要评估社区贡献的质量和可靠性。
+    *   **与闭源模型的权衡**: 能够清晰地阐述选择 LLaMA（开源）而非 GPT/Claude（闭源）的理由（或反之），参见 [[../开源 vs 闭源模型]]。
+
+    ## 总结
+
+    LLaMA 系列是 Meta 推出的高性能开源 LLM，对 AI 领域产生了深远影响。了解 LLaMA 的基本情况、版本迭代和核心优势，对于需要进行 LLM 技术选型的 AI 产品经理来说非常重要。它代表了开源 LLM 的重要力量，是闭源 API 之外的一个关键选择。
+
+    ## 相关概念
+
+    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
+    *   [[../开源 vs 闭源模型|开源 vs 闭源模型]]
+    *   [[Meta AI]]
+    *   [[微调 (Fine-tuning)]]
+    *   [[RLHF]] (人类反馈强化学习)
+    *   [[参数规模]]
+    *   [[基准测试 (Benchmark)]]
+    *   [[主流 LLM 模型概览]]
+""")
+
+mainstream_llms_path = os.path.join(ai_models_folder, '主流 LLM 模型概览.md')
+mainstream_llms_content = textwrap.dedent("""\
+    ---
+    tags: [topic/ai_ml, concept/llm, type/overview, model/comparison]
+    aliases: [LLM Landscape, 主流大模型]
+    ---
+    # 主流 LLM 模型概览
+
+    [[../00 - AI 与机器学习概览|返回 AI 概览]] | [[../大型语言模型 (LLM)|LLM 基础]]
+
+    ## 概述
+
+    当前[[../大型语言模型 (LLM)|大型语言模型 (LLM)]]领域发展迅速，涌现了众多来自不同公司和研究机构的模型。了解主流模型的名称、开发者、主要特点以及[[../开源 vs 闭源模型|开放性]]，对于 AI 产品经理进行技术选型和评估非常有帮助。
+
+    以下列举一些当前（截至编写时，技术发展很快，请关注最新信息）比较知名和有影响力的 LLM 系列：
+
+    ## 主流模型系列简介
+
+    | 模型系列        | 主要开发者     | 主要特点/定位                                     | 开放性 ([[../开源 vs 闭源模型|Open/Closed]]) | 备注/知名版本举例                                    |
+    | :-------------- | :------------- | :------------------------------------------------ | :------------------------------------ | :--------------------------------------------------- |
+    | **[[GPT 模型系列|GPT 系列]]** | OpenAI         | **通用能力强**，引领多轮对话和指令遵循，API 易用 | **闭源 (API)**                      | GPT-3, GPT-3.5 (ChatGPT), GPT-4, GPT-4o              |
+    | **[[Claude 模型系列|Claude 系列]]** | Anthropic      | 强调**安全性、伦理**和“宪法 AI”，长文本处理能力强 | **闭源 (API)**                      | Claude, Claude 2, Claude 3 (Haiku, Sonnet, Opus) |
+    | **[[Gemini 模型系列|Gemini 系列]]** | Google DeepMind | **多模态能力** (原生支持文本、图像、音频、视频)，与 Google 生态集成 | **闭源 (API)** / 部分小模型[[../Models/Gemma 模型系列|开源 (Gemma)]] | Gemini Pro, Gemini Ultra, Gemini Flash             |
+    | **[[LLaMA 模型系列|Llama 系列]]** | Meta AI        | **高性能开源**，推动开源生态发展，允许商用      | **开源**                            | Llama 2 (7B, 13B, 70B), Llama 3 (8B, 70B)           |
+    | **[[Mistral 模型系列|Mistral 系列]]**| Mistral AI     | **高性能开源**，尤其在中等规模模型上表现优异，注重效率 | **开源** / 部分模型闭源 (API)       | Mistral 7B, Mixtral 8x7B (MoE), Mistral Large (API) |
+    | **Falcon 系列** | TII (阿联酋)   | 早期重要的高性能开源模型                          | **开源**                            | Falcon 40B, Falcon 180B                            |
+    | **(国内示例)**    | 如百度、阿里、智谱AI、月之暗面等 | 各具特色，中文能力通常较强，部分开源或提供 API | **混合** (部分开源，部分闭源 API) | 文心一言, 通义千问, ChatGLM, Kimi 等                 |
+
+    **说明:**
+    *   "B" 通常指 Billion (十亿) 参数。参数规模是衡量模型大小的一个指标，但不完全等同于性能。
+    *   模型的性能通常通过各种[[基准测试 (Benchmark)]]来评估，但实际应用效果还需结合具体场景测试。
+    *   [[开源 vs 闭源模型|开放性]]可能随时间变化，需关注官方发布。
+    *   MoE (Mixture of Experts) 是一种模型架构，可以在保持较低计算成本的同时实现大规模参数的效果。
+
+    ## 产品经理需要了解多深？
+
+    这是一个常见问题，尤其对于非技术背景的 PM。参见 [[../核心技能/PM 对 LLM 的理解深度|PM 对 LLM 的理解深度]]。
+
+    **核心观点**: PM **不需要**深入理解模型的算法细节或数学原理，但需要：
+
+    1.  **理解核心概念**: 懂 [[../大型语言模型 (LLM)|LLM]], [[../Core Technologies/Transformer 模型|Transformer]], [[../Core Technologies/嵌入 (Embedding)|Embedding]], [[../检索增强生成 (RAG)|RAG]], [[../提示工程 (Prompt Engineering)|Prompt]], [[../模型幻觉 (Hallucination)|幻觉]], [[../模型鲁棒性 (Robustness)|鲁棒性]], [[../开源 vs 闭源模型|开源/闭源]] 等基本概念的含义和作用。
+    2.  **了解能力边界**: 知道当前主流模型能做什么、不能做什么，它们的优势和局限性是什么。
+    3.  **把握技术趋势**: 关注行业发展，了解不同模型的演进方向（例如：多模态、更长上下文、更高效率）。
+    4.  **评估与选型**: 能够基于产品需求，与技术团队讨论并参与模型选型的决策，理解不同选择（如开源 vs. 闭源, 不同模型 API）在**成本、性能、定制化、隐私、风险**等方面的权衡。
+    5.  **有效沟通**: 能够用相对准确的语言与工程师、算法科学家沟通需求和产品逻辑。
+
+    [!tip] 面试建议
+    面试时，展现你对主流模型的**了解广度**（知道有哪些主要玩家和它们的特点）和对**核心概念的理解深度**（能解释 RAG、幻觉等并讨论其影响），比深入某个具体模型的算法细节更重要。强调你如何基于这些理解来做产品决策。
+
+    ## 总结
+
+    LLM 领域百花齐放，了解主流模型的概况和特点，有助于 AI 产品经理把握行业动态，做出更明智的技术选型和产品规划。关键在于理解概念、能力边界和商业影响，而非钻研底层算法。
+
+    ## 相关概念
+
+    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
+    *   [[../开源 vs 闭源模型|开源 vs 闭源模型]]
+    *   [[GPT 模型系列]] (Placeholder Link)
+    *   [[Claude 模型系列]] (Placeholder Link)
+    *   [[Gemini 模型系列]] (Placeholder Link)
+    *   [[LLaMA 模型系列]]
+    *   [[Mistral 模型系列]] (Placeholder Link)
+    *   [[Gemma 模型系列]] (Placeholder Link)
+    *   [[参数规模]]
+    *   [[基准测试 (Benchmark)]]
+    *   [[API (应用程序接口)]]
+    *   [[../核心技能/PM 对 LLM 的理解深度|PM 对 LLM 的理解深度]]
+""")
+
+# Concepts/Product Management/核心技能
+core_skills_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'Product Management', '核心技能')
+
+pm_llm_depth_path = os.path.join(core_skills_folder, 'PM 对 LLM 的理解深度.md')
+pm_llm_depth_content = textwrap.dedent("""\
+    ---
+    tags: [topic/product_management, skill/technical_literacy, type/soft_skill, domain/ai_ml]
+    aliases: [产品经理需要懂多少AI技术, PM技术深度]
+    ---
+    # PM 对 LLM 的理解深度
+
+    [[../../AI & ML/主流 LLM 模型概览|返回 模型概览]]
+
+    ## 问题背景
+
+    一个常见的疑问是：“作为 AI 产品经理，我需要理解像 [[../../AI & ML/Models/LLaMA 模型系列|LLaMA]]、[[../../AI & ML/Core Technologies/Transformer 模型|Transformer]] 这些技术到什么程度？” 尤其对于非技术背景出身的 PM 来说，把握合适的学习深度很重要。
+
+    ## 核心原则：聚焦Why和What，理解How的影响
+
+    产品经理的核心职责是定义**“Why”（为什么要做）**和**“What”（做什么）**，而技术团队负责**“How”（如何实现）**。但这并不意味着 PM 可以完全不懂技术。对于 AI PM，尤其需要理解“How”对“What”和“Why”的影响。
+
+    **PM 不需要成为 AI 算法专家或工程师，不需要能够编写代码或推导数学公式。**
+
+    **但是，PM 需要达到以下理解层次：**
+
+    1.  **理解核心概念与原理 (Conceptual Understanding)**:
+        *   **懂术语**: 能准确理解和使用 [[../../AI & ML/大型语言模型 (LLM)|LLM]], [[../../AI & ML/Core Technologies/Transformer 模型|Transformer]], [[../../AI & ML/Core Technologies/嵌入 (Embedding)|Embedding]], [[../../AI & ML/检索增强生成 (RAG)|RAG]], [[../../AI & ML/提示工程 (Prompt Engineering)|Prompt Engineering]], [[../../AI & ML/模型幻觉 (Hallucination)|幻觉]], [[../../AI & ML/模型鲁棒性 (Robustness)|鲁棒性]], [[../../AI & ML/微调 (Fine-tuning)|微调]], [[../../AI & ML/开源 vs 闭源模型|开源/闭源]] 等核心术语的**含义、作用和基本原理**。
+        *   **知其然，知其所以然 (Why it works)**: 对关键技术（如 [[../../AI & ML/Core Technologies/Transformer 模型|Transformer]] 的注意力机制为何能处理长依赖，[[../../AI & ML/检索增强生成 (RAG)|RAG]] 为何能缓解幻觉）有**直觉性、概念性**的理解。
+
+    2.  **了解能力边界与局限性 (Capabilities & Limitations)**:
+        *   知道当前 AI 技术（特别是 LLM）擅长什么（文本生成、理解、摘要等），不擅长什么（严格逻辑推理、事实绝对准确性、实时感知物理世界等）。
+        *   理解 [[../../AI & ML/模型幻觉 (Hallucination)|幻觉]]、[[../../AI & ML/模型偏见|偏见]]、[[../../AI & ML/模型鲁棒性 (Robustness)|鲁棒性]]差等是现有技术的固有局限性，需要在产品设计中考虑缓解策略。
+
+    3.  **把握技术趋势 (Technology Trends)**:
+        *   关注 AI 领域的主要发展方向（如多模态、更长上下文、Agent 化、效率优化等）。
+        *   了解[[../../AI & ML/Models/主流 LLM 模型概览|主流模型]]的演进和能力差异。
+
+    4.  **评估技术方案与权衡 (Evaluate Solutions & Trade-offs)**:
+        *   能够参与技术选型的讨论，理解不同方案（如 [[../../AI & ML/开源 vs 闭源模型|API vs. 开源模型]]、不同 RAG 策略、是否需要[[../../AI & ML/微调 (Fine-tuning)|微调]]）在**成本、性能、开发周期、可控性、数据隐私、风险**等方面的利弊权衡 (Trade-offs)。
+        *   能够基于产品需求，向技术团队提出合理的技术要求（例如：对[[../../AI & ML/模型幻觉 (Hallucination)|幻觉率]]的容忍度、响应[[../../AI & ML/大型语言模型 (LLM)|延迟]]要求）。
+
+    5.  **有效沟通与协作 (Effective Communication & Collaboration)**:
+        *   能够用**相对准确的技术语言**与工程师、算法科学家顺畅沟通产品需求、用户场景和业务逻辑。
+        *   能够理解技术团队反馈的技术难点、风险和限制。
+
+    ## 类比：产品经理 vs. 汽车设计师
+
+    [!info] 类比
+    想象一位汽车设计师（产品经理）。他/她不需要精通发动机的内部构造或流体力学计算（工程师/科学家的领域），但是：
+    *   需要知道不同类型的发动机（汽油、电动、混合动力）的**基本原理、优缺点、适用场景**（核心概念）。
+    *   需要了解当前发动机技术的**能力边界**（无法无限加速、有排放限制等）（局限性）。
+    *   需要关注电池技术、自动驾驶等**发展趋势**。
+    *   需要在设计时**权衡**动力、油耗/续航、成本、空间、安全性等因素（评估与权衡）。
+    *   需要能与工程师沟通设计意图，并理解工程师提出的结构或制造方面的限制（沟通协作）。
+
+    ## 如何学习？
+
+    *   **阅读科普文章和博客**: 关注 AI 领域的知名媒体、技术博客和专家解读。
+    *   **学习在线课程**: Coursera, Udacity, Fast.ai 等平台有许多面向非专业人士的 AI/ML 入门课程。
+    *   **阅读产品案例分析**: 学习其他 AI 产品是如何应用技术的。
+    *   **与技术同事交流**: 主动请教，参加技术分享会。
+    *   **动手实践**: 尝试使用 ChatGPT 等工具，体验不同的 Prompt 和功能；如果可能，参与一些简单的 AI 项目。
+    *   **聚焦概念而非细节**: 优先理解“是什么”、“为什么”、“有什么用”、“有什么风险”，而不是死抠算法细节。
+
+    ## 总结
+
+    AI 产品经理需要的是**技术素养 (Technical Literacy)**，而不是技术专精 (Technical Expertise)。关键在于**理解技术的核心概念、能力边界和商业影响，能够基于此进行产品决策，并与技术团队有效沟通协作**。不必为不懂算法细节而焦虑，持续学习，聚焦于技术如何服务于用户和业务价值即可。
+
+    ## 相关概念
+
+    *   [[技术素养]]
+    *   [[../完整框架/04 - 技术与实现|技术与实现 (完整框架)]]
+    *   [[../../AI & ML/00 - AI 与机器学习概览|AI 与机器学习概览]]
+    *   [[../../AI & ML/Models/主流 LLM 模型概览|主流 LLM 模型概览]]
+    *   [[权衡 (Trade-offs)]]
+    *   [[沟通技巧]]
+    *   [[学习能力]]
+""")
+
+
+# --- Modify existing LLM content to include new links ---
+# NOTE: In a real update scenario, you'd read the existing file first.
+# Here, we redefine the content string with added links for simplicity in this script.
+llm_content_updated = textwrap.dedent("""\
     ---
     tags: [topic/ai_ml, concept/llm, type/definition, technology]
     aliases: [LLM, Large Language Model]
@@ -95,9 +495,9 @@ llm_content = textwrap.dedent("""\
 
     ## 概述
 
-    大型语言模型 (LLM) 是一种基于**深度学习**（特别是 [[Transformer]] 架构）的人工智能模型，它通过在**海量文本数据**上进行训练，学习语言的模式、结构和知识，从而能够**理解和生成**类似人类的自然语言文本。
+    大型语言模型 (LLM) 是一种基于**[[深度学习]]**（特别是 [[Core Technologies/Transformer 模型|Transformer]] 架构）的人工智能模型，它通过在**海量文本数据**上进行训练，学习语言的模式、结构和知识，从而能够**理解和生成**类似人类的自然语言文本。
 
-    LLM 是当前许多先进 AI 应用（包括 AI 聊天机器人、内容创作工具、代码生成器以及像 Amazon Rufus 这样的 AI 购物助手）的核心驱动力。
+    LLM 是当前许多先进 AI 应用（包括 AI 聊天机器人、内容创作工具、代码生成器以及像 Amazon Rufus 这样的 AI 购物助手）的核心驱动力。理解其基础有助于理解 [[Core Technologies/Transformer 模型|Transformer]] 和 [[Core Technologies/嵌入 (Embedding)|Embedding]] 等相关技术。
 
     ## LLM 的核心能力
 
@@ -113,9 +513,9 @@ llm_content = textwrap.dedent("""\
 
     1.  **训练 (Training)**:
         *   LLM 在包含互联网文本、书籍、代码等的大规模数据集上进行**预训练 (Pre-training)**。
-        *   目标是学习预测文本序列中的下一个词 (Next Token Prediction) 或填补文本中的空白 (Masked Language Modeling)。通过这个过程，模型学习语法、语义、常识知识等。
+        *   目标是学习预测文本序列中的下一个词 (Next Token Prediction) 或填补文本中的空白 (Masked Language Modeling)。通过这个过程，模型学习语法、语义、常识知识等。输入文本首先会被转换为 [[Core Technologies/嵌入 (Embedding)|嵌入向量]]。
         *   这个阶段计算量巨大，成本高昂。
-    2.  **微调 (Fine-tuning)**: (可选但常见)
+    2.  **[[微调 (Fine-tuning)|微调 (Fine-tuning)]]**: (可选但常见)
         *   为了让模型在特定任务（如问答、摘要、特定领域对话）上表现更好，可以使用**更小、更具体**的数据集对预训练好的模型进行微调。
         *   例如，可以用电商领域的问答数据微调 LLM，使其更擅长回答购物相关问题。
     3.  **推理/推断 (Inference)**:
@@ -124,18 +524,18 @@ llm_content = textwrap.dedent("""\
 
     ```mermaid
     graph LR
-        A["海量文本数据<br/>(互联网, 书籍等)"] --> B(预训练 Pre-training<br/>学习语言模式);
-        B --> C["预训练 LLM<br/>(基础模型)"];
-        D["特定任务数据<br/>(如电商问答)"] --> E(微调 Fine-tuning<br/>优化特定能力);
-        C --> E;
-        E --> F["微调后 LLM<br/>(针对性优化)"];
-        G["用户[[提示工程 (Prompt Engineering)|提示]] (Prompt)<br/>(例如: '这件衣服有其他颜色吗?')"] --> H(推理 Inference<br/>预测后续文本);
-        C --> H;
-        F --> H;
-        H --> I["模型输出 (Output)<br/>(例如: '有的, 这件衣服还有蓝色和...')"];
+        A["海量文本数据<br/>(互联网, 书籍等)"] --> B("文本->[[Core Technologies/嵌入 (Embedding)|Embedding]]") --> C(预训练 Pre-training<br/>(基于 [[Core Technologies/Transformer 模型|Transformer]])<br/>学习语言模式);
+        C --> D["预训练 LLM<br/>(基础模型)"];
+        F["特定任务数据<br/>(如电商问答)"] --> G(微调 Fine-tuning<br/>优化特定能力);
+        D --> G;
+        G --> H["微调后 LLM<br/>(针对性优化)"];
+        I["用户[[提示工程 (Prompt Engineering)|提示]] (Prompt)<br/>(例如: '这件衣服有其他颜色吗?')"] --> J(推理 Inference<br/>预测后续文本);
+        D --> J;
+        H --> J;
+        J --> K["模型输出 (Output)<br/>(例如: '有的, 这件衣服还有蓝色和...')"];
 
-        style C fill:#eee,stroke:#333
-        style F fill:#ccf,stroke:#333
+        style D fill:#eee,stroke:#333
+        style H fill:#ccf,stroke:#333
     ```
 
     ## LLM 的关键考量 (产品角度)
@@ -147,7 +547,7 @@ llm_content = textwrap.dedent("""\
     *   **成本 (Cost)**: 训练和运行 LLM（尤其是大型模型）的计算成本很高。API 调用也需要付费。
     *   **延迟 (Latency)**: 模型生成响应需要时间，对于实时交互应用需要考虑延迟问题。
     *   **[[开源 vs 闭源模型|开源 vs. 闭源]]**: 如何选择合适的模型？（见 [[开源 vs 闭源模型]]）
-    *   **偏见与伦理 (Bias & Ethics)**: 训练数据中可能存在的偏见会被模型学到，导致输出带有歧视性或不公平。需要进行风险评估和缓解。
+    *   **[[模型偏见|偏见]]与伦理 (Bias & Ethics)**: 训练数据中可能存在的偏见会被模型学到，导致输出带有歧视性或不公平。需要进行风险评估和缓解。
     *   **[[../技术相关/数据隐私|数据隐私]]**: 用户输入的数据如何处理？是否会被用于再训练？
 
     ## 与 AI 购物助手 (Rufus) 的关联
@@ -156,7 +556,7 @@ llm_content = textwrap.dedent("""\
     *   理解用户的自然语言查询（商品咨询、比较、售后问题等）。
     *   生成自然的、对话式的回答。
     *   可能结合 [[检索增强生成 (RAG)|RAG]] 技术，从亚马逊庞大的商品目录、评论、订单信息等实时数据库中检索信息，以提供准确、最新的答案，减少[[模型幻觉 (Hallucination)|幻觉]]。
-    *   通过[[提示工程 (Prompt Engineering)|精心设计的提示]]和可能的微调，确保回答符合品牌调性、聚焦于购物场景。
+    *   通过[[提示工程 (Prompt Engineering)|精心设计的提示]]和可能的[[微调 (Fine-tuning)|微调]]，确保回答符合品牌调性、聚焦于购物场景。
 
     ## 总结
 
@@ -166,7 +566,8 @@ llm_content = textwrap.dedent("""\
 
     *   [[00 - AI 与机器学习概览|AI 与机器学习概览]]
     *   [[深度学习]]
-    *   [[Transformer]]
+    *   [[Core Technologies/Transformer 模型|Transformer]]
+    *   [[Core Technologies/嵌入 (Embedding)|Embedding]]
     *   [[提示工程 (Prompt Engineering)|提示工程 (Prompt Engineering)]]
     *   [[模型幻觉 (Hallucination)|模型幻觉 (Hallucination)]]
     *   [[模型鲁棒性 (Robustness)|模型鲁棒性 (Robustness)]]
@@ -175,897 +576,48 @@ llm_content = textwrap.dedent("""\
     *   [[微调 (Fine-tuning)]]
     *   [[AI 伦理]]
     *   [[../Product Management/完整框架/04 - 技术与实现|技术与实现 (完整框架)]]
-""")
-
-hallucination_path = os.path.join(ai_ml_folder, '模型幻觉 (Hallucination).md')
-hallucination_content = textwrap.dedent("""\
-    ---
-    tags: [topic/ai_ml, concept/llm, concept/risk, type/definition, technology]
-    aliases: [Hallucination, LLM幻觉, 模型一本正经胡说八道]
-    ---
-    # 模型幻觉 (Hallucination)
-
-    [[大型语言模型 (LLM)|返回 LLM]]
-
-    ## 概述
-
-    模型幻觉 (Hallucination) 是指**[[大型语言模型 (LLM)|大型语言模型 (LLM)]] 或其他生成式 AI 模型产生看似合理、流畅自然，但实际上是错误的、与事实不符、或在给定上下文中无依据的信息**的现象。通俗地说，就是模型“一本正经地胡说八道”。
-
-    幻觉是当前 LLM 应用面临的核心挑战之一，尤其是在需要高准确性和可靠性的场景（如医疗咨询、金融建议、以及提供精确商品信息的 AI 购物助手）中，幻觉可能导致严重后果。
-
-    ## 幻觉产生的原因 (可能因素)
-
-    幻觉的产生机制很复杂，可能涉及多种因素：
-
-    *   **训练数据的偏差和噪声**: 模型在训练过程中学习了数据中错误或矛盾的信息。
-    *   **知识截止**: 模型的知识仅限于其训练数据，对于训练之后发生的事情或数据中未包含的信息，模型可能会“编造”答案。
-    *   **模型本身的概率性**: LLM 本质上是根据概率生成下一个词，有时为了追求语句流畅或连贯性，会生成不准确的内容。
-    *   **对提示的误解**: 模型可能没有完全理解用户的[[提示工程 (Prompt Engineering)|提示 (Prompt)]] 或其隐含的约束。
-    *   **推理能力局限**: 模型可能缺乏严格的逻辑推理能力，在复杂推理任务中容易出错。
-    *   **过度自信**: 模型通常不会表达不确定性，即使对于它不知道或不确定的信息，也可能生成非常自信的错误答案。
-
-    ## 幻觉的表现形式
-
-    *   **事实性错误**: 提供错误的日期、名称、事件、统计数据等。
-    *   **捏造信息**: 编造不存在的人物、研究、来源或产品特性。
-    *   **与上下文矛盾**: 生成的回答与之前的对话或提供的背景信息不一致。
-    *   **推理谬误**: 在逻辑推理过程中出错。
-
-    ## 如何缓解幻觉？(产品与技术层面)
-
-    缓解幻觉是一个持续性的挑战，需要产品、技术、运营多方面努力：
-
-    1.  **[[检索增强生成 (RAG)|检索增强生成 (RAG)]]**:
-        *   **核心方法之一**。在生成回答前，先从**可靠的外部知识库**（如产品数据库、帮助文档、经过验证的事实库）中检索相关信息。
-        *   然后将检索到的信息作为**上下文**提供给 LLM，**指导**模型基于这些事实来生成回答，而不是仅仅依赖其内部知识。
-        *   这对于需要提供**准确、实时**信息的场景（如 AI 购物助手查询库存、规格）至关重要。
-    2.  **[[提示工程 (Prompt Engineering)|提示工程 (Prompt Engineering)]]**:
-        *   设计更**明确、具体、带有约束**的提示，引导模型关注事实、避免猜测。
-        *   可以在提示中明确指示模型：“如果信息不确定，请说明不知道”。
-    3.  **模型微调 (Fine-tuning)**:
-        *   使用高质量、经过事实核查的数据对模型进行微调，增强其在特定领域的准确性。
-    4.  **事实核查与后处理 (Fact-Checking & Post-processing)**:
-        *   对模型生成的关键信息（尤其是事实性陈述）进行自动或人工核查。
-        *   设置规则或过滤器，识别和修正潜在的幻觉内容。
-    5.  **引入不确定性表达**:
-        *   训练或引导模型在不确定时表达不确定性（例如：“根据我的知识库，情况可能是...”、“我无法找到确切信息...”）。
-    6.  **用户反馈机制**:
-        *   允许用户标记不准确或有问题的回答，利用[[../Product Management/用户研究/用户反馈|用户反馈]]来改进模型和知识库。
-    7.  **选择合适的模型**:
-        *   不同的模型在幻觉控制方面的能力可能不同。
-    8.  **设定合理的预期**:
-        *   在产品界面或文档中，向用户说明 AI 可能存在的局限性，管理用户预期。
-
-    ## 对 AI 购物助手 (Rufus) 的意义
-
-    对于 Rufus 这样的 AI 购物助手，控制幻觉至关重要：
-
-    *   **商品信息准确性**: 如果 Rufus 提供了错误的商品价格、规格、库存或兼容性信息，会严重损害用户信任和购物体验，甚至导致交易纠纷。
-    *   **政策解释**: 对退换货政策、促销规则等的错误解释会误导用户。
-    *   **解决方案**: 很可能采用了 [[检索增强生成 (RAG)|RAG]] 方案，实时查询亚马逊的商品数据库、订单系统等，确保回答基于最新、最准确的官方信息。同时结合了强大的[[提示工程 (Prompt Engineering)|提示工程]]和可能的领域微调。
-
-    ## 总结
-
-    模型幻觉是 LLM 应用中的固有风险。产品经理需要深刻理解幻觉的成因、表现和潜在危害，并与技术团队紧密合作，采用 [[检索增强生成 (RAG)|RAG]]、[[提示工程 (Prompt Engineering)|提示工程]]、事实核查等多种策略来**最大限度地减少幻觉的发生**，提升 AI 产品的可靠性和用户信任度。在面试中讨论如何应对幻觉是考察 AI 产品经理风险意识和解决方案能力的重要方面。
-
-    ## 相关概念
-
-    *   [[大型语言模型 (LLM)|大型语言模型 (LLM)]]
-    *   [[检索增强生成 (RAG)|检索增强生成 (RAG)]]
-    *   [[提示工程 (Prompt Engineering)|提示工程 (Prompt Engineering)]]
-    *   [[模型鲁棒性 (Robustness)|模型鲁棒性 (Robustness)]] (幻觉是鲁棒性差的一种表现)
-    *   [[AI 伦理]]
-    *   [[事实核查]]
-    *   [[../Product Management/基础概念/风险管理|风险管理]]
-""")
-
-robustness_path = os.path.join(ai_ml_folder, '模型鲁棒性 (Robustness).md')
-robustness_content = textwrap.dedent("""\
-    ---
-    tags: [topic/ai_ml, concept/robustness, type/definition, technology, concept/risk]
-    aliases: [Robustness, 模型稳定性, AI鲁棒性]
-    ---
-    # 模型鲁棒性 (Robustness)
-
-    [[00 - AI 与机器学习概览|返回 AI 概览]]
-
-    ## 概述
-
-    模型鲁棒性 (Robustness) 是指一个 AI 模型（包括 [[大型语言模型 (LLM)|LLM]]）在面对**各种预料之外或带有干扰的输入**时，仍能保持其**性能稳定、表现一致、并产生合理可靠输出**的能力。
-
-    一个鲁棒性差的模型可能在训练数据或理想输入下表现良好，但在现实世界的复杂、多变、甚至带有对抗性的输入面前，其性能会急剧下降，产生不可预测或错误的输出。
-
-    对于需要部署到真实环境、与用户直接交互的 AI 产品（如 AI 助手），模型的鲁棒性至关重要。
-
-    ## 缺乏鲁棒性的表现
-
-    *   **对微小变化的敏感性**: 输入中微小的、人眼难以察觉的改动（如拼写错误、同义词替换、微小的图像扰动）导致模型输出截然不同或完全错误。
-    *   **分布外 (Out-of-Distribution, OOD) 样本的脆弱性**: 当输入数据的分布与训练数据分布显著不同时，模型性能急剧下降。现实世界的数据总是在变化。
-    *   **[[模型幻觉 (Hallucination)|幻觉]]**: 在某些输入下产生不准确或无中生有的信息。
-    *   **[[模型偏见|偏见放大]]**: 对某些特定群体或类型的输入产生带有偏见或歧视性的输出。
-    *   **易受[[对抗性攻击 (Adversarial Attacks)]]**: 恶意设计的、对人类看似无害的输入可以轻易地欺骗模型，使其产生错误的分类或有害的输出。
-
-    ## 影响鲁棒性的因素
-
-    *   **训练数据的质量和多样性**: 数据覆盖面不足、存在偏差或噪声会影响模型的泛化能力和鲁棒性。
-    *   **模型架构**: 某些模型架构可能比其他架构更鲁棒。
-    *   **训练方法**: 训练过程中的正则化、数据增强等技术可以提升鲁棒性。
-    *   **对抗性训练 (Adversarial Training)**: 在训练过程中加入对抗性样本，提升模型抵抗攻击的能力。
-
-    ## 如何提升模型鲁棒性？ (产品与技术层面)
-
-    1.  **数据增强 (Data Augmentation)**: 在训练数据中人工加入各种噪声、扰动、变化（如：文本中的错别字、句式变换；图像中的旋转、裁剪、亮度变化），让模型学习应对这些变化。
-    2.  **对抗性训练 (Adversarial Training)**: 将模型可能遇到的对抗性样本加入训练集，提升模型的防御能力。
-    3.  **模型正则化 (Regularization)**: 使用 L1/L2 正则化、Dropout 等技术防止模型过拟合，提升泛化能力。
-    4.  **集成学习 (Ensemble Methods)**: 结合多个不同模型的预测结果，通常比单一模型更鲁棒。
-    5.  **输入预处理与验证 (Input Preprocessing & Validation)**:
-        *   对用户输入进行清洗、规范化处理，去除异常或潜在的恶意内容。
-        *   检测输入是否属于分布外 (OOD Detection)。
-    6.  **模型监控与持续评估**:
-        *   在模型上线后，持续监控其在真实数据上的表现，特别是对于异常输入或边界情况的响应。
-        *   定期使用鲁棒性基准测试集对模型进行评估。
-    7.  **冗余与备份**: 对于关键决策，可以考虑使用多个模型或结合传统规则进行校验。
-
-    ## 对 AI 购物助手 (Rufus) 的意义
-
-    *   **应对多样化用户输入**: 用户可能会用各种口语化、不规范甚至带有错别字的方式提问，模型需要能够稳定理解。
-    *   **处理歧义**: 用户的问题可能存在歧义，鲁棒的模型应该能识别歧义并进行[[提示工程 (Prompt Engineering)|澄清]]，而不是随意猜测。
-    *   **抵抗干扰**: 避免因用户无意或有意的奇怪输入导致系统崩溃或产生不当回答。
-    *   **保持一致性**: 对相似问题的回答应该保持一致，避免因微小输入差异导致回答逻辑混乱。
-
-    ## 总结
-
-    模型鲁棒性是衡量 AI 模型在现实世界中可靠性的关键指标。产品经理需要理解鲁棒性的重要性，关注模型在各种边缘情况和干扰下的表现，并与技术团队合作，采用数据增强、对抗性训练、输入验证等方法来提升模型的鲁棒性，确保 AI 产品在真实应用中稳定可靠。
-
-    ## 相关概念
-
-    *   [[模型幻觉 (Hallucination)|模型幻觉 (Hallucination)]] (鲁棒性差的表现之一)
-    *   [[对抗性攻击 (Adversarial Attacks)]]
-    *   [[模型偏见]]
-    *   [[分布外检测 (OOD Detection)]]
-    *   [[数据增强]]
-    *   [[正则化]]
-    *   [[集成学习]]
-    *   [[模型监控]]
-    *   [[../Product Management/基础概念/风险管理|风险管理]]
-""")
-
-rag_path = os.path.join(ai_ml_folder, '检索增强生成 (RAG).md')
-rag_content = textwrap.dedent("""\
-    ---
-    tags: [topic/ai_ml, concept/rag, type/technique, technology, concept/llm]
-    aliases: [RAG, Retrieval-Augmented Generation]
-    ---
-    # 检索增强生成 (Retrieval-Augmented Generation - RAG)
-
-    [[大型语言模型 (LLM)|返回 LLM]]
-
-    ## 概述
-
-    检索增强生成 (Retrieval-Augmented Generation, RAG) 是一种**将[[大型语言模型 (LLM)|大型语言模型 (LLM)]]的生成能力与外部知识库的检索能力相结合**的技术框架。其核心思想是，在让 LLM 生成回答之前，先从一个**相关的、通常是实时的、可信的知识源**（如数据库、文档库、网站）中**检索 (Retrieve)** 出与用户[[提示工程 (Prompt Engineering)|提示 (Prompt)]] 相关的信息片段，然后将这些检索到的信息作为**上下文 (Context)** 连同原始提示一起**输入**给 LLM，让 LLM 在生成回答时**参考**这些外部信息。
-
-    RAG 的主要目的是解决 LLM 的两大固有局限：
-    1.  **[[模型幻觉 (Hallucination)|知识过时与幻觉]]**: LLM 的内部知识截止于其训练数据，无法获取最新信息，并且可能产生幻觉。RAG 通过引入外部实时知识源来缓解这个问题。
-    2.  **缺乏领域专业知识**: 通用 LLM 可能缺乏特定领域的深入知识。RAG 可以接入特定领域的知识库，提升回答的专业性和准确性。
-
-    ## RAG 的工作流程 (简化)
-
-    ```mermaid
-    graph TD
-        A[用户输入 (Query/Prompt)] --> B{检索器 (Retriever)};
-        C[外部知识库<br/>(Knowledge Source)<br/>(数据库/文档/网页等)] --> B;
-        B -- "检索相关信息片段" --> D["相关上下文<br/>(Relevant Context)"];
-        A & D --> E{生成器 (Generator)<br/>(通常是 LLM)};
-        E -- "结合上下文生成回答" --> F[最终输出 (Final Response)];
-
-        subgraph RAG 框架
-            direction LR
-            B --- E;
-        end
-
-        style C fill:#eee,stroke:#333
-        style D fill:#ccf,stroke:#333
-    ```
-
-    1.  **接收用户输入 (Query/Prompt)**: 获取用户的提问或指令。
-    2.  **检索 (Retrieve)**:
-        *   使用用户的输入作为查询条件，在**外部知识库**中搜索最相关的信息片段。
-        *   常用的检索技术包括：[[向量数据库]] (Vector Database) + [[嵌入 (Embedding)]] 技术（将文本转换为向量，通过向量相似度查找相关内容）、传统的关键词搜索等。
-        *   知识库需要预先建立索引，以便快速检索。
-    3.  **增强 (Augment)**:
-        *   将检索到的相关信息片段 (Context) 与用户的原始输入 (Prompt) 结合起来，构建一个新的、增强后的[[提示工程 (Prompt Engineering)|提示]]。
-        *   这个增强提示通常会指示 LLM：“请根据以下信息回答用户的问题：[检索到的上下文] \n 用户问题：[原始问题]”。
-    4.  **生成 (Generate)**:
-        *   将增强后的提示输入给 [[大型语言模型 (LLM)|LLM]]。
-        *   LLM 基于其内部知识和提供的外部上下文信息，生成最终的回答。由于有了相关的、通常更准确的上下文，LLM 产生[[模型幻觉 (Hallucination)|幻觉]]的可能性会降低，回答的相关性和准确性会提高。
-
-    ## RAG 的优势
-
-    *   **提高准确性，减少[[模型幻觉 (Hallucination)|幻觉]]**: 通过引入外部实时、可信的知识源，显著降低 LLM 胡说八道的概率。
-    *   **知识可更新**: 无需重新训练庞大的 LLM，只需更新外部知识库，即可让系统获取最新信息。成本远低于重新训练模型。
-    *   **领域适应性**: 可以方便地接入特定领域的专业知识库，让通用 LLM 也能在专业领域表现出色。
-    *   **可解释性/可溯源**: 可以追溯回答是基于哪些检索到的信息生成的，提高了透明度和可信度。用户甚至可以看到引用的来源。
-    *   **成本效益**: 相比于为特定领域从头训练或大规模微调 LLM，RAG 通常更具成本效益。
-
-    ## RAG 的挑战与考量
-
-    *   **检索质量**: 检索器的效果至关重要。如果检索不到相关信息，或者检索到的信息不准确/有噪声，RAG 的效果会大打折扣（Garbage In, Garbage Out）。
-    *   **知识库构建与维护**: 需要构建高质量、结构化的知识库，并保持其更新。
-    *   **检索与生成的平衡**: 如何平衡依赖外部知识和利用 LLM 内部知识？
-    *   **上下文长度限制**: LLM 对输入上下文的长度有限制，如何有效地选择和组织检索到的信息片段？
-    *   **延迟**: 检索过程会增加额外的响应时间。
-    *   **复杂性**: 实现一个高效、鲁棒的 RAG 系统涉及多个组件（检索器、生成器、知识库管理），工程实现相对复杂。
-
-    ## 对 AI 购物助手 (Rufus) 的应用
-
-    RAG 是实现像 Rufus 这样需要**基于大量实时商品信息**进行问答的 AI 助手的**关键技术**。
-
-    *   **知识库**: 亚马逊庞大的商品目录、用户评论、卖家信息、订单系统、帮助文档等构成了 RAG 的外部知识库。
-    *   **工作流程**:
-        1.  用户问：“这双鞋有 9 号的吗？”
-        2.  检索器在商品数据库中查找该鞋款的库存信息。
-        3.  检索到：“该鞋款 9 号目前有货 / 无货”。
-        4.  将此信息和用户问题输入给 LLM：“根据以下库存信息回答用户问题：该鞋款 9 号目前有货。用户问题：这双鞋有 9 号的吗？”
-        5.  LLM 生成回答：“是的，这双鞋目前有 9 号库存。” 或 “抱歉，这双鞋目前 9 号缺货。”
-
-    通过 RAG，Rufus 可以提供比通用 LLM 更准确、更实时的购物相关信息，显著提升用户体验和信任度。
-
-    ## 总结
-
-    RAG 是一种有效结合 LLM 与外部知识的技术，对于需要高准确性、实时性或特定领域知识的 AI 应用（如 AI 助手、企业知识库问答）至关重要。产品经理需要理解 RAG 的原理、优势和挑战，以便在产品设计中考虑如何利用它来提升 AI 能力，并评估相关的技术投入和风险。
-
-    ## 相关概念
-
-    *   [[大型语言模型 (LLM)|大型语言模型 (LLM)]]
-    *   [[模型幻觉 (Hallucination)|模型幻觉 (Hallucination)]] (RAG 是主要缓解手段)
-    *   [[检索 (Retrieval)]]
-    *   [[生成 (Generation)]]
-    *   [[外部知识库]]
-    *   [[向量数据库]]
-    *   [[嵌入 (Embedding)]]
-    *   [[上下文学习 (In-Context Learning)]]
-    *   [[知识图谱]] (有时也作为知识库)
-""")
-
-prompt_engineering_path = os.path.join(ai_ml_folder, '提示工程 (Prompt Engineering).md')
-prompt_engineering_content = textwrap.dedent("""\
-    ---
-    tags: [topic/ai_ml, concept/prompt_engineering, type/technique, skill/ai_interaction]
-    aliases: [Prompt Engineering, 提示词工程, Prompt Design]
-    ---
-    # 提示工程 (Prompt Engineering)
-
-    [[大型语言模型 (LLM)|返回 LLM]]
-
-    ## 概述
-
-    提示工程 (Prompt Engineering) 是一门**设计和优化输入文本（即“提示”或“提示词”，Prompt）以有效引导[[大型语言模型 (LLM)|大型语言模型 (LLM)]]或其他生成式 AI 模型产生期望输出**的艺术和科学。
-
-    由于 LLM 的行为在很大程度上取决于输入的提示，因此精心设计的提示对于控制模型输出的**质量、相关性、准确性、风格和安全性**至关重要。它更像是一种**与 AI 沟通的技巧**，而不是传统的编程。
-
-    对于 AI 产品（如 AI 助手）来说，提示工程是连接用户意图和模型能力的关键环节。
-
-    ## 为什么需要提示工程？
-
-    *   **引导模型行为**: 指示模型扮演特定角色、遵循特定格式、关注特定方面。
-    *   **提高输出质量**: 获得更准确、更相关、更符合需求的回答或生成内容。
-    *   **减少[[模型幻觉 (Hallucination)|幻觉]]和错误**: 通过提供清晰的指令和上下文，约束模型的输出。
-    *   **控制输出风格与语气**: 让模型的输出符合品牌调性或特定场景要求。
-    *   **实现复杂任务**: 将复杂任务分解为步骤，通过提示引导模型逐步完成。
-    *   **提升安全性**: 设计提示来避免模型生成有害、不当或违反政策的内容。
-
-    ## 核心提示工程技术/策略
-
-    1.  **明确指令 (Clear Instructions)**:
-        *   使用清晰、简洁、无歧义的语言告诉模型你想要什么。
-        *   明确指定输出的**格式**（如：列表、JSON、表格）、**长度**、**受众**、**语气**等。
-        *   示例：“请将以下文章总结为三个要点，面向非技术读者。”
-    2.  **提供上下文 (Provide Context)**:
-        *   给出相关的背景信息，帮助模型更好地理解任务。
-        *   这与 [[检索增强生成 (RAG)|RAG]] 密切相关，RAG 检索到的信息就是重要的上下文。
-        *   示例：“已知用户正在浏览这款红色连衣裙，用户问：‘有其他颜色吗？’请根据以下库存信息回答：蓝色有货，绿色无货。”
-    3.  **角色扮演 (Role Playing)**:
-        *   指示模型扮演一个特定的角色，使其回答更符合该角色的专业知识和口吻。
-        *   示例：“你现在是一位资深的电商客服，请回答以下用户关于退货政策的问题...”
-    4.  **少量示例学习 (Few-Shot Learning)**:
-        *   在提示中提供几个**输入-输出示例**，让模型学习期望的格式或逻辑。
-        *   示例：
-            ```
-            问题：法国的首都是哪里？
-            答案：巴黎
-            问题：德国的首都是哪里？
-            答案：柏林
-            问题：意大利的首都是哪里？
-            答案：[模型在此处生成 罗马]
-            ```
-    5.  **思维链 (Chain-of-Thought, CoT)**:
-        *   对于需要**推理**的问题，引导模型**分步思考**，将推理过程也输出出来，可以提高复杂问题回答的准确性。
-        *   示例：“问题：一个球拍和一个球总共 1.1 美元，球拍比球贵 1 美元，球多少钱？请逐步思考并给出答案。”
-    6.  **分解任务 (Task Decomposition)**:
-        *   将复杂的任务分解成更小的、更易于管理的子任务，为每个子任务设计提示。
-    7.  **迭代优化 (Iterative Refinement)**:
-        *   提示工程通常是一个**试错和迭代**的过程。尝试不同的提示措辞、结构和技术，观察模型输出，不断调整优化，直到获得满意的结果。
-
-    ## 提示工程在 AI 购物助手中的应用
-
-    *   **理解用户意图**: 设计提示帮助模型准确理解用户五花八门的问题（查询商品、比较、推荐、售后等）。
-    *   **控制回答风格**: 确保助手回答的语气友好、专业、符合品牌形象。
-    *   **结合 [[检索增强生成 (RAG)|RAG]]**: 设计提示，有效利用 RAG 检索到的商品信息、库存、评论等上下文。
-    *   **处理边缘情况**: 设计提示处理用户问题模糊不清、超出范围或意图不轨的情况。
-    *   **引导对话流程**: 通过提示引导多轮对话，例如在用户表达购买意向后，引导其进行下单。
-    *   **生成问题 (针对用户提到的“问题咋 generate 出来”)**: 如果 AI 助手需要主动提问或引导（例如，在用户长时间未输入时），可以通过设计提示来实现。例如，提示可以包含：“如果用户表达了对 [某类商品] 的兴趣但没有具体提问，请根据以下策略生成引导性问题：[策略 A, 策略 B... ]”。或者结合用户画像和浏览历史，生成个性化的问题建议。
-
-    ## 总结
-
-    提示工程是与 [[大型语言模型 (LLM)|LLM]] 有效协作的关键技能。对于 AI 产品经理来说，理解并掌握基本的提示工程原理和技巧，能够更好地定义产品需求、评估技术方案、并与工程师协作优化 AI 产品的表现。它是一个需要不断实践和探索的领域。
-
-    ## 相关概念
-
-    *   [[大型语言模型 (LLM)|大型语言模型 (LLM)]]
-    *   [[提示 (Prompt)]]
-    *   [[上下文学习 (In-Context Learning)]]
-    *   [[少量示例学习 (Few-Shot Learning)]]
-    *   [[零示例学习 (Zero-Shot Learning)]]
-    *   [[思维链 (Chain-of-Thought)]]
-    *   [[检索增强生成 (RAG)|检索增强生成 (RAG)]] (RAG 的结果通常用于增强 Prompt)
-    *   [[模型幻觉 (Hallucination)|模型幻觉 (Hallucination)]] (好的 Prompt 有助于减少幻觉)
-    *   [[../Product Management/完整框架/03 - 产品设计与方案构思|产品设计与方案构思]] (需要考虑 Prompt 设计)
-""")
-
-open_closed_models_path = os.path.join(ai_ml_folder, '开源 vs 闭源模型.md')
-open_closed_models_content = textwrap.dedent("""\
-    ---
-    tags: [topic/ai_ml, concept/llm, type/comparison, technology, skill/strategy]
-    aliases: [Open Source vs Closed Source Models, 开源LLM, 闭源LLM]
-    ---
-    # 开源 vs. 闭源模型 (LLM)
-
-    [[大型语言模型 (LLM)|返回 LLM]]
-
-    ## 概述
-
-    在选择或使用 [[大型语言模型 (LLM)|大型语言模型 (LLM)]] 时，一个重要的决策是选择**开源模型 (Open Source Models)** 还是**闭源模型 (Closed Source Models)**。这两种模式各有优劣，适用于不同的场景和需求。
-
-    *   **闭源模型 (Closed Source / Proprietary Models)**:
-        *   由特定公司开发和拥有，通常**不公开模型架构、训练数据和模型权重**。
-        *   用户主要通过 **API (应用程序接口)** 的方式调用模型，按使用量付费。
-        *   **典型代表**: OpenAI 的 GPT 系列 (ChatGPT, GPT-4), Anthropic 的 Claude 系列, Google 的 Gemini (部分 API 形式提供)。
-    *   **开源模型 (Open Source Models)**:
-        *   模型的**架构、代码、甚至训练好的权重**通常是公开的，允许用户自由下载、使用、修改和分发（具体取决于开源许可证）。
-        *   用户可以将其**部署在自己的服务器**上，进行更深度的定制和[[微调 (Fine-tuning)]]。
-        *   **典型代表**: Meta 的 Llama 系列, Mistral AI 的模型, TII 的 Falcon 系列, Google 的 Gemma, 以及许多由研究机构和社区贡献的模型。
-
-    ## 对比分析
-
-    | 特征             | 闭源模型 (Closed Source / API)                     | 开源模型 (Open Source)                                  |
-    | :--------------- | :------------------------------------------------- | :------------------------------------------------------ |
-    | **性能 (通常)**   | 通常在通用任务上性能**领先**（尤其是最大规模的模型） | 性能快速追赶，特定领域**微调后可能更优**，但顶尖通用能力可能稍逊 |
-    | **易用性**       | **非常高**，通过 API 调用即可，无需关心底层运维      | **较低**，需要自行部署、配置、优化和维护                  |
-    | **成本**         | **按量付费 (API 调用)**，前期投入低，长期或大规模使用成本高 | **前期硬件/人力投入高**（服务器、部署、维护），**后期运行成本**（主要是电力和计算资源），无 API 调用费 |
-    | **定制化/控制权** | **非常有限**，通常只能通过[[提示工程 (Prompt Engineering)|提示]]或有限的 API 参数调整 | **非常高**，可以完全访问模型权重，进行深度[[微调 (Fine-tuning)]]、修改架构 |
-    | **数据隐私与安全** | 数据需要发送给第三方 API 提供商，**存在隐私风险**（取决于提供商政策） | **数据可控**，模型部署在本地，数据不离开自有环境，隐私性更好 |
-    | **更新与迭代**   | 由提供商控制，用户被动接受更新，可能无法使用旧版本 | **自主可控**，可以自行决定何时更新、使用哪个版本            |
-    | **透明度**       | **低**，模型内部机制、训练数据通常不透明          | **高**，模型架构、权重、有时甚至训练数据都可能公开          |
-    | **社区与生态**   | 依赖提供商的支持文档和社区                           | 拥有活跃的开源社区，共享知识、工具和微调模型                |
-    | **风险**         | 依赖单一供应商，API 可能变更/停用，价格可能上涨      | 技术门槛高，需要专业团队维护，可能存在未知的安全漏洞         |
-
-    ## 如何选择？ (产品经理视角)
-
-    没有绝对的优劣，选择取决于具体的产品需求、团队能力、预算和战略考量：
-
-    *   **选择闭源模型 (API) 的场景**:
-        *   **快速验证/MVP**: 需要快速上线，验证产品概念，API 是最快的方式。
-        *   **追求最佳通用性能**: 需要顶尖的通用语言理解和生成能力。
-        *   **技术团队资源有限**: 缺乏部署和维护大型模型的专业人才和基础设施。
-        *   **预算可控/初期成本低**: 按量付费模式更适合初期投入有限的情况。
-        *   **对数据隐私要求相对较低**: 信任 API 提供商的数据处理政策。
-    *   **选择开源模型的场景**:
-        *   **需要深度定制**: 需要针对特定领域或任务进行深度[[微调 (Fine-tuning)]]，以获得最佳性能。
-        *   **数据隐私和安全是首要考虑**: 数据敏感，不能离开自有环境。
-        *   **需要完全控制模型**: 不希望受制于第三方 API 的变化或停用风险。
-        *   **拥有强大的技术团队和基础设施**: 有能力部署、运维和优化大型模型。
-        *   **长期成本考虑**: 对于大规模、高频次的使用，自建可能比长期支付 API 费用更经济。
-        *   **希望利用社区资源**: 借助开源社区的力量进行创新。
-
-    *   **混合策略**: 也可以采用混合策略，例如使用闭源 API 进行快速原型设计，同时探索使用开源模型进行特定任务的优化。
-
-    ## 对 AI 购物助手 (Rufus) 的推测
-
-    *   像亚马逊这样的大公司，拥有强大的技术实力和数据资源，**很可能既使用了自研/闭源的模型，也可能结合了开源模型或技术**。
-    *   对于核心的对话理解和生成，可能基于自研的大模型（闭源）。
-    *   为了处理海量的、实时的商品信息，几乎肯定会用到类似 [[检索增强生成 (RAG)|RAG]] 的技术，这部分可能结合了内部的搜索引擎和数据库技术。
-    *   他们也可能利用开源社区的研究成果或模型进行实验和特定功能的开发。
-
-    ## 总结
-
-    开源与闭源 LLM 代表了两种不同的技术路径和商业模式。产品经理需要理解两者的核心差异、优劣势以及适用场景，以便在技术选型决策中提供有价值的输入，平衡性能、成本、控制权、隐私安全等多方面因素，选择最适合产品和业务需求的方案。
-
-    ## 相关概念
-
-    *   [[大型语言模型 (LLM)|大型语言模型 (LLM)]]
-    *   [[API (应用程序接口)]]
-    *   [[微调 (Fine-tuning)]]
-    *   [[数据隐私]]
-    *   [[数据安全]]
-    *   [[成本效益分析]]
-    *   [[技术选型]]
-    *   [[../Product Management/完整框架/04 - 技术与实现|技术与实现 (完整框架)]]
-    *   [[../Product Management/基础概念/风险管理|风险管理]]
-""")
-
-
-# Concepts/Product Management/应用案例 - AI 助手
-ai_assistant_case_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'Product Management', '应用案例 - AI 助手')
-
-ai_assistant_overview_path = os.path.join(ai_assistant_case_folder, '00 - AI 购物助手案例分析 (Rufus 启发).md')
-ai_assistant_overview_content = textwrap.dedent("""\
-    ---
-    tags: [topic/product_management, type/case_study, domain/ecommerce, domain/ai_assistant]
-    aliases: [AI Shopping Assistant Case Study, Rufus案例分析]
-    ---
-    # AI 购物助手案例分析 (Rufus 启发)
-
-    ## 概述
-
-    本案例旨在以 Amazon Rufus 等 AI 购物助手为启发，探讨如何运用产品管理框架来分析和设计这类产品。我们将分别应用 [[../MVP 框架/00 - MVP 框架概览|MVP 框架]] 和 [[../完整框架/00 - 完整产品管理框架概览|完整框架]]，并结合相关的 [[../../AI & ML/00 - AI 与机器学习概览|AI 技术概念]]进行讨论。
-
-    这有助于为[[../../../Interview Simulation/Product Manager Interview/案例分析与模拟/01 - 设计 AI 购物助手 (面试模拟)|AI 产品经理面试]]中可能遇到的设计或分析问题做准备。
-
-    ## 产品定义 (假设)
-
-    *   **产品**: 一款集成在电商平台 App 内的 AI 购物助手。
-    *   **核心[[../产品战略与规划/价值主张|价值]]**: 帮助用户更方便、更智能地发现商品、获取信息、比较选择并完成购物决策，提升购物效率和体验。
-    *   **灵感来源**: Amazon Rufus, 电商平台的智能客服等。
-
-    ## 框架应用入口
-
-    1.  **[[01 - Rufus 类助手 MVP 框架应用|MVP 框架应用]]**: 聚焦快速验证核心价值，适用于初期探索或面试中的快速回答。
-        *   [[../MVP 框架/01 - 用户痛点价值 (MVP)|用户痛点与价值]] (AI 助手版)
-        *   [[../MVP 框架/02 - MVP 解决方案|MVP 解决方案]] (AI 助手版)
-        *   [[../MVP 框架/03 - MVP 数据验证|数据验证]] (AI 助手版)
-        *   [[../MVP 框架/04 - MVP 迭代优化|迭代优化]] (AI 助手版)
-    2.  **[[02 - Rufus 类助手完整框架应用|完整框架应用]]**: 进行更系统全面的分析，适用于深入思考或面试中的详细阐述。
-        *   [[../完整框架/01 - 行业与市场认知|行业与市场认知]] (电商 AI 助手背景)
-        *   [[../完整框架/02 - 用户需求分析|用户需求分析]] (购物场景深挖)
-        *   [[../完整框架/03 - 产品设计与方案构思|产品设计与方案]] (功能、流程、交互)
-        *   [[../完整框架/04 - 技术与实现|技术与实现]] (LLM, RAG, 风险)
-        *   [[../完整框架/05 - 数据指标与衡量|数据指标与衡量]] (北极星, KPI)
-        *   [[../完整框架/06 - 推动与沟通|推动与沟通]] (跨团队协作)
-        *   [[../完整框架/07 - 迭代与成长|迭代与成长]] (反馈闭环, 创新)
-
-    ## 关键 AI 技术考量
-
-    在分析和设计过程中，需要特别关注以下 AI 相关概念：
-
-    *   **[[../../AI & ML/大型语言模型 (LLM)|LLM]]**: 理解用户意图，生成自然语言回答。
-    *   **[[../../AI & ML/检索增强生成 (RAG)|RAG]]**: 结合实时商品信息、评论、库存等外部知识，提高准确性。
-    *   **[[../../AI & ML/提示工程 (Prompt Engineering)|提示工程]]**: 设计有效的提示引导模型行为，控制回答质量和风格。
-    *   **[[../../AI & ML/模型幻觉 (Hallucination)|模型幻觉]]**: 如何避免提供错误的商品信息或政策解释？ (核心风险)
-    *   **[[../../AI & ML/模型鲁棒性 (Robustness)|模型鲁棒性]]**: 如何处理用户的各种模糊、错误或非典型输入？
-    *   **[[../../AI & ML/开源 vs 闭源模型|模型选择]]**: 使用 API 还是自建/开源模型？成本、性能、定制化、隐私的权衡。
-    *   **[[../../AI & ML/模型偏见|偏见与公平性]]**: 推荐或回答是否会对某些商品或用户群体产生偏见？
-    *   **[[../../技术相关/数据隐私|数据隐私]]**: 如何处理用户的购物历史和对话数据？
-
-    ## 学习目标
-
-    通过本案例分析，旨在帮助理解：
-    *   如何将通用的产品管理框架应用于具体的 AI 产品。
-    *   AI 技术（特别是 LLM 相关）在产品设计中的实际考量和挑战。
-    *   如何在面试中结构化地讨论 AI 产品设计问题。
-
-    开始探索：
-    *   [[01 - Rufus 类助手 MVP 框架应用|查看 MVP 框架应用]]
-    *   [[02 - Rufus 类助手完整框架应用|查看 完整框架应用]]
-    *   [[../../../Interview Simulation/Product Manager Interview/案例分析与模拟/01 - 设计 AI 购物助手 (面试模拟)|进行面试模拟]]
-""")
-
-ai_assistant_mvp_path = os.path.join(ai_assistant_case_folder, '01 - Rufus 类助手 MVP 框架应用.md')
-ai_assistant_mvp_content = textwrap.dedent("""\
-    ---
-    tags: [topic/product_management, type/case_study, framework/mvp, domain/ecommerce, domain/ai_assistant]
-    aliases: [AI助手MVP框架, Rufus MVP]
-    ---
-    # Rufus 类助手 MVP 框架应用
-
-    [[00 - AI 购物助手案例分析 (Rufus 启发)|返回 案例概览]]
-
-    本篇应用 [[../MVP 框架/00 - MVP 框架概览|MVP 框架 (4步法)]] 来快速构思一个 AI 购物助手的最小可行产品。目标是在短时间内验证核心价值，并为面试提供一个简洁的回答思路。
-
-    ## 1. [[../MVP 框架/01 - 用户痛点价值 (MVP)|用户 → 痛点 → 价值]]
-
-    *   **用户是谁？**
-        *   **核心用户 (MVP 阶段)**: 在电商平台上有**明确购物意图**或遇到**常见购物问题**的用户。（先不考虑纯浏览或复杂研究型用户）
-    *   **痛点是什么？**
-        *   **信息查找效率低**: 在海量商品和信息中找到关键信息（如规格对比、兼容性、特定功能）耗时费力。
-        *   **常见问题重复问**: 对于物流、退换货政策、优惠券使用等常见问题，现有自助查询入口不明显或信息分散，联系人工客服又需等待。
-    *   **带来什么价值？ (核心价值假设)**
-        *   **提升信息获取效率**: 通过自然语言问答，快速提供准确、聚合的商品信息和常见问题答案。
-        *   **节省用户时间**: 减少用户自行查找或等待人工客服的时间。
-        *   **(对平台) 降低客服成本**: 分流一部分简单的、重复性的客服咨询。
-
-    [!tip] MVP 聚焦
-    MVP 阶段，优先解决**最高频、最痛**的信息查找和常见问题解答痛点。
-
-    ## 2. [[../MVP 框架/02 - MVP 解决方案|解决方案 (MVP 版本)]]
-
-    *   **功能重点 (核心功能)**:
-        1.  **基于特定商品的问答**: 允许用户在商品详情页针对**当前商品**提问（例如：“这件衣服是纯棉的吗？” “这个手机防水吗？” “有其他买家说电池怎么样？”）。
-        2.  **常见购物问题解答 (FAQ Bot)**: 回答平台通用的、结构化的问题（例如：“订单什么时候发货？” “如何申请退款？” “优惠券怎么用？”）。
-    *   **Scope 界定 (不做)**:
-        *   不做跨商品比较。
-        *   不做个性化推荐。
-        *   不做复杂的意图理解和多轮对话。
-        *   不做主动发起对话。
-        *   不处理需要人工介入的复杂客诉。
-    *   **技术可行性**:
-        *   **方案 A (更快验证)**: 商品问答部分，初期可基于结构化商品数据 + 关键词匹配/简单[[../../AI & ML/00 - AI 与机器学习概览|规则引擎]]；FAQ Bot 可基于现有知识库 + [[FAQ]] 匹配技术。
-        *   **方案 B (效果更好但稍复杂)**: 利用 [[../../AI & ML/大型语言模型 (LLM)|LLM]] API (可能是 [[../../AI & ML/开源 vs 闭源模型|闭源]] API 以求快速上线和较好效果) + [[../../AI & ML/检索增强生成 (RAG)|RAG]]。RAG 从商品结构化数据和 FAQ 知识库中检索信息，LLM 基于检索结果生成回答。需要关注 API 成本和[[../../AI & ML/模型幻觉 (Hallucination)|幻觉]]风险控制（通过 RAG 和[[../../AI & ML/提示工程 (Prompt Engineering)|提示工程]]）。
-
-    [!info] 技术选型权衡
-    MVP 的技术选择应优先考虑**快速上线验证核心价值**。方案 A 更快，方案 B 效果可能更好但集成和风险控制稍复杂。面试时可讨论此权衡。
-
-    ## 3. [[../MVP 框架/03 - MVP 数据验证|数据指标 & 验证]]
-
-    *   **核心目标**: 验证 AI 助手是否能有效解答用户关于**特定商品**和**常见购物问题**的咨询，并初步提升用户满意度/降低人工咨询量。
-    *   **关键指标 (MVP 阶段)**:
-        *   **助手使用率**: 打开助手入口的用户比例 / 触发问答的用户比例。
-        *   **问题解决率**: 用户提问后，AI 能够给出相关回答（不一定是完美答案）的比例。
-        *   **用户满意度 (CSAT)**: 在回答后进行简单的满意度评分（例如：“这个回答对你有帮助吗？” 是/否/有点帮助）。
-        *   **(对比指标)** 对应场景下人工客服的进线量变化（预期应有所下降）。
-    *   **测试/验证计划**:
-        *   **灰度发布/[[../../AI & ML/A_B 测试|A/B 测试]]**:
-            *   在部分商品详情页或 App 内特定入口，向少量用户 (例如 5%) 开放 AI 助手功能 (灰度)。
-            *   或者进行 [[../../AI & ML/A_B 测试|A/B 测试]]：一组用户看到 AI 助手入口，另一组看不到，对比两组的用户行为（如页面停留时间、联系客服比例、转化率等）和满意度。
-        *   **数据监控**: 监控后台日志，分析用户提问类型、回答准确率、失败案例。
-
-    ## 4. [[../MVP 框架/04 - MVP 迭代优化|迭代优化]]
-
-    *   **收集反馈**:
-        *   分析[[../MVP 框架/03 - MVP 数据验证|关键指标]]数据（解决率、CSAT）。
-        *   收集用户在满意度评分时可能留下的文字反馈。
-        *   分析高频提问但回答不佳的场景。
-        *   分析用户放弃使用助手的节点。
-    *   **分析与洞察**:
-        *   哪些类型的问题 AI 回答得好/不好？
-        *   用户最常问的是什么？（可能揭示新的痛点或需求）
-        *   技术方案（规则 vs. LLM+RAG）的表现如何？[[../../AI & ML/模型幻觉 (Hallucination)|幻觉]]问题是否严重？
-    *   **决策与优化 (下一步方向)**:
-        *   **坚持 (Persevere)**: 如果数据显示核心功能受欢迎且有效，则继续优化回答准确率（改进[[../../AI & ML/检索增强生成 (RAG)|RAG]]策略、优化[[../../AI & ML/提示工程 (Prompt Engineering)|提示]]、补充知识库）和[[../产品设计/用户体验 (UX)|用户体验]]（如交互流程）。
-        *   **迭代 (Iterate)**:
-            *   如果发现用户对**跨商品比较**需求强烈，可以考虑在下一版本加入此功能。
-            *   如果发现用户经常问**开放性推荐**问题（“给我推荐一款适合跑步的鞋”），可以考虑引入简单的推荐逻辑。
-            *   如果[[../../AI & ML/模型幻觉 (Hallucination)|幻觉]]问题突出，需要加强[[../../AI & ML/检索增强生成 (RAG)|RAG]]和事实核查机制。
-        *   **扩展 (Expand)**: 逐步扩大灰度范围，或将助手部署到更多场景。
-
-    ## 总结 (面试应用)
-
-    当面试官问“如何设计一个 AI 购物助手”时，这个 MVP 框架提供了一个快速、结构化的回答思路：
-
-    1.  **用户与痛点**: 明确目标用户（购物者），核心痛点（信息查找难，常见问题重复）。
-    2.  **MVP 方案**: 聚焦核心功能（单品问答 + FAQ Bot），快速验证，技术选型（规则/LLM+RAG）并说明权衡。
-    3.  **数据与验证**: 定义核心指标（使用率、解决率、CSAT），采用灰度/A/B 测试验证。
-    4.  **迭代方向**: 基于数据和反馈进行优化（准确率、体验）或扩展（跨品比较、推荐）。
-
-    这个思路能展现你的用户中心思维、MVP理念、对 AI 技术的基本理解和数据驱动的迭代思路。如果面试官追问细节，可以进一步展开 [[02 - Rufus 类助手完整框架应用|完整框架]] 中的内容。
-""")
-
-ai_assistant_complete_path = os.path.join(ai_assistant_case_folder, '02 - Rufus 类助手完整框架应用.md')
-ai_assistant_complete_content = textwrap.dedent("""\
-    ---
-    tags: [topic/product_management, type/case_study, framework/complete, domain/ecommerce, domain/ai_assistant]
-    aliases: [AI助手完整框架, Rufus完整分析]
-    ---
-    # Rufus 类助手完整框架应用
-
-    [[00 - AI 购物助手案例分析 (Rufus 启发)|返回 案例概览]]
-
-    本篇应用 [[../完整框架/00 - 完整产品管理框架概览|完整产品管理框架 (7步法)]] 对 AI 购物助手进行更系统、全面的分析和构思，展现更深入的产品思考。
-
-    ## 1. [[../完整框架/01 - 行业与市场认知|行业与市场认知]]
-
-    *   **市场规模与趋势**:
-        *   全球电商市场持续增长，但竞争激烈，平台寻求新的增长点和提升[[../产品设计/用户体验 (UX)|用户体验]]的方法。
-        *   AI 技术（特别是 [[../../AI & ML/大型语言模型 (LLM)|LLM]]）发展迅速，在客服、导购、个性化推荐等电商场景的应用成为重要趋势。
-        *   用户对即时、个性化、智能化的购物辅助需求日益增长。
-    *   **[[../市场与行业分析/竞品分析|竞品分析]]**:
-        *   **平台内置助手**: 如淘宝、京东、其他大型电商平台的智能客服/助手。分析其功能范围（售前/售中/售后）、智能化程度、交互方式、用户评价。
-        *   **独立 AI 客服/导购工具**: 如一些面向商家的 SaaS 服务。
-        *   **通用聊天机器人**: 如 ChatGPT, Claude 等在购物场景下的潜在应用。
-        *   **分析维度**: 功能对比、[[../产品设计/用户体验 (UX)|UX]] 差异、技术实现推测 ([[../../AI & ML/开源 vs 闭源模型|模型类型]]? 是否用 [[../../AI & ML/检索增强生成 (RAG)|RAG]]?)、商业模式。
-    *   **自身定位与机会 (假设为某大型电商平台)**:
-        *   **优势**: 海量用户、丰富的商品数据、用户行为数据、完善的交易和履约体系、可能的技术积累（如[[推荐算法]]）。
-        *   **机会**:
-            *   将 AI 助手与平台数据深度整合，提供**超个性化**的推荐和问答。
-            *   打通售前、售中、售后全链路，提供无缝的智能服务体验。
-            *   利用 AI 提升**内容发现**效率（例如，根据用户意图智能生成商品集合或比较）。
-            *   探索**语音交互**等新交互模式。
-            *   通过 AI 提升**转化率**和**客单价**，或**降低客服成本**，实现商业价值。
-
-    ## 2. [[../完整框架/02 - 用户需求分析|用户需求分析]]
-
-    *   **[[../基础概念/用户画像|用户画像]] & [[用户场景]]**:
-        *   **效率型买家**: 目标明确，希望快速找到信息、完成购买。痛点：筛选信息慢，客服等待长。
-        *   **探索型买家**: 目标不明确，边逛边看，需要灵感和推荐。痛点：商品太多选择困难，缺乏个性化引导。
-        *   **研究型买家**: 购买高价或复杂商品，需要详细对比、深入了解。痛点：信息分散，规格比较麻烦。
-        *   **售后求助型用户**: 遇到订单、物流、退换货问题。痛点：流程不清晰，解决耗时。
-        *   **卖家用户**: （如果助手也服务卖家）希望提升客服效率、自动化回复等。
-    *   **[[../基础概念/痛点|痛点]]深挖 ([[../用户研究/5 Whys|5 Whys]])**:
-        *   为什么用户觉得找信息难？ -> 商品描述不规范？缺乏关键属性？比较工具不好用？
-        *   为什么用户频繁问客服？ -> FAQ 不完善？自助入口难找？AI 回答不准确？
-    *   **[[../产品战略与规划/价值主张|价值假设]]**:
-        *   通过提供一站式、智能化的问答与导购服务，可以显著提升用户购物决策效率和满意度，并带来 [[../数据分析与实验/转化率|转化率]] 和 [[../数据分析与实验/客单价|客单价]] 的提升。
-        *   通过自动化处理常见问题，可以降低 xx% 的人工客服成本。
-
-    ## 3. [[../完整框架/03 - 产品设计与方案构思|产品设计与方案构思]]
-
-    *   **功能规划**:
-        *   **核心**: 自然语言问答（商品细节、比较、政策、订单状态）、智能推荐（基于对话上下文、用户画像）、[[../产品设计/用户流程图|引导下单]]。
-        *   **增强**: 多轮对话管理、上下文记忆、[[个性化]]问候与互动、[[语音交互]]、购物清单管理、[[比价]]/[[促销信息]]提醒。
-        *   **[[../产品设计/功能优先级排序|优先级]]**: 参考 [[01 - Rufus 类助手 MVP 框架应用|MVP 方案]] 作为起点，根据用户价值 ([[../产品设计/Kano 模型|Kano]])、业务目标和技术复杂度 ([[../产品设计/RICE 模型|RICE]]) 进行排序。
-    *   **[[../产品设计/用户流程图|用户流程]] (User Journey)**:
-        *   绘制用户从触发助手 -> 提问/浏览 -> 获取信息/推荐 -> 追问/点击商品 -> ... -> 结束对话/下单 的完整流程图。考虑各种分支和异常情况（如无法回答、转人工）。
-    *   **[[../产品设计/信息架构|信息架构]] (AI 视角)**:
-        *   **输入**: 用户文本/语音、对话历史、用户画像标签、浏览/购物车/订单数据、当前页面上下文、[[../../AI & ML/检索增强生成 (RAG)|RAG]] 检索到的知识（商品属性、价格、库存、评论、FAQ、政策）。
-        *   **处理**: 意图识别、[[实体抽取]]、[[../../AI & ML/检索增强生成 (RAG)|知识检索]]、[[../../AI & ML/大型语言模型 (LLM)|LLM]] 推理与生成、推荐算法调用。
-        *   **输出**: 自然语言文本、商品卡片、按钮、快捷回复建议、图表（如比较结果）。
-    *   **[[../产品设计/交互设计|交互]]与[[../产品设计/用户界面设计|UI]]**:
-        *   **入口设计**: 如何让用户方便地找到并触发助手？（悬浮按钮、搜索框集成、特定页面入口）
-        *   **对话界面**: 类聊天界面设计，消息气泡、加载状态、输入方式（文本/语音）、富媒体内容展示（卡片/图片）。
-        *   **[[../产品设计/用户体验 (UX)|用户体验]]**: 响应速度、回答的相关性/准确性/易懂性、[[../产品设计/可用性|容错性]]（如何处理无法回答的问题）、转人工流程的顺畅性。
-
-    ## 4. [[../完整框架/04 - 技术与实现|技术与实现]]
-
-    *   **核心技术**:
-        *   **[[../../AI & ML/大型语言模型 (LLM)|LLM]]**: 选择 [[../../AI & ML/开源 vs 闭源模型|合适的模型]]（API vs. 自建/开源？规模？）。可能需要针对电商领域进行[[../../AI & ML/大型语言模型 (LLM)|微调]]。
-        *   **[[../../AI & ML/检索增强生成 (RAG)|RAG]]**: **极其关键**。需要构建高效的检索系统，对接商品库、订单库、知识库等。[[../../AI & ML/向量数据库|向量数据库]] 和 [[../../AI & ML/嵌入 (Embedding)|Embedding]] 技术是常用方案。
-        *   **[[../../AI & ML/提示工程 (Prompt Engineering)|提示工程]]**: 精心设计 Prompt，结合 RAG 上下文，引导模型生成准确、安全的回答。
-        *   **[[推荐系统]]**: （如果涉及推荐功能）需要推荐算法支持。
-        *   **[[ASR]]/[[TTS]]**: （如果支持语音交互）需要语音识别和语音合成技术。
-    *   **架构与成本**:
-        *   需要考虑高并发、低延迟的服务架构。
-        *   LLM 推理成本（API 调用费或自建 GPU 成本）是主要开销之一。
-        *   RAG 系统的维护和更新成本。
-    *   **[[../基础概念/风险管理|风险管理]]**:
-        *   **[[../../AI & ML/模型幻觉 (Hallucination)|幻觉]]**: 避免提供错误信息（价格、库存、政策）。**缓解策略**: 强依赖 [[../../AI & ML/检索增强生成 (RAG)|RAG]]、精心设计的[[../../AI & ML/提示工程 (Prompt Engineering)|Prompt]]、[[../../AI & ML/模型幻觉 (Hallucination)|事实核查]]机制、用户反馈。
-        *   **[[../../AI & ML/模型鲁棒性 (Robustness)|鲁棒性]]**: 处理各种非标准输入。**缓解策略**: [[../../AI & ML/模型鲁棒性 (Robustness)|数据增强]]、输入校验。
-        *   **[[../../AI & ML/模型偏见|偏见]]**: 避免推荐或回答中带有偏见。**缓解策略**: 数据审核、算法公平性评估。
-        *   **[[../../技术相关/数据隐私|数据隐私与安全]]**: 严格遵守法规，保护用户对话和购物数据。需要明确数据使用边界。
-        *   **过度依赖风险**: 用户是否会过度依赖 AI 而失去自主判断？
-
-    ## 5. [[../完整框架/05 - 数据指标与衡量|数据指标与衡量]]
-
-    *   **[[../../AI & ML/北极星指标|北极星指标 (NSM)]] (可选其一或组合)**:
-        *   AI 助手驱动的 GMV / [[../数据分析与实验/转化率|转化率]]提升。
-        *   用户问题通过 AI 成功解决率 / 用户满意度 (CSAT)。
-        *   单位用户交互带来的价值提升 (综合考虑效率、转化、成本)。
-    *   **关键 [[../数据分析与实验/KPI|KPI]]**:
-        *   **助手渗透率/使用率**: 多少用户使用了助手？频率如何？
-        *   **任务完成率**: 用户通过助手成功找到商品/答案/完成购买的比例。
-        *   **对话质量**: 回答相关性、准确率、[[../../AI & ML/模型幻觉 (Hallucination)|幻觉率]] (需要抽样评估)。
-        *   **用户满意度**: CSAT, NPS。
-        *   **[[../数据分析与实验/转化率|转化]]影响**: 助手引导下的点击率 (CTR)、加购率、下单转化率。
-        *   **效率/成本影响**: 人工客服进线量变化、平均处理时长 (AHT) 变化。
-        *   **[[../数据分析与实验/留存率|留存率]]**: 使用助手的用户留存率是否更高？
-    *   **[[../数据分析与实验/00 - 数据分析概览|数据分析流程]]**:
-        *   [[../数据分析与实验/Dashboard|Dashboard]] 监控核心指标。
-        *   [[../数据分析与实验/A_B 测试|A/B 测试]]验证不同模型、Prompt、交互设计的效果。
-        *   [[../数据分析与实验/漏斗分析|漏斗分析]]识别用户在对话流程中的流失点。
-        *   [[../数据分析与实验/用户分群|用户分群]]分析不同用户群体的使用行为差异。
-        *   [[../用户研究/用户反馈|定性反馈]]结合[[../数据分析与实验/00 - 数据分析概览|定量数据]]进行分析。
-
-    ## 6. [[../完整框架/06 - 推动与沟通|推动与沟通]]
-
-    *   **[[../沟通协作/跨职能团队|跨团队协作]]**:
-        *   与**算法/AI 工程师**: 讨论模型选型、[[../../AI & ML/检索增强生成 (RAG)|RAG]] 策略、[[../../AI & ML/模型幻觉 (Hallucination)|幻觉]]控制、性能优化。
-        *   与**后端工程师**: 对接商品库、订单库、用户画像等数据接口。
-        *   与**前端/客户端工程师**: 实现对话界面和交互。
-        *   与**[[../产品设计/设计师|设计师]]**: 共同打磨[[../产品设计/用户体验 (UX)|用户体验]]和[[../产品设计/用户界面设计|UI]]。
-        *   与**[[../沟通协作/测试工程师 (QA Engineer)|QA]]**: 定义测试策略，特别是针对 AI 的黑盒测试、[[../../AI & ML/模型鲁棒性 (Robustness)|鲁棒性]]测试、[[../../AI & ML/模型幻觉 (Hallucination)|幻觉]]测试。
-        *   与**法务/隐私团队**: 确保数据使用合规。
-        *   与**运营/客服团队**: 收集[[../用户研究/用户反馈|用户反馈]]，了解一线问题，制定转人工策略。
-    *   **[[../沟通协作/沟通技巧|沟通]]与[[../沟通协作/利益相关者管理|利益相关者管理]]**:
-        *   向管理层清晰阐述 AI 助手的[[../产品战略与规划/价值主张|价值]]、[[../基础概念/风险管理|风险]]和[[../数据分析与实验/KPI|预期回报 (ROI)]]。
-        *   管理各方对 AI 能力的预期（避免过度神化）。
-        *   定期同步项目进展、[[../数据分析与实验/KPI|数据]]表现和[[../用户研究/用户反馈|用户反馈]]。
-        *   撰写清晰的[[../文档与交付物/PRD 产品需求文档|PRD]]，包含 AI 特有的需求（如回答准确率要求、[[../../AI & ML/模型幻觉 (Hallucination)|幻觉]]处理逻辑）。
-
-    ## 7. [[../完整框架/07 - 迭代与成长|迭代与成长]]
-
-    *   **[[../用户研究/用户反馈闭环|用户反馈闭环]]**:
-        *   建立便捷的用户反馈渠道（点赞/点踩、文字反馈）。
-        *   定期分析低分评价、用户抱怨，识别核心问题。
-        *   将反馈转化为可执行的改进项，纳入[[../开发流程/产品待办列表|产品待办列表]]。
-    *   **持续改进**:
-        *   **模型优化**: 持续迭代[[../../AI & ML/大型语言模型 (LLM)|LLM]]模型、[[../../AI & ML/检索增强生成 (RAG)|RAG]]策略、[[../../AI & ML/提示工程 (Prompt Engineering)|提示工程]]，提升回答质量。
-        *   **[[../产品设计/用户体验 (UX)|体验优化]]**: 改进交互流程、减少等待时间、优化信息呈现。
-        *   **知识库更新**: 确保持续更新 RAG 所需的商品信息、政策、FAQ 等。
-    *   **创新与扩展**:
-        *   **功能扩展**: 从问答向更主动的导购、[[个性化]]推荐、[[比价]]、[[售后]]自动化处理扩展。
-        *   **交互升级**: 探索[[语音交互]]、[[多模态]]交互（结合图像）。
-        *   **场景拓展**: 将 AI 助手应用到直播、社交分享等更多购物场景。
-        *   **服务扩展**: 从服务 C 端用户扩展到服务 B 端卖家。
-
-    ## 总结
-
-    设计一个成功的 AI 购物助手，需要将扎实的产品管理基本功与对 AI 技术（特别是 LLM 及相关技术）的理解相结合。产品经理需要关注用户需求，设计流畅体验，管理 AI 特有的风险（如[[../../AI & ML/模型幻觉 (Hallucination)|幻觉]]），并通过[[../数据分析与实验/数据驱动决策|数据]]和[[../用户研究/用户反馈|反馈]]持续迭代优化。
-
-    ## 相关概念
-
-    *   所有 [[../完整框架/00 - 完整产品管理框架概览|完整框架]] 的 7 个步骤
-    *   所有 [[../../AI & ML/00 - AI 与机器学习概览|AI & ML]] 文件夹下的核心概念
-    *   [[../数据分析与实验/00 - 数据分析概览|数据分析]] 与 [[../数据分析与实验/A_B 测试|实验]]
-    *   [[../产品设计/00 - 产品设计概览|产品设计]] 与 [[../产品设计/用户体验 (UX)|用户体验]]
-    *   [[../沟通协作/00 - 沟通协作概览|沟通协作]] 与 [[../沟通协作/利益相关者管理|利益相关者管理]]
-""")
-
-
-# Interview Simulation/Product Manager Interview/案例分析与模拟
-interview_simulation_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Interview Simulation', 'Product Manager Interview', '案例分析与模拟')
-
-ai_assistant_design_sim_path = os.path.join(interview_simulation_folder, '01 - 设计 AI 购物助手 (面试模拟).md')
-ai_assistant_design_sim_content = textwrap.dedent("""\
-    ---
-    tags: [topic/interview, type/simulation, domain/product_design, domain/ai_assistant, framework/product_design_question]
-    aliases: [AI Shopping Assistant Interview Simulation, 设计AI助手面试题]
-    ---
-    # 面试模拟：设计 AI 购物助手
-
-    [[../02 - 产品管理框架面试准备与深造|返回 面试准备与深造]]
-
-    ## 面试官问题
-
-    “假设你是我们公司（某大型电商平台）的产品经理，我们希望开发一款类似 Amazon Rufus 的 AI 购物助手，集成在我们的 App 中。请谈谈你会如何设计这款产品？”
-
-    ## 回答框架与思路
-
-    可以采用经典的**产品设计问题回答框架**（例如 CIRCLES: Comprehend, Identify, Report, Cut, List, Evaluate, Summarize 或类似结构），并融入 [[../../Concepts/Product Management/MVP 框架/00 - MVP 框架概览|MVP]] 和 [[../../Concepts/Product Management/完整框架/00 - 完整产品管理框架概览|完整框架]] 的思维，特别强调 AI 相关的考量。
-
-    ---
-
-    ### 1. 理解问题 & 明确目标 (Comprehend Situation & Clarify Goal)
-
-    > “谢谢您提出这个问题，设计 AI 购物助手非常有挑战性也很有价值。在开始设计之前，我想先澄清几个问题，以确保我的理解和方向是正确的：”
-
-    *   **核心目标是什么？(Goal)**
-        *   “我们希望这款 AI 助手主要解决什么问题？是提升用户购物效率？提高[[../../Concepts/Product Management/数据分析与实验/转化率|转化率]]？降低客服成本？还是探索 AI 技术的创新应用？” (面试官可能会说：优先提升用户体验和购物效率，其次是转化率)
-    *   **目标用户是谁？(Target User)**
-        *   “我们的目标用户是所有平台用户，还是会先聚焦于特定人群（例如：高价值用户、特定品类爱好者、年轻用户）？” (面试官可能会说：先面向所有用户，但可以考虑不同用户群的差异化需求)
-    *   **平台现状与资源？(Context & Resources)**
-        *   “我们平台目前是否有类似功能的尝试？团队的技术栈如何（例如：是否有现成的 [[../../Concepts/AI & ML/大型语言模型 (LLM)|LLM]] 能力或需要外购 API）？项目的时间和资源限制大致是怎样的？” (面试官可能会说：假设我们有基础的 LLM 能力和数据接口，时间相对灵活但希望快速看到效果)
-    *   **成功的标准？(Success Metrics)**
-        *   “我们初步会用哪些[[../../Concepts/Product Management/数据分析与实验/KPI|指标]]来衡量这款助手的成功？” (面试官可能会说：用户使用率、[[../../Concepts/Product Management/数据分析与实验/任务完成率|任务完成率]]、用户满意度)
-
-    > “好的，基于您的回答，我理解我们的主要目标是**通过 AI 助手提升用户购物效率和体验**，并希望通过**用户使用率、任务完成率和满意度**来衡量初步成功。我将围绕这个目标来展开我的设计思路。”
-
-    ---
-
-    ### 2. 识别用户与痛点 (Identify Users & Pain Points)
-
-    > “接下来，我们需要深入理解目标用户的需求和痛点。根据购物场景，我们可以将用户大致分为几类，并分析他们在现有购物流程中遇到的问题：”
-
-    *   **用户分群 (User Segments)**: (参考 [[../../Concepts/Product Management/应用案例 - AI 助手/02 - Rufus 类助手完整框架应用|完整框架应用]] 中的用户画像)
-        *   效率型买家
-        *   探索型买家
-        *   研究型买家
-        *   售后求助型用户
-    *   **核心[[../../Concepts/Product Management/基础概念/痛点|痛点]] (Pain Points)**:
-        *   信息过载，查找/筛选/比较耗时。
-        *   关键信息缺失或难以找到（规格、兼容性、评论关键点）。
-        *   常见问题（物流、退换货、优惠）查询不便，客服等待长。
-        *   选择困难，缺乏个性化、可信赖的建议。
-
-    > “对于 MVP 阶段，我认为我们应该优先解决**效率型买家**和**售后求助型用户**关于**信息查找效率低**和**常见问题重复问**的核心痛点。”
-
-    ---
-
-    ### 3. 提出解决方案 (List Solutions - MVP Focus)
-
-    > “针对上述核心痛点，我们可以设计一个 MVP 版本的 AI 助手，聚焦于核心问答能力：”
-
-    *   **MVP 核心功能**: (参考 [[../../Concepts/Product Management/应用案例 - AI 助手/01 - Rufus 类助手 MVP 框架应用|MVP 框架应用]])
-        1.  **单品页智能问答**: 用户可在商品详情页针对当前商品提问，AI 基于商品数据（通过 [[../../Concepts/AI & ML/检索增强生成 (RAG)|RAG]] 获取）回答规格、特性、评论摘要、兼容性等问题。
-        2.  **平台通用 FAQ 问答**: 回答物流、退换货、账户、优惠券等常见、结构化问题。
-    *   **关键[[../../Concepts/Product Management/产品设计/用户体验 (UX)|用户体验]]考量**:
-        *   **入口**: 在商品详情页和“我的订单”等关键页面提供清晰、易于发现的助手入口。
-        *   **交互**: 简洁的聊天界面，支持文本输入，回答清晰、直接。
-        *   **[[../../Concepts/Product Management/产品设计/可用性|容错]]**: 对于无法回答的问题，提供友好的提示，并引导用户联系人工客服或查找相关帮助文档。
-    *   **技术实现考量 (简述)**:
-        *   需要 [[../../Concepts/AI & ML/大型语言模型 (LLM)|LLM]] 理解用户问题并生成回答。
-        *   需要 [[../../Concepts/AI & ML/检索增强生成 (RAG)|RAG]] 技术从商品库和 FAQ 知识库检索准确信息，以减少[[../../Concepts/AI & ML/模型幻觉 (Hallucination)|幻觉]]。
-        *   需要[[../../Concepts/AI & ML/提示工程 (Prompt Engineering)|提示工程]]来引导模型基于检索到的信息进行回答。
-
-    ---
-
-    ### 4. 评估与优先级 (Evaluate & Prioritize)
-
-    > “这个 MVP 方案的优势在于聚焦核心痛点，能够较快地验证 AI 助手在提升信息获取效率方面的价值。我们需要定义关键指标来衡量其效果：”
-
-    *   **[[../../Concepts/Product Management/MVP 框架/03 - MVP 数据验证|衡量指标 (MVP)]]**:
-        *   助手使用率 (入口点击率、提问用户比例)
-        *   问题解决率 (AI 给出相关回答的比例)
-        *   用户满意度 (CSAT 评分)
-        *   (对比) 人工客服咨询量变化
-    *   **[[../../Concepts/Product Management/基础概念/风险管理|风险与挑战 (MVP)]]**:
-        *   **[[../../Concepts/AI & ML/模型幻觉 (Hallucination)|幻觉]]风险**: AI 提供错误商品信息或政策解释。缓解：强依赖 [[../../Concepts/AI & ML/检索增强生成 (RAG)|RAG]] + [[../../Concepts/AI & ML/提示工程 (Prompt Engineering)|提示工程]]。
-        *   **[[../../Concepts/AI & ML/模型鲁棒性 (Robustness)|鲁棒性]]挑战**: 如何处理用户各种不规范提问。缓解：输入校验 + [[../../AI & ML/模型鲁棒性 (Robustness)|数据增强]]训练。
-        *   **冷启动/用户教育**: 如何让用户知道并愿意使用这个新功能？
-        *   **成本**: [[../../Concepts/AI & ML/大型语言模型 (LLM)|LLM]] API 调用或推理成本。
-
-    ---
-
-    ### 5. 总结与未来迭代 (Summarize & Future Iterations)
-
-    > “总结一下，我的初步设计思路是，首先通过 MVP 版本聚焦解决用户在**单品信息获取**和**常见问题解答**上的效率痛点，利用 [[../../Concepts/AI & ML/大型语言模型 (LLM)|LLM]] + [[../../Concepts/AI & ML/检索增强生成 (RAG)|RAG]] 技术提供核心问答能力，并通过**使用率、解决率、满意度**等指标进行验证。”
-
-    > “在 MVP 成功验证后，未来的迭代方向可以包括：”
-    *   **功能增强**:
-        *   支持**跨商品比较**。
-        *   加入**个性化推荐**能力。
-        *   实现更强的**多轮对话**和上下文理解。
-        *   支持**语音交互**。
-    *   **体验优化**:
-        *   持续优化回答的**准确性**和**速度**。
-        *   改进[[../../Concepts/Product Management/产品设计/用户体验 (UX)|交互体验]]，例如提供更丰富的富媒体回答（图片、视频链接）。
-    *   **场景扩展**:
-        *   将助手扩展到 App 的更多场景（首页、搜索结果页、购物车）。
-        *   探索在直播等场景的应用。
-    *   **商业化探索**:
-        *   探索如何通过 AI 助手更有效地引导[[../../Concepts/Product Management/数据分析与实验/转化率|转化]]，例如智能优惠券发放、搭配推荐等。
-
-    > “当然，这只是一个初步的构想，具体的设计还需要在明确更详细的目标和资源后，与[[../../Concepts/Product Management/沟通协作/跨职能团队|跨职能团队]]一起进行更深入的[[../../Concepts/Product Management/用户研究/00 - 用户研究概览|用户研究]]、方案细化和[[../../Concepts/Product Management/数据分析与实验/A_B 测试|实验验证]]。”
-
-    ---
-
-    [!tip] 面试注意
-    *   **互动**: 在阐述过程中，适时停顿，观察面试官反馈，可以问“您觉得这个方向怎么样？”或“关于这一点您有什么想法吗？”
-    *   **展现思考过程**: 不仅给出答案，更要说明你是如何思考的，运用了哪些框架和原则。
-    *   **强调权衡 (Trade-offs)**: 在讨论功能、技术选型时，主动提及不同方案的优劣和需要做的权衡。
-    *   **突出 AI 特色**: 重点讨论 AI 带来的独特价值以及需要特别关注的 AI 风险（幻觉、鲁棒性、偏见、隐私）和应对策略。
-    *   **自信与热情**: 展现你对 AI 产品和该职位的热情。
+    *   [[Models/主流 LLM 模型概览|主流 LLM 模型概览]]
+    *   [[../Product Management/核心技能/PM 对 LLM 的理解深度|PM 对 LLM 的理解深度]]
 """)
 
 
 # --- Main Script Logic ---
 def main():
-    print("Starting Obsidian Knowledge Base Generation (Part 5 - AI Focus & Skills)...")
+    print("Starting Obsidian Knowledge Base Generation (Part 6 - AI Core Tech & Models)...")
     print(f"Target Root Directory: {os.path.abspath(TARGET_ROOT_DIRECTORY)}")
     print(f"Overwrite Existing Files: {OVERWRITE_EXISTING}")
 
-    # Files prioritized by user request (AI Assistant focus, technical understanding, frameworks, interview skills)
+    # Prioritized based on user request: Transformer intuition, LLaMA/models, PM understanding depth
     files_to_create = {
-        # Core AI/ML Concepts (High priority for understanding Rufus)
-        ai_ml_overview_path: ai_ml_overview_content,
-        llm_path: llm_content,
-        hallucination_path: hallucination_content,
-        robustness_path: robustness_content,
-        rag_path: rag_content,
-        prompt_engineering_path: prompt_engineering_content,
-        open_closed_models_path: open_closed_models_content,
-        # AI Assistant Case Study (Applying frameworks to Rufus-like product)
-        ai_assistant_overview_path: ai_assistant_overview_content,
-        ai_assistant_mvp_path: ai_assistant_mvp_content,
-        ai_assistant_complete_path: ai_assistant_complete_content,
-        # Interview Simulation (Specific practice for AI assistant design)
-        ai_assistant_design_sim_path: ai_assistant_design_sim_content,
+        # AI Core Technologies (Intuition focused)
+        transformer_path: transformer_content,
+        embedding_path: embedding_content,
+        vector_db_path: vector_db_content, # Essential for RAG understanding
+        # AI Models Landscape (Addressing LLaMA & comparison)
+        llama_path: llama_content,
+        mainstream_llms_path: mainstream_llms_content,
+        # Core Skills (Addressing PM's required depth)
+        pm_llm_depth_path: pm_llm_depth_content,
+        # Update existing LLM file content with new links
+        llm_path: llm_content_updated, # Use the updated content string
     }
 
     # Create necessary base directories if they don't exist
-    os.makedirs(ai_ml_folder, exist_ok=True)
-    os.makedirs(ai_assistant_case_folder, exist_ok=True)
-    os.makedirs(interview_simulation_folder, exist_ok=True)
-
+    os.makedirs(ai_core_tech_folder, exist_ok=True)
+    os.makedirs(ai_models_folder, exist_ok=True)
+    os.makedirs(core_skills_folder, exist_ok=True)
+    # Ensure the base AI/ML folder exists for the updated LLM file path
+    os.makedirs(os.path.dirname(llm_path), exist_ok=True)
     print("Base directories ensured.")
 
     for filepath, content in files_to_create.items():
-        # Check if file exists and OVERWRITE_EXISTING is False only if we are *sure* it's from THIS run
-        # Since we might be re-generating files from previous runs, let's just rely on OVERWRITE_EXISTING flag
         if not OVERWRITE_EXISTING and os.path.exists(filepath):
             print(f"Skipping existing file: {filepath}")
             continue
         write_file(filepath, content)
 
-    print("\nObsidian Knowledge Base Generation (Part 5) Complete.")
-    print("Focus was on AI/LLM concepts, framework application to AI assistants, and core interview skills.")
+    print("\nObsidian Knowledge Base Generation (Part 6) Complete.")
+    print("Focus was on core AI technologies (Transformer, Embedding, VectorDB), LLM landscape (LLaMA, comparison), and PM's required technical depth.")
 
 if __name__ == "__main__":
     main()
