@@ -16,535 +16,621 @@ def write_file(filepath, content):
     except IOError as e:
         print(f"Error writing file {filepath}: {e}")
 
-# --- Knowledge Base Content Definitions (Part 8 - Interview Priority: Models, Benchmarks, API, NLP) ---
+# --- Knowledge Base Content Definitions (Part 9 - Foundational & IR Concepts) ---
 
-# --- Concepts/AI & ML/Core Concepts & Technologies ---
-# (Using existing folder from previous runs, adding NLP here)
-ai_core_tech_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML', 'Core Technologies')
+# --- Concepts/Fundamentals ---
+# (Creating this new folder for foundational concepts)
+fundamentals_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'Fundamentals')
 
-nlp_path = os.path.join(ai_core_tech_folder, '自然语言处理 (NLP).md')
-nlp_content = textwrap.dedent("""\
+vector_path = os.path.join(fundamentals_folder, '向量 (Vector).md')
+vector_content = textwrap.dedent("""\
     ---
-    tags: [topic/ai_ml, concept/nlp, type/definition, field/computer_science]
-    aliases: [NLP, Natural Language Processing]
+    tags: [topic/fundamentals, concept/vector, type/definition, domain/math, domain/ai_ml]
+    aliases: [Vector, 向量定义]
     ---
-    # 自然语言处理 (Natural Language Processing - NLP)
-
-    [[../00 - AI 与机器学习概览|返回 AI 概览]]
+    # 向量 (Vector)
 
     ## 概述
 
-    自然语言处理 (NLP) 是人工智能 (AI) 和语言学的一个交叉领域，专注于**使计算机能够理解、解释、处理和生成人类自然语言（如中文、英文）**。其目标是弥合人类交流方式与计算机理解能力之间的鸿沟。
+    在数学和计算机科学（尤其是在 AI/ML 领域）中，向量 (Vector) 是一个**有序的数字列表**，通常用来表示空间中的一个点或一个方向。列表中的每个数字代表向量在某个维度上的分量或坐标。
 
-    NLP 是许多现代 AI 应用的基础，尤其是那些涉及文本或语音交互的应用，例如：
-    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]] 本身就是 NLP 领域取得突破性进展的成果。
-    *   [[../应用案例 - AI 助手/00 - AI 购物助手案例分析 (Rufus 启发)|AI 助手]] / 聊天机器人
-    *   机器翻译
-    *   情感分析
-    *   文本摘要
-    *   信息抽取
-    *   语音识别 (通常与 NLP 结合)
+    例如，一个二维向量可以表示为 `(x, y)`，一个三维向量可以表示为 `(x, y, z)`。在 [[../AI & ML/Core Technologies/嵌入 (Embedding)|机器学习嵌入]]中，向量的维度通常非常高（例如几百甚至上千维），表示为 `(d1, d2, d3, ..., dn)`，其中 n 是向量的维度。
 
-    ## NLP 的主要任务
+    ## 向量在 AI/ML 中的意义
 
-    NLP 涵盖了广泛的任务，可以大致分为两大类：
+    向量是 AI/ML 中表示和处理数据的基本方式，特别是对于非结构化数据（如文本、图像）：
 
-    1.  **自然语言理解 (Natural Language Understanding - NLU)**: 让计算机“读懂”人类语言。
-        *   **[[词法分析]]**: 分词 (将句子切分成单词)、词性标注 (识别名词、动词等)。
-        *   **[[句法分析]]**: 分析句子结构（主谓宾、依存关系）。
-        *   **[[语义分析]]**: 理解单词和句子的含义，包括消歧（如“苹果”指水果还是公司？）、[[实体识别]]（识别人名、地名、组织名）、[[关系抽取]]（识别实体间的关系）。
-        *   **[[意图识别]]**: 判断用户说话的意图（例如，是提问、抱怨还是下指令）。
-        *   **[[情感分析]]**: 判断文本的情感倾向（正面、负面、中性）。
-    2.  **自然语言生成 (Natural Language Generation - NLG)**: 让计算机“说出”或“写出”人类语言。
-        *   **文本规划**: 决定要表达哪些信息。
-        *   **句子规划**: 将信息组织成合乎语法的句子结构。
-        *   **文本实现**: 生成最终的自然语言文本。
-        *   [[../大型语言模型 (LLM)|LLM]] 在 NLG 方面表现尤为突出。
+    1.  **表示语义**: 通过 [[../AI & ML/Core Technologies/嵌入 (Embedding)|嵌入 (Embedding)]] 技术，可以将单词、句子、商品等转换为向量。这些向量能够**捕捉输入的语义信息**。
+    2.  **量化相似性**: 在向量空间中，可以通过计算向量之间的**距离**（如[[../AI & ML/Information Retrieval/欧氏距离|欧氏距离]]）或**夹角**（如[[../AI & ML/Information Retrieval/余弦相似度|余弦相似度]]）来**量化它们之间的相似性**。距离越近或夹角越小，通常表示语义越相似。
+    3.  **模型输入**: 向量是[[../AI & ML/Core Technologies/Transformer 模型|深度学习模型]]（如 Transformer）能够处理的数学对象。模型通过对输入向量进行计算来学习模式和进行预测。
 
-    ```mermaid
-    graph TD
-        A["自然语言处理 (NLP)"] --> B["自然语言理解 (NLU)<br/>(让机器'懂')"];
-        A --> C["自然语言生成 (NLG)<br/>(让机器'说')"];
+    [!info] 示例
+    *   `国王` 可能被表示为向量 `(0.8, 0.7, 0.6, ..., -0.2)`
+    *   `女王` 可能被表示为向量 `(0.7, 0.8, 0.5, ..., -0.1)`
+    *   `香蕉` 可能被表示为向量 `(-0.9, -0.8, 0.6, ..., 0.5)`
+    *   可以看到 `国王` 和 `女王` 的向量表示（在所有维度上）会比它们与 `香蕉` 的向量表示更相似。
 
-        subgraph NLU 任务示例
-            B --> B1["分词/词性标注"];
-            B --> B2["句法分析"];
-            B --> B3["语义分析 (消歧/实体/关系)"];
-            B --> B4["意图识别"];
-            B --> B5["情感分析"];
-        end
+    ## 关键操作
 
-        subgraph NLG 任务示例
-            C --> C1["文本摘要"];
-            C --> C2["机器翻译"];
-            C --> C3["对话生成"];
-            C --> C4["内容创作"];
-        end
-
-        B & C <--> D("[[../大型语言模型 (LLM)|LLM]]<br/>(同时擅长 NLU 和 NLG)");
-    ```
-
-    ## NLP 技术的发展
-
-    *   **早期 (基于规则)**: 依赖语言学家手动编写大量语法规则和词典。效果有限，难以覆盖语言的复杂性和歧义性。
-    *   **统计 NLP**: 基于大规模语料库，使用[[机器学习]]（如 [[朴素贝叶斯]]、[[支持向量机 (SVM)]]、[[隐马尔可夫模型 (HMM)]]）学习语言的统计模式。比基于规则的方法效果更好，但仍依赖特征工程。
-    *   **[[深度学习]]时代**:
-        *   [[../Core Technologies/嵌入 (Embedding)|词嵌入 (Word Embeddings)]] (Word2Vec, GloVe) 解决了词语的向量表示问题。
-        *   RNN/LSTM 在序列建模上取得进展。
-        *   **[[../Core Technologies/Transformer 模型|Transformer]] 架构 (2017)**: 带来了革命性突破，其[[自注意力]]机制能有效捕捉长距离依赖并支持并行计算，成为现代 NLP 的基石。
-        *   **预训练语言模型 (Pre-trained Language Models, PLM)**: 如 BERT, GPT 等基于 [[../Core Technologies/Transformer 模型|Transformer]] 在海量数据上预训练的模型，只需少量[[../微调 (Fine-tuning)|微调]]即可在各种下游 NLP 任务上取得优异效果，极大降低了应用门槛。
-        *   **[[../大型语言模型 (LLM)|大型语言模型 (LLM)]]**: 参数规模更大、能力更强的 PLM，展现出强大的理解和生成能力。
-
-    ## 对产品经理的意义
-
-    *   **理解 AI 产品基础**: NLP 是理解许多 AI 产品（尤其是涉及文本交互的）工作原理的基础。
-    *   **定义产品需求**: 能够更准确地描述产品在理解用户输入（NLU）和生成响应（NLG）方面需要达到的能力水平。
-    *   **评估技术可行性**: 对 NLP 任务的难度有基本判断（例如，简单的意图识别 vs. 复杂的开放域对话）。
-    *   **沟通协作**: 能与 NLP 工程师使用共同语言交流。
+    *   **向量加减**: 可以进行向量运算，有时能揭示语义关系 (如 `国王 - 男人 + 女人 ≈ 女王`)。
+    *   **[[../AI & ML/Information Retrieval/相似性搜索|相似度计算]]**: 计算两个向量的[[../AI & ML/Information Retrieval/余弦相似度|余弦相似度]]或[[../AI & ML/Information Retrieval/欧氏距离|欧氏距离]]。
 
     ## 总结
 
-    NLP 是使计算机能够处理人类语言的关键技术领域。从早期的规则方法到统计学习，再到如今由 [[../Core Technologies/Transformer 模型|Transformer]] 和 [[../大型语言模型 (LLM)|LLM]] 引领的深度学习时代，NLP 取得了巨大进步。理解 NLP 的基本概念、主要任务和发展历程，有助于产品经理更好地设计和评估利用自然语言交互的 AI 产品。
+    向量是将现实世界中的对象（尤其是文本）转化为机器可理解、可计算形式的关键桥梁。理解向量及其相似性计算是理解 [[../AI & ML/Core Technologies/嵌入 (Embedding)|Embedding]]、[[../AI & ML/Core Technologies/向量数据库|向量数据库]] 和 [[../AI & ML/Information Retrieval/相似性搜索|语义搜索]] 的基础。
+
+    ## 相关概念
+
+    *   [[../AI & ML/Core Technologies/嵌入 (Embedding)|嵌入 (Embedding)]]
+    *   [[向量空间]]
+    *   [[维度 (Dimension)]]
+    *   [[../AI & ML/Information Retrieval/相似性搜索|相似性搜索]]
+    *   [[../AI & ML/Information Retrieval/余弦相似度|余弦相似度]]
+    *   [[../AI & ML/Information Retrieval/欧氏距离|欧氏距离]]
+    *   [[../AI & ML/Core Technologies/向量数据库|向量数据库]]
+""")
+
+database_path = os.path.join(fundamentals_folder, '数据库.md')
+database_content = textwrap.dedent("""\
+    ---
+    tags: [topic/fundamentals, concept/database, type/definition, domain/computer_science]
+    aliases: [Database, DB]
+    ---
+    # 数据库 (Database)
+
+    ## 概述
+
+    数据库 (Database, DB) 是一个**结构化的、持久化存储的数据集合**，通常由数据库管理系统 (Database Management System, DBMS) 进行管理。数据库使得数据的存储、检索、更新和管理更加高效和有组织。
+
+    ## 数据库的主要类型
+
+    根据数据组织方式和特点，数据库可以分为多种类型：
+
+    1.  **关系型数据库 (Relational Database)**:
+        *   **特点**: 基于**关系模型**，将数据存储在具有**行和列的二维表 (Table)** 中，表之间可以通过**键 (Key)** 建立关联。使用 **[[SQL (结构化查询语言)|SQL]]** 进行查询和操作。
+        *   **优势**: 结构清晰，[[事务处理 (Transaction)]] (ACID特性) 成熟可靠，数据一致性高。
+        *   **劣势**: 模式 (Schema) 相对固定，不易扩展，处理非结构化数据或超大规模数据可能效率不高。
+        *   **代表**: MySQL, PostgreSQL, Oracle, SQL Server, SQLite。
+    2.  **NoSQL 数据库 (Not Only SQL)**:
+        *   **特点**: 通常**不遵循严格的关系模型和固定的表结构**，设计用于大规模、高并发、模式灵活的应用场景。包含多种子类型：
+            *   **键值存储 (Key-Value Store)**: 数据以简单的键值对形式存储。(如: Redis, Memcached)
+            *   **文档数据库 (Document Database)**: 数据以类似 [[JSON]] 或 BSON 的**文档**形式存储，模式灵活。(如: MongoDB, Couchbase)
+            *   **列式数据库 (Column-Family Store)**: 数据按列族存储，适合大规模聚合查询。(如: Cassandra, HBase)
+            *   **图形数据库 (Graph Database)**: 专注于存储**节点和边**，高效处理实体间的复杂关系。(如: Neo4j, Nebula Graph)
+        *   **优势**: 高可扩展性，高性能读写，模式灵活，适合半结构化和非结构化数据。
+        *   **劣势**: 通常牺牲了部分一致性（遵循 BASE 原则而非 ACID），事务支持较弱。
+    3.  **[[../AI & ML/Core Technologies/向量数据库|向量数据库 (Vector Database)]]**:
+        *   **特点**: **专门用于存储和高效查询高维[[向量 (Vector)|向量]]**，核心功能是[[../AI & ML/Information Retrieval/相似性搜索|相似性搜索]]（特别是[[../AI & ML/Information Retrieval/近似最近邻搜索 (ANN)|ANN]]）。
+        *   **优势**: 在海量向量中进行快速语义相似性检索。
+        *   **劣势**: 通常不适合存储和查询传统的结构化数据，功能相对专一。
+        *   **代表**: Pinecone, Milvus, Weaviate, Qdrant, Chroma DB (以及带向量扩展的传统数据库如 PostgreSQL+pgvector)。
+    4.  **其他类型**: 时间序列数据库 (Time-Series DB), 搜索数据库 (Search Engine DB, 如 Elasticsearch) 等。
+
+    ```mermaid
+    graph TD
+        A["数据库 (Database)"] --> B["关系型数据库 (Relational)<br/>(表格, SQL, ACID)"];
+        A --> C["NoSQL 数据库<br/>(模式灵活, 高扩展性, BASE)"];
+        A --> D["[[../AI & ML/Core Technologies/向量数据库|向量数据库 (Vector)]]<br/>(向量存储, [[../AI & ML/Information Retrieval/相似性搜索|相似性搜索]])"];
+        A --> E["其他 (时间序列等)"];
+
+        C --> C1["键值存储 (Key-Value)"];
+        C --> C2["文档数据库 (Document)"];
+        C --> C3["列式数据库 (Column-Family)"];
+        C --> C4["图形数据库 (Graph)"];
+
+        subgraph 传统数据存储
+            B; C1; C2; C3; C4; E;
+        end
+        subgraph AI/向量数据存储
+            D;
+        end
+
+        style D fill:#ccf, stroke:#333
+    ```
+
+    ## 对产品经理的意义
+
+    *   **理解数据存储基础**: 知道数据是如何被组织和存储的。
+    *   **参与技术选型**: 能够与工程师讨论不同数据库类型在特定场景下的优劣势（例如：需要强一致性事务用关系型，需要灵活存储用户信息用文档型，需要语义搜索用向量型）。
+    *   **考虑数据需求**: 在设计功能时，考虑需要存储哪些数据，数据的结构如何，对查询性能的要求等。
+    *   **理解技术限制**: 了解不同数据库在扩展性、一致性、查询能力等方面的限制。
+
+    ## 总结
+
+    数据库是现代应用的基础设施。了解不同数据库类型的特点和适用场景，有助于产品经理更好地理解系统架构，参与技术决策，并设计出能够有效利用数据的功能。特别是[[../AI & ML/Core Technologies/向量数据库|向量数据库]]，在当前 AI 应用（尤其是 [[../AI & ML/检索增强生成 (RAG)|RAG]]）中扮演着越来越重要的角色。
+
+    ## 相关概念
+
+    *   [[数据 (Data)]]
+    *   [[数据库管理系统 (DBMS)]]
+    *   [[关系模型]]
+    *   [[表 (Table)]]
+    *   [[SQL (结构化查询语言)|SQL]]
+    *   [[事务处理 (Transaction)]] (ACID vs BASE)
+    *   [[NoSQL]]
+    *   [[JSON]]
+    *   [[../AI & ML/Core Technologies/向量数据库|向量数据库]]
+    *   [[技术架构]]
+""")
+
+ml_path = os.path.join(fundamentals_folder, '机器学习 (ML).md')
+ml_content = textwrap.dedent("""\
+    ---
+    tags: [topic/fundamentals, concept/ml, type/definition, domain/ai_ml]
+    aliases: [ML, Machine Learning, 机器学习定义]
+    ---
+    # 机器学习 (Machine Learning - ML)
+
+    [[../AI & ML/00 - AI 与机器学习概览|返回 AI 概览]]
+
+    ## 概述
+
+    机器学习 (Machine Learning, ML) 是人工智能 (AI) 的一个核心子领域，专注于研究如何让计算机系统**利用数据来提高其在特定任务上的性能，而无需进行显式编程**。简单来说，就是让机器具备从经验（数据）中“学习”的能力。
+
+    传统编程是人告诉机器**如何**做（明确的规则和指令），而机器学习是人给机器提供**数据**和**目标**，让机器自己**学习如何**做。
+
+    ## 机器学习的基本流程 (简化)
+
+    ```mermaid
+    graph LR
+        A[1. 数据收集与准备<br/>(采集, 清洗, 标注)] --> B[2. 特征工程<br/>(选择/提取/转换特征)];
+        B --> C[3. 模型选择<br/>(选择合适的算法)];
+        C --> D[4. 模型训练<br/>(用训练数据学习参数)];
+        D --> E[5. 模型评估<br/>(用测试数据评估性能)];
+        E -- "性能达标?" --> F(6. 模型部署<br/>(上线应用));
+        E -- "否" --> C;
+        F --> G(7. 模型监控与迭代);
+        G --> A;
+
+        subgraph 机器学习流程
+            direction LR
+            A ~~~ B ~~~ C ~~~ D ~~~ E ~~~ F ~~~ G
+        end
+    ```
+
+    1.  **数据收集与准备**: 获取相关数据，进行清洗（处理缺失值、异常值）、标注（如果需要监督学习）。
+    2.  **特征工程**: 从原始数据中选择、提取或转换出对模型学习有帮助的特征 (Features)。(在[[../AI & ML/Core Technologies/深度学习|深度学习]]中，特征工程的重要性有所降低，模型能自动学习特征)。
+    3.  **模型选择**: 根据任务类型（分类、回归、聚类等）和数据特点，选择合适的机器学习算法（如[[线性回归]]、[[逻辑回归]]、[[决策树]]、[[支持向量机 (SVM)]]、[[神经网络]]等）。
+    4.  **模型训练**: 将准备好的训练数据输入给选定的模型算法，算法会自动调整内部参数，以最小化预测错误或达成特定目标。
+    5.  **模型评估**: 使用未参与训练的测试数据来评估模型的性能，常用的[[../AI & ML/Evaluation/评估指标 (Evaluation Metrics)|评估指标]]包括准确率、精确率、召回率、F1 分数、AUC 等（取决于任务）。
+    6.  **模型部署**: 将训练好的、性能达标的模型部署到实际应用中，对外提供预测或决策服务。
+    7.  **模型监控与迭代**: 持续监控模型在线上的表现，收集新数据，根据需要重新训练或更新模型。
+
+    ## 机器学习的主要类型
+
+    根据学习方式和数据类型的不同，机器学习主要分为：
+
+    1.  **监督学习 (Supervised Learning)**:
+        *   **特点**: 使用**带有标签 (Labeled)** 的数据进行训练。模型学习从输入特征到已知输出标签之间的映射关系。
+        *   **任务**:
+            *   **分类 (Classification)**: 预测输入属于哪个预定义的类别（例如：判断邮件是否为垃圾邮件，识别图像中的猫或狗）。
+            *   **回归 (Regression)**: 预测一个连续的数值（例如：预测房价，预测股票价格）。
+    2.  **无监督学习 (Unsupervised Learning)**:
+        *   **特点**: 使用**没有标签**的数据进行训练。模型需要自己发现数据中的结构、模式或关系。
+        *   **任务**:
+            *   **聚类 (Clustering)**: 将相似的数据点分组（例如：用户分群）。
+            *   **降维 (Dimensionality Reduction)**: 减少数据的特征数量，同时保留重要信息（例如：[[主成分分析 (PCA)]]）。
+            *   **关联规则挖掘**: 发现数据项之间的关联性（例如：“购买啤酒的人也倾向于购买尿布”）。
+    3.  **强化学习 (Reinforcement Learning - RL)**:
+        *   **特点**: 模型（称为智能体 Agent）通过与**环境 (Environment)** 互动来学习。智能体执行**动作 (Action)**，环境给出**奖励 (Reward)** 或惩罚，智能体的目标是学习一个**策略 (Policy)** 来最大化累积奖励。
+        *   **应用**: [[游戏 AI]] (如 AlphaGo), [[机器人控制]], [[推荐系统]] 优化等。RLHF (人类反馈强化学习) 被用于[[../微调 (Fine-tuning)|微调]] [[../大型语言模型 (LLM)|LLM]] 以更好地遵循指令。
+
+    ```mermaid
+    graph TD
+        A["机器学习 (ML)"] --> B["监督学习<br/>(有标签数据)"];
+        A --> C["无监督学习<br/>(无标签数据)"];
+        A --> D["强化学习<br/>(与环境互动学习)"];
+
+        B --> B1["分类 (类别预测)"];
+        B --> B2["回归 (数值预测)"];
+
+        C --> C1["聚类 (数据分组)"];
+        C --> C2["降维 (特征压缩)"];
+        C --> C3["关联规则"];
+
+        D --> D1["策略学习 (最大化奖励)"];
+    ```
+
+    ## 对产品经理的意义
+
+    *   **理解 AI 能力来源**: 知道机器学习是当前 AI 能力的主要来源，是数据驱动的。
+    *   **评估可行性**: 对一个 AI 功能需求，能初步判断它属于哪种机器学习任务，大致了解其实现难度和对数据的要求（例如，监督学习需要大量标注数据）。
+    *   **数据重要性**: 深刻理解数据质量和数量对机器学习模型效果的决定性作用（Garbage In, Garbage Out）。
+    *   **沟通协作**: 能与数据科学家、ML 工程师就模型目标、评估指标、数据需求等进行有效沟通。
+    *   **关注模型评估与迭代**: 理解模型需要持续评估和优化。
+
+    ## 总结
+
+    机器学习是让机器从数据中学习的核心技术。理解其基本流程、主要类型（监督、无监督、强化）及其典型任务，有助于产品经理更好地理解 AI 产品的底层逻辑，评估需求可行性，并认识到数据在 AI 产品开发中的关键作用。
 
     ## 相关概念
 
     *   [[人工智能 (AI)]]
-    *   [[机器学习 (ML)]]
-    *   [[深度学习]]
-    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
-    *   [[../Core Technologies/Transformer 模型|Transformer 模型]]
-    *   [[../Core Technologies/嵌入 (Embedding)|嵌入 (Embedding)]]
-    *   [[自然语言理解 (NLU)]]
-    *   [[自然语言生成 (NLG)]]
-    *   [[../应用案例 - AI 助手/00 - AI 购物助手案例分析 (Rufus 启发)|AI 助手]]
+    *   [[../AI & ML/Core Technologies/深度学习|深度学习]] (ML 的一个分支)
+    *   [[数据 (Data)]]
+    *   [[特征工程]]
+    *   [[模型训练]]
+    *   [[模型评估]]
+    *   [[../AI & ML/Evaluation/评估指标 (Evaluation Metrics)|评估指标]]
+    *   [[监督学习]]
+    *   [[无监督学习]]
+    *   [[强化学习 (RL)]]
+    *   [[分类 (Classification)]]
+    *   [[回归 (Regression)]]
+    *   [[聚类 (Clustering)]]
 """)
 
-# --- Concepts/AI & ML/Infrastructure ---
-# (Creating this new subfolder)
-ai_infra_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML', 'Infrastructure')
+# --- Concepts/AI & ML/Core Technologies ---
+# (Moving Deep Learning here as it's a core tech under ML)
+ai_core_tech_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML', 'Core Technologies')
 
-api_path = os.path.join(ai_infra_folder, 'API (应用程序接口).md')
-api_content = textwrap.dedent("""\
+deep_learning_path = os.path.join(ai_core_tech_folder, '深度学习.md')
+deep_learning_content = textwrap.dedent("""\
     ---
-    tags: [topic/technology, concept/api, type/definition, interface]
-    aliases: [API, Application Programming Interface]
+    tags: [topic/ai_ml, concept/deep_learning, type/definition, domain/ml]
+    aliases: [Deep Learning, DL, 深度神经网络]
     ---
-    # API (应用程序接口)
+    # 深度学习 (Deep Learning - DL)
 
-    [[../00 - AI 与机器学习概览|返回 AI 概览]] | [[../开源 vs 闭源模型|相关: 开源 vs 闭源模型]]
+    [[../00 - AI 与机器学习概览|返回 AI 概览]] | [[../../Fundamentals/机器学习 (ML)|从属于: 机器学习]]
 
     ## 概述
 
-    API (Application Programming Interface)，即应用程序接口，是一组**预定义的规则、协议和工具**，允许不同的软件应用程序之间相互**通信和交互**。你可以把它想象成是软件服务提供商（例如 OpenAI, Google Cloud）提供给开发者（例如你公司的工程师）的一个“菜单”或“遥控器”，开发者可以通过这个菜单/遥控器来请求服务或数据，而不需要知道服务内部复杂的实现细节。
+    深度学习 (Deep Learning, DL) 是[[../../Fundamentals/机器学习 (ML)|机器学习 (ML)]]的一个**特定分支**，其核心是使用包含**多个处理层（因此称为“深度”）的人工神经网络 (Artificial Neural Networks, ANN)** 来学习数据的复杂模式和表示。
 
-    ## API 的工作方式 (简化)
+    与传统的机器学习方法相比，深度学习的一个关键优势在于其**自动特征学习**能力。传统 ML 通常需要领域专家进行复杂的[[../../Fundamentals/机器学习 (ML)|特征工程]]来提取有效特征，而深度学习模型可以直接从原始数据（如图像像素、文本词语）中逐层学习越来越抽象、越来越复杂的特征表示。
 
-    API 的交互通常遵循**请求-响应 (Request-Response)** 模式：
+    深度学习在许多领域取得了突破性进展，尤其是在**计算机视觉 (Computer Vision)**、**[[../Core Technologies/自然语言处理 (NLP)|自然语言处理 (NLP)]]** 和**语音识别 (Speech Recognition)** 等方面。
 
-    1.  **客户端 (Client)**: 需要使用某项服务的应用程序（例如，你的电商 App 后端）。
-    2.  **发起请求 (Request)**: 客户端按照 API 定义的**格式和协议**（通常是 HTTP/HTTPS），向指定的 **API 端点 (Endpoint)**（一个 URL 地址）发送请求。请求中通常包含：
-        *   **方法 (Method)**: 如 GET (获取数据), POST (提交数据), PUT (更新数据), DELETE (删除数据)。
-        *   **头部 (Headers)**: 包含元数据，如身份验证信息 (**API 密钥/令牌**)、内容类型等。
-        *   **参数 (Parameters)**: （可选）附加信息，可以在 URL 中（查询参数）或请求体中（Body）。
-        *   **请求体 (Body)**: （对于 POST/PUT 等）包含要发送的数据，通常是 JSON 格式。
-    3.  **服务器 (Server)**: 提供 API 服务的应用程序（例如，OpenAI 的服务器）。
-    4.  **处理请求**: 服务器接收到请求，验证身份，根据请求内容执行相应的操作（例如，调用 [[../大型语言模型 (LLM)|LLM]] 生成文本）。
-    5.  **返回响应 (Response)**: 服务器将处理结果按照 API 定义的格式（通常是 JSON）返回给客户端。响应中通常包含：
-        *   **状态码 (Status Code)**: 如 200 (成功), 400 (错误请求), 401 (未授权), 500 (服务器错误)。
-        *   **头部 (Headers)**: 响应的元数据。
-        *   **响应体 (Body)**: 包含请求的结果数据（例如，LLM 生成的文本、错误信息）。
+    ## 核心构成：人工神经网络 (ANN)
+
+    深度学习的基础是人工神经网络，其结构受到人脑神经元连接方式的启发：
+
+    *   **神经元 (Neuron)**: 基本计算单元，接收输入，进行加权求和和[[激活函数]]处理，产生输出。
+    *   **层 (Layer)**: 神经元按层组织。
+        *   **输入层 (Input Layer)**: 接收原始数据。
+        *   **隐藏层 (Hidden Layers)**: 位于输入层和输出层之间，负责进行特征提取和转换。**“深度”学习指的就是隐藏层数量多**。
+        *   **输出层 (Output Layer)**: 产生最终的预测结果（如分类概率、回归值）。
+    *   **连接与权重 (Connections & Weights)**: 层与层之间的神经元通过带权重的连接进行信息传递。模型训练的过程就是调整这些权重，以使模型能够做出准确的预测。
+    *   **[[激活函数]] (Activation Function)**: 引入非线性，使得神经网络能够学习复杂模式（否则多层线性网络等效于单层）。常用如 ReLU, Sigmoid, Tanh。
 
     ```mermaid
-    sequenceDiagram
-        participant Client as 客户端 App (e.g., 电商后端)
-        participant Server as API 服务器 (e.g., OpenAI)
+    graph TD
+        subgraph "人工神经网络 (示意)"
+            direction LR
+            subgraph Input Layer
+                I1(Input 1)
+                I2(Input 2)
+                I3(...)
+            end
+            subgraph Hidden Layer 1
+                 H11(Node)
+                 H12(Node)
+                 H13(...)
+            end
+             subgraph Hidden Layer 2 (更多层 = '深度')
+                 H21(Node)
+                 H22(Node)
+                 H23(...)
+             end
+             subgraph Output Layer
+                 O1(Output 1)
+                 O2(...)
+             end
 
-        Client->>Server: 1. 发起 API 请求 (POST /v1/chat/completions)<br/>- Header: Authorization: Bearer YOUR_API_KEY<br/>- Body: {"model": "gpt-4o", "messages": [...]}
-        activate Server
-        Server-->>Server: 2. 验证身份, 处理请求 (调用 LLM)
-        Server-->>Client: 3. 返回 API 响应<br/>- Status: 200 OK<br/>- Body: {"choices": [{"message": {"content": "生成的文本"}}]}
-        deactivate Server
+            Input Layer -- "连接权重" --> Hidden Layer 1;
+            Hidden Layer 1 -- "连接权重" --> Hidden Layer 2;
+            Hidden Layer 2 -- "连接权重" --> Output Layer;
+        end
     ```
 
-    ## API 在 LLM 领域的应用
+    ## 常见的深度学习架构
 
-    API 是使用**[[../开源 vs 闭源模型|闭源 LLM]]** 的主要方式。公司如 OpenAI (GPT 系列), Anthropic (Claude 系列), Google (Gemini API) 等都提供了 API，允许开发者将这些强大的 LLM 集成到自己的应用程序中，而无需自己部署和维护庞大的模型。
+    除了基本的多层感知机 (MLP)，还有一些针对特定数据类型设计的特殊神经网络架构：
 
-    **通过 LLM API 可以实现**:
-    *   文本生成
-    *   聊天对话
-    *   文本摘要
-    *   [[../Core Technologies/嵌入 (Embedding)|文本嵌入]] (将文本转换为向量)
-    *   ... 等等
+    *   **卷积神经网络 (Convolutional Neural Networks, CNN)**: 特别擅长处理**网格状数据**，如**图像**。通过卷积层提取局部特征，池化层降维。在图像识别、目标检测等领域非常成功。
+    *   **循环神经网络 (Recurrent Neural Networks, RNN)**: 设计用于处理**序列数据**（如文本、时间序列），具有“记忆”能力，能考虑先前的信息。变体如 LSTM, GRU 解决了 RNN 的梯度消失/爆炸问题。
+    *   **[[../Core Technologies/Transformer 模型|Transformer]]**: **当前 NLP 领域的主流架构**。基于[[自注意力]]机制，能有效捕捉长距离依赖并支持并行计算。是 [[../大型语言模型 (LLM)|LLM]] 的基础。
 
-    **调用 LLM API 的关键考量**:
-    *   **成本**: 通常按输入和输出的 **Token 数量**（大致可理解为单词或字符块）收费，大规模使用成本可能很高。
-    *   **[[../大型语言模型 (LLM)|延迟 (Latency)]]**: API 调用需要网络传输和服务器处理时间，可能存在延迟。
-    *   **速率限制 (Rate Limits)**: API 提供商通常会限制单位时间内的请求次数。
-    *   **[[../技术相关/数据隐私|数据隐私]]**: 将用户数据发送给第三方 API，需要仔细评估提供商的隐私政策。
-    *   **可用性与稳定性**: 依赖第三方服务的稳定性。
-    *   **版本管理**: API 和底层模型会更新，需要关注版本兼容性。
+    ## 深度学习的优势
+
+    *   **强大的特征学习能力**: 能够自动从原始数据中学习复杂、抽象的特征表示。
+    *   **处理非结构化数据**: 在图像、文本、语音等非结构化数据上表现优异。
+    *   **性能卓越**: 在许多复杂的 AI 任务上达到了 SOTA (State-of-the-Art) 水平。
+    *   **端到端学习**: 可以直接从输入到输出进行学习，减少了对传统特征工程的依赖。
+
+    ## 深度学习的挑战
+
+    *   **需要大量数据**: 通常需要比传统 ML 方法更多的（通常是标注好的）数据才能达到良好性能。
+    *   **计算成本高**: 训练深度模型需要强大的计算资源（如 GPU/TPU）和较长时间。
+    *   **可解释性差 (黑箱问题)**: 模型内部决策过程复杂，难以直观理解为什么模型会做出某个预测。
+    *   **调参复杂**: 模型架构和训练过程涉及众多超参数，需要经验和实验来优化。
+    *   **对数据质量敏感**: 对噪声和偏差数据比较敏感。
 
     ## 对产品经理的意义
 
-    *   **理解技术实现方式**: 知道 API 是集成第三方服务（尤其是闭源 LLM）的主要方式。
-    *   **评估技术选型**: 参与讨论 [[../开源 vs 闭源模型|API vs. 开源模型]]的利弊，理解 API 模式的优缺点（易用性、成本、控制权、隐私等）。
-    *   **成本意识**: 理解 API 调用是按量付费的，需要在产品设计中考虑成本效益。
-    *   **关注非功能性需求**: 关注 API 的延迟、速率限制、稳定性对[[../产品设计/用户体验 (UX)|用户体验]]的影响。
-    *   **[[../沟通协作/沟通技巧|沟通]]**: 能与工程师讨论 API 选择、集成方式、错误处理等问题。
+    *   **理解 AI 技术前沿**: 知道深度学习是驱动当前许多最先进 AI 功能（图像识别、NLP、LLM）的核心技术。
+    *   **认识数据和算力需求**: 理解深度学习项目通常需要大量数据和计算资源，影响项目规划和预算。
+    *   **关注可解释性问题**: 对于需要高透明度和可信度的应用（如金融、医疗），需要考虑深度学习模型的“黑箱”特性带来的挑战。
+    *   **评估技术方案**: 了解 CNN、RNN、Transformer 等不同架构的适用场景（例如，处理图像用 CNN，处理文本序列用 Transformer）。
 
     ## 总结
 
-    API 是现代软件开发的粘合剂，使得不同系统能够方便地交互。对于 LLM 领域，API 是使用强大闭源模型的主要途径。产品经理需要理解 API 的基本工作原理及其在 LLM 应用中的关键考量（成本、延迟、隐私等），以便在产品规划和技术选型中做出明智的决策。
+    深度学习是机器学习中一个强大的分支，通过构建深层神经网络，实现了在图像、文本、语音等复杂数据上的卓越表现，是当前 AI 革命的核心引擎。产品经理需要理解其基本原理、优势、挑战以及对数据和算力的要求，以便更好地与技术团队合作，规划和评估基于深度学习的 AI 产品。
 
     ## 相关概念
 
-    *   [[../开源 vs 闭源模型|开源 vs 闭源模型]]
-    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
-    *   [[HTTP/HTTPS]]
-    *   [[JSON]]
-    *   [[身份验证]] (API Key/Token)
-    *   [[端点 (Endpoint)]]
-    *   [[请求-响应模式]]
-    *   [[延迟 (Latency)]]
-    *   [[速率限制]]
-    *   [[../技术相关/数据隐私|数据隐私]]
-    *   [[技术选型]]
+    *   [[../../Fundamentals/机器学习 (ML)|机器学习 (ML)]]
+    *   [[人工智能 (AI)]]
+    *   [[人工神经网络 (ANN)]]
+    *   [[神经元]]
+    *   [[隐藏层]]
+    *   [[激活函数]]
+    *   [[卷积神经网络 (CNN)]]
+    *   [[循环神经网络 (RNN)]]
+    *   [[../Core Technologies/Transformer 模型|Transformer 模型]]
+    *   [[特征学习]]
+    *   [[../../Fundamentals/数据 (Data)|数据]]
+    *   [[算力]]
+    *   [[可解释性 AI (Explainable AI)]]
 """)
 
-# --- Concepts/AI & ML/Evaluation ---
-# (Creating this new subfolder)
-ai_evaluation_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML', 'Evaluation')
 
-benchmark_path = os.path.join(ai_evaluation_folder, '基准测试 (Benchmark).md')
-benchmark_content = textwrap.dedent("""\
-    ---
-    tags: [topic/ai_ml, concept/benchmark, type/evaluation, process/evaluation]
-    aliases: [Benchmark, LLM Benchmark, AI Benchmark, 模型评测基准]
-    ---
-    # 基准测试 (Benchmark)
+# --- Concepts/AI & ML/Information Retrieval ---
+# (Creating this new folder)
+ir_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML', 'Information Retrieval')
 
-    [[../00 - AI 与机器学习概览|返回 AI 概览]] | [[../Models/主流 LLM 模型概览|相关: 主流模型]]
+similarity_search_path = os.path.join(ir_folder, '相似性搜索.md')
+similarity_search_content = textwrap.dedent("""\
+    ---
+    tags: [topic/ai_ml, concept/similarity_search, type/technique, domain/ir, domain/vector_database]
+    aliases: [Similarity Search, 语义搜索, 向量搜索]
+    ---
+    # 相似性搜索 (Similarity Search)
+
+    [[../Core Technologies/向量数据库|相关: 向量数据库]] | [[信息检索|返回 信息检索]]
 
     ## 概述
 
-    基准测试 (Benchmark) 在 AI 和机器学习领域，特别是 [[../大型语言模型 (LLM)|LLM]] 领域，指的是一套**标准化的、公开的数据集和评估指标**，用于**系统性地衡量和比较不同模型在特定任务或能力上的表现**。
+    相似性搜索，在 AI/ML 领域通常特指**基于[[../Core Technologies/嵌入 (Embedding)|嵌入向量]]的语义相似性搜索**，其目标是在一个大规模的[[../../Fundamentals/向量 (Vector)|向量]]集合中，找到与给定查询向量**最相似**（即在向量空间中距离最近）的一个或多个向量。
 
-    你可以把 Benchmark 想象成 AI 模型的“标准化考试”。通过让不同的模型在同一套“考题”上进行测试，并使用统一的“评分标准”，研究人员和开发者可以：
+    与传统的基于关键词匹配的搜索不同，相似性搜索能够理解查询和目标内容的**语义含义**，即使它们使用的具体词语不同，只要意思相近，也能被匹配到。
 
-    *   **客观评估模型能力**: 量化模型在特定任务（如阅读理解、常识推理、代码生成、数学问题）上的表现。
-    *   **比较不同模型**: 横向比较不同模型（例如 [[../Models/GPT 模型系列|GPT-4]] vs [[../Models/Claude 模型系列|Claude 3]] vs [[../Models/LLaMA 模型系列|Llama 3]]）在相同任务上的优劣。
-    *   **追踪技术进展**: 衡量新模型或新训练方法相对于先前模型的改进程度。
-    *   **识别模型强项与弱点**: 了解模型在哪些类型的任务上表现好，在哪些方面有待提高。
+    ## 核心原理
 
-    ## 常见的 LLM 基准测试示例
+    1.  **[[../Core Technologies/嵌入 (Embedding)|向量化]]**: 将需要被搜索的内容（如文档、图片、商品）和用户的查询都使用**相同的**[[../Core Technologies/嵌入 (Embedding)|嵌入模型]]转换为高维[[../../Fundamentals/向量 (Vector)|向量]]。
+    2.  **[[../Core Technologies/向量数据库|索引与存储]]**: 将内容向量存储在[[../Core Technologies/向量数据库|向量数据库]]或专门的索引结构中，以便快速检索。
+    3.  **[[距离/相似度计算]]**: 定义一个度量标准来衡量向量之间的相似性，常用的是[[余弦相似度]]（衡量方向相似性）或[[欧氏距离]]（衡量空间距离）。
+    4.  **[[近邻搜索]]**: 当给定一个查询向量时，在索引中搜索与其相似度最高（或距离最近）的 K 个向量（[[K近邻 (KNN)]]）。为了效率，通常使用[[近似最近邻搜索 (ANN)]]算法。
 
-    存在许多不同的 LLM 基准测试，侧重于评估模型的不同方面：
+    [!info] 示例
+    用户搜索“适合夏天穿的透气跑鞋”，即使数据库中的某个商品描述是“轻量化网面运动鞋，夏季跑步优选”，由于它们的[[../Core Technologies/嵌入 (Embedding)|嵌入向量]]在语义空间中距离很近，相似性搜索也能将其匹配出来，而传统的关键词搜索可能就无法匹配。
 
-    *   **通用语言理解与知识**:
-        *   **MMLU (Massive Multitask Language Understanding)**: 涵盖了 57 个不同学科（从高中到专业级别）的多项选择题，测试模型的广泛知识和推理能力。**非常常用。**
-        *   **GLUE / SuperGLUE**: 包含一系列多样化的 NLU（自然语言理解）任务，如情感分析、文本蕴含、相似度判断等。
-        *   **HellaSwag**: 评估模型对日常场景的常识推理能力（预测接下来最可能发生什么）。
-    *   **推理能力**:
-        *   **GSM8K**: 小学数学应用题，测试模型的数学推理能力。
-        *   **LogiQA**: 逻辑推理问题。
-    *   **代码能力**:
-        *   **HumanEval**: 根据 Python 函数文档字符串生成函数代码。
-        *   **MBPP (Mostly Basic Python Programming)**: 基础 Python 编程问题。
-    *   **综合性基准**:
-        *   **HELM (Holistic Evaluation of Language Models)**: 由斯坦福大学提出，试图从多个维度（准确性、鲁棒性、公平性、效率等）对模型进行更全面的评估。
-        *   **AlpacaEval**: 评估模型遵循指令和进行对话的能力，通常使用更强的模型（如 GPT-4）作为裁判进行打分。
+    ## 应用场景
 
-    ## 如何解读 Benchmark 结果？
+    *   **[[../检索增强生成 (RAG)|检索增强生成 (RAG)]]**: 核心步骤！根据用户问题向量，在知识库向量中搜索最相关的上下文。
+    *   **语义文本搜索**: 比关键词搜索更智能的文档/网页搜索。
+    *   **图像/视频检索**: 以图搜图，以视频搜视频。
+    *   **[[推荐系统]]**: 查找与用户兴趣向量或用户看过的物品向量相似的其他物品。
+    *   **重复内容检测**: 查找相似的文档或图片。
+    *   **异常检测**: 正常数据的向量通常聚集在一起，远离这些聚类的向量可能是异常点。
 
-    *   **分数越高通常越好**: 但要理解每个 Benchmark 的具体指标含义。
-    *   **关注特定能力**: 根据你的产品需求，关注在相关任务（如问答、代码、推理）上的 Benchmark 表现。
-    *   **查看排行榜**: 许多组织（如 Hugging Face 的 Open LLM Leaderboard）会发布不同模型在各种 Benchmark 上的排名。
-    *   **注意模型规模**: 比较时应考虑模型的[[../Models/参数规模|参数规模]]，通常更大规模的模型表现更好。
-    *   **区分基础模型和微调模型**: 有些 Benchmark 是针对基础模型，有些是针对经过指令[[../微调 (Fine-tuning)|微调]]的对话模型。
+    ## 关键技术
 
-    ## Benchmark 的局限性 (重要!)
-
-    [!warning] 注意：Benchmark 不是万能的！
-    产品经理需要**批判性地看待 Benchmark 结果**，它只是评估模型能力的一个维度，存在以下局限性：
-
-    *   **无法完全反映真实世界表现**: 标准化测试环境与复杂多变的真实应用场景存在差距。模型在 Benchmark 上得分高，不代表在你的具体产品中表现一定好。
-    *   **可能存在“应试”现象 (Overfitting to Benchmarks)**: 模型可能针对特定 Benchmark 的模式进行了过度优化，导致在这些任务上得分虚高，但在其他未覆盖的任务上表现平平。
-    *   **数据污染 (Data Contamination)**: 如果 Benchmark 的测试数据意外地出现在模型的训练数据中，会导致分数虚高。
-    *   **评估维度有限**: 许多 Benchmark 主要关注准确性，可能忽略了[[../模型鲁棒性 (Robustness)|鲁棒性]]、[[../模型幻觉 (Hallucination)|幻觉控制]]、[[../模型偏见|公平性]]、[[../大型语言模型 (LLM)|生成速度 (Latency)]]、[[../大型语言模型 (LLM)|成本]]等在实际应用中同样重要的因素。
-    *   **指标本身的局限性**: 有些任务的评估指标（如 BLEU 用于翻译）并不能完全反映人类对质量的感知。
-    *   **更新速度滞后**: Benchmark 的更新速度可能跟不上模型发展的速度。
+    *   **[[../Core Technologies/嵌入 (Embedding)|嵌入模型 (Embedding Models)]]**: 生成高质量、能够准确反映语义的向量至关重要。
+    *   **[[距离/相似度度量]]**: 选择合适的度量标准（[[余弦相似度]], [[欧氏距离]]等）。
+    *   **[[近似最近邻搜索 (ANN)]] 算法**: HNSW, LSH, IVF 等，用于在速度和精度之间做权衡，实现快速搜索。
+    *   **[[../Core Technologies/向量数据库|向量数据库]]**: 提供存储、索引和查询向量的基础设施。
 
     ## 对产品经理的意义
 
-    *   **了解行业水平**: Benchmark 提供了一个快速了解当前 SOTA (State-of-the-Art) 模型能力水平的参考。
-    *   **辅助技术选型**: 可以作为[[../技术选型|技术选型]]时的**参考依据之一**，但**绝不能是唯一依据**。
-    *   **沟通依据**: 在与技术团队或[[../沟通协作/利益相关者管理|利益相关者]]讨论模型能力时，可以引用相关的 Benchmark 结果。
-    *   **保持批判性思维**: 理解 Benchmark 的价值和局限性，避免唯分数论。**最终评估模型是否适合你的产品，还需要进行针对性的测试和评估。**
+    *   **理解智能搜索基础**: 知道相似性搜索是实现超越关键词匹配的语义理解搜索的核心。
+    *   **评估 RAG 可行性**: 理解[[../检索增强生成 (RAG)|RAG]] 依赖于高效的相似性搜索来查找相关上下文。
+    *   **定义产品需求**: 在设计需要“智能搜索”、“相关推荐”、“问答”等功能时，可以考虑相似性搜索方案。
+    *   **关注性能与精度**: 了解[[近似最近邻搜索 (ANN)|ANN]] 带来的速度与精度的权衡，需要在产品层面设定合理的预期。
 
     ## 总结
 
-    Benchmark 是评估和比较 LLM 能力的标准化工具，为行业提供了一个共同的参考框架。产品经理需要了解常见的 Benchmark 及其评估重点，能够解读结果，但更要认识到其局限性，**将 Benchmark 作为参考，并结合实际产品场景进行综合评估和决策**。
+    相似性搜索（特别是基于向量的语义搜索）是现代 AI 应用中的一项关键技术，它使得机器能够理解内容的深层含义并进行智能匹配。它是[[../检索增强生成 (RAG)|RAG]]、语义搜索、智能推荐等功能的技术基石。
 
     ## 相关概念
 
-    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
-    *   [[评估指标 (Evaluation Metrics)]]
-    *   [[模型比较]]
-    *   [[SOTA (State-of-the-Art)]]
-    *   [[MMLU]], [[SuperGLUE]], [[HumanEval]] (具体 Benchmark 示例)
-    *   [[../数据分析与实验/00 - 数据分析概览|数据分析]] (Benchmark 结果也是一种数据)
-    *   [[../核心技能/PM 对 LLM 的理解深度|PM 对 LLM 的理解深度]]
+    *   [[../../Fundamentals/向量 (Vector)|向量 (Vector)]]
+    *   [[../Core Technologies/嵌入 (Embedding)|嵌入 (Embedding)]]
+    *   [[../Core Technologies/向量数据库|向量数据库]]
+    *   [[近似最近邻搜索 (ANN)]]
+    *   [[K近邻 (KNN)]]
+    *   [[余弦相似度]]
+    *   [[欧氏距离]]
+    *   [[信息检索]]
+    *   [[../检索增强生成 (RAG)|检索增强生成 (RAG)]]
 """)
 
-# --- Concepts/AI & ML/Models ---
-# (Creating these specific model files)
-ai_models_folder = os.path.join(TARGET_ROOT_DIRECTORY, 'Concepts', 'AI & ML', 'Models')
-
-gpt_series_path = os.path.join(ai_models_folder, 'GPT 模型系列.md')
-gpt_series_content = textwrap.dedent("""\
+ann_search_path = os.path.join(ir_folder, '近似最近邻搜索 (ANN).md')
+ann_search_content = textwrap.dedent("""\
     ---
-    tags: [topic/ai_ml, concept/llm, model/gpt, type/closed_source_model]
-    aliases: [GPT, GPT-3, GPT-4, GPT-4o, ChatGPT]
+    tags: [topic/ai_ml, concept/ann_search, type/algorithm, domain/ir, domain/vector_database]
+    aliases: [ANN Search, Approximate Nearest Neighbor Search, ANN算法]
     ---
-    # GPT 模型系列 (OpenAI)
+    # 近似最近邻搜索 (Approximate Nearest Neighbor - ANN)
 
-    [[主流 LLM 模型概览|返回 模型概览]] | [[../开源 vs 闭源模型|闭源模型]]
+    [[相似性搜索|返回 相似性搜索]] | [[../Core Technologies/向量数据库|相关: 向量数据库]]
 
     ## 概述
 
-    GPT (Generative Pre-trained Transformer) 是由 **OpenAI** 公司开发的一系列基于 [[../Core Technologies/Transformer 模型|Transformer]] 架构的[[../大型语言模型 (LLM)|大型语言模型]]。GPT 系列以其**强大的通用自然语言理解和生成能力**而闻名，尤其是 ChatGPT 的发布，极大地推动了生成式 AI 的普及和发展。
+    近似最近邻搜索 (Approximate Nearest Neighbor, ANN) 是一种在高维[[../../Fundamentals/向量 (Vector)|向量]]空间中**快速查找**与查询向量**近似**相似（距离最近）的邻居的算法。
 
-    GPT 模型通常是**[[../开源 vs 闭源模型|闭源]]**的，主要通过 **[[../Infrastructure/API (应用程序接口)|API]]** 提供服务。
+    与精确的 K 近邻 (Exact K-Nearest Neighbor, KNN) 搜索（需要计算查询向量与数据库中所有向量的距离，找到绝对最近的 K 个）相比，ANN 算法通过牺牲一定的**精度 (Accuracy)** 来换取极大的**速度 (Speed)** 提升和更低的**资源消耗**（内存、计算量）。
 
-    ## 主要版本与特点
+    在处理[[../Core Technologies/向量数据库|向量数据库]]中数百万甚至数十亿级别的海量高维向量时，精确 KNN 搜索的计算成本过高，无法满足实时查询的需求，因此 ANN 成为了**实际应用中的标准方法**。
 
-    *   **GPT-3 (Generative Pre-trained Transformer 3)**: 2020 年发布，拥有 1750 亿参数，在当时引起轰动。展现了强大的[[../大型语言模型 (LLM)|零示例 (Zero-shot)]]和[[../提示工程 (Prompt Engineering)|少量示例 (Few-shot)]]学习能力。
-    *   **InstructGPT / GPT-3.5**: 在 GPT-3 基础上，通过**指令[[../微调 (Fine-tuning)|微调]]**和 **RLHF (人类反馈强化学习)** 进行优化，使其更擅长**遵循用户指令**和进行**对话**。**ChatGPT (基于 GPT-3.5 Turbo)** 的发布使其广为人知。
-    *   **GPT-4**: 2023 年发布，是比 GPT-3.5 更强大的模型。
-        *   **更强的推理能力**: 在复杂问题、逻辑推理、数学等方面表现更好。
-        *   **更高的准确性**: 减少了[[../模型幻觉 (Hallucination)|幻觉]]的发生率（但仍然存在）。
-        *   **更长的上下文窗口**: 可以处理更长的输入文本。
-        *   **初步的多模态能力**: 可以接受图像输入（例如 GPT-4V）。
-    *   **GPT-4o ("o" for "omni")**: 2024 年 5 月发布，是 OpenAI 最新的旗舰模型。
-        *   **原生多模态**: 设计上可以无缝处理**文本、音频和图像**的输入和输出。
-        *   **速度更快，成本更低**: 相比 GPT-4 Turbo，API 速度更快且价格更低。
-        *   **更强的视觉和音频理解能力**。
-        *   **实时语音对话能力**显著提升，响应更自然、更快速。
+    ## 为什么需要 ANN？
 
-    ## 优势
+    *   **高维灾难 (Curse of Dimensionality)**: 在高维空间中，所有点之间的距离趋向于变得很大且相近，传统的空间索引结构（如 KD-Tree）效率急剧下降。精确查找所有点的距离变得非常耗时。
+    *   **数据规模**: 现代 AI 应用（如 [[../检索增强生成 (RAG)|RAG]] 的知识库）可能包含海量向量，无法对每个向量都进行精确计算。
+    *   **实时性要求**: 许多应用（如在线搜索、推荐、问答）需要毫秒级的响应速度。
 
-    *   **领先的通用能力**: 在广泛的自然语言任务上通常表现出业界顶尖或接近顶尖的性能。
-    *   **强大的指令遵循和对话能力**: 尤其是在微调后的 Chat 版本（如 ChatGPT, GPT-4o）。
-    *   **易用的 API**: 提供了相对成熟、文档完善的 API，方便开发者集成。
-    *   **持续快速迭代**: OpenAI 持续发布新模型和功能。
-    *   **多模态能力 (GPT-4/4o)**: 能够处理文本以外的模态。
+    ## ANN 的核心思想：速度与精度的权衡
 
-    ## 考量因素/潜在劣势
+    ANN 算法的核心思想是**避免全局搜索**，通过某种策略快速缩小搜索范围，找到“足够近”的邻居，而不是“绝对最近”的邻居。这种权衡通常是值得的，因为在很多应用场景下，找到语义上非常相似的几个结果通常就足够了，不一定非要找到理论上最相似的那一个。
 
-    *   **[[../开源 vs 闭源模型|闭源]]**: 无法本地部署，无法深度定制模型本身。
-    *   **[[../Infrastructure/API (应用程序接口)|成本]]**: API 调用按 Token 收费，大规模使用成本较高。
-    *   **[[../技术相关/数据隐私|数据隐私]]**: 数据需要发送给 OpenAI 服务器，存在隐私顾虑（尽管 OpenAI 有相关政策）。
-    *   **依赖性**: 依赖单一供应商，存在 API 变更、停用或价格调整的风险。
-    *   **[[../模型幻觉 (Hallucination)|幻觉]]与偏见**: 仍然存在幻觉和潜在偏见问题，需要在使用中注意。
+    ```mermaid
+    graph LR
+        A[精确 KNN 搜索] -- 特点 --> B(保证找到<br/>**绝对**最近邻);
+        A -- 缺点 --> C(计算量大<br/>速度慢<br/>资源消耗高);
+
+        D[近似 ANN 搜索] -- 特点 --> E(快速找到<br/>**大概率**是最近邻的结果);
+        D -- 优势 --> F(速度快<br/>资源消耗低);
+        D -- 代价 --> G(牺牲少量精度<br/>可能错过绝对最近邻);
+
+        H{实际应用<br/>(大规模/高维/实时)} -- 通常选择 --> D;
+
+        style H fill:#ccf, stroke:#333
+    ```
+
+    ## 常见的 ANN 算法类型
+
+    存在多种不同的 ANN 算法，各有优劣：
+
+    *   **基于树的方法 (Tree-based)**: 如 KD-Tree, Annoy。通过构建树状结构划分空间。在高维时效果下降。
+    *   **基于哈希的方法 (Hashing-based)**: 如 [[局部敏感哈希 (LSH)]]。通过设计哈希函数，让相似的向量有更高概率映射到同一个“桶”里，然后在同一个桶内搜索。
+    *   **基于图的方法 (Graph-based)**: 如 **HNSW (Hierarchical Navigable Small World)**。构建一个多层的邻近图，搜索时从顶层粗粒度的图开始，逐步导航到底层精细的图，找到最近邻。**HNSW 是当前非常流行且性能优异的 ANN 算法之一**。
+    *   **基于量化的方法 (Quantization-based)**: 如 IVF (Inverted File Index), PQ (Product Quantization)。通过聚类或向量压缩来减少需要比较的向量数量。IVF 将向量空间划分为多个区域（聚类中心），搜索时只查找查询向量所在区域及其附近区域的向量。
 
     ## 对产品经理的意义
 
-    *   **了解 SOTA**: GPT 系列通常代表了 LLM 能力的“天花板”或重要标杆，有助于了解当前技术能达到的水平。
-    *   **[[../技术选型|技术选型]]**: 在选择 LLM 方案时，GPT API 是一个重要的选项，需要权衡其性能、成本、易用性、隐私等因素。
-    *   **产品设计启发**: GPT 展示的能力（如多模态、流畅对话）可以为新的 AI 产品功能和交互提供灵感。
-    *   **[[../基础概念/风险管理|风险意识]]**: 理解闭源 API 模式带来的成本、隐私和依赖性风险。
+    *   **理解技术现实**: 知道在大规模向量搜索中，追求绝对精确通常不现实，ANN 是工程实践中的常用方案。
+    *   **关注性能指标**: 理解 ANN 涉及**速度（查询延迟 QPS）、精度（召回率 Recall）、内存占用**等多个指标的权衡。在定义产品需求时，需要考虑对这些指标的要求。
+    *   **评估技术方案**: 了解不同的 ANN 算法有不同的特点和适用场景，可以参与关于[[../Core Technologies/向量数据库|向量数据库]]或 ANN 算法选型的讨论。
+    *   **设定合理预期**: 向[[../沟通协作/利益相关者管理|利益相关者]]解释为什么搜索结果是“近似”相关的，而不是绝对完美的。
 
     ## 总结
 
-    GPT 系列是 OpenAI 开发的领先的闭源 LLM，以其强大的通用能力和易用的 API 推动了 AI 应用的浪潮。了解其主要版本、优势和考量因素，对于 AI 产品经理进行技术评估和产品规划至关重要。
+    ANN 是解决大规模高维向量[[相似性搜索|相似性搜索]]效率问题的关键技术。它通过牺牲少量精度换取速度和效率，是现代[[../Core Technologies/向量数据库|向量数据库]]和许多 AI 应用（如 [[../检索增强生成 (RAG)|RAG]]）的核心引擎。产品经理理解 ANN 的基本原理和其速度-精度的权衡，有助于设定合理的产品预期和评估相关技术方案。
 
     ## 相关概念
 
-    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
-    *   [[../开源 vs 闭源模型|闭源模型]]
-    *   [[../Infrastructure/API (应用程序接口)|API (应用程序接口)]]
-    *   [[OpenAI]]
-    *   [[../Core Technologies/Transformer 模型|Transformer]]
-    *   [[指令微调]]
-    *   [[RLHF]] (人类反馈强化学习)
-    *   [[多模态 AI]]
-    *   [[主流 LLM 模型概览]]
+    *   [[相似性搜索]]
+    *   [[K近邻 (KNN)]]
+    *   [[../Core Technologies/向量数据库|向量数据库]]
+    *   [[高维灾难]]
+    *   [[精度 (Accuracy/Recall)]]
+    *   [[速度 (Latency/QPS)]]
+    *   [[HNSW]], [[LSH]], [[IVF]] (具体 ANN 算法)
+    *   [[权衡 (Trade-offs)]]
 """)
 
-claude_series_path = os.path.join(ai_models_folder, 'Claude 模型系列.md')
-claude_series_content = textwrap.dedent("""\
+information_retrieval_path = os.path.join(ir_folder, '信息检索.md')
+information_retrieval_content = textwrap.dedent("""\
     ---
-    tags: [topic/ai_ml, concept/llm, model/claude, type/closed_source_model]
-    aliases: [Claude, Claude 2, Claude 3]
+    tags: [topic/fundamentals, concept/ir, type/definition, domain/computer_science]
+    aliases: [IR, Information Retrieval, 信息检索系统]
     ---
-    # Claude 模型系列 (Anthropic)
-
-    [[主流 LLM 模型概览|返回 模型概览]] | [[../开源 vs 闭源模型|闭源模型]]
+    # 信息检索 (Information Retrieval - IR)
 
     ## 概述
 
-    Claude 是由 **Anthropic** 公司开发的一系列[[../大型语言模型 (LLM)|大型语言模型]]。Anthropic 由前 OpenAI 员工创立，其研究和产品特别强调 **AI 安全、伦理和负责任的 AI 开发**。Claude 系列模型以其**强大的长文本处理能力、较好的对话能力和对安全性的关注**而受到关注。
+    信息检索 (Information Retrieval, IR) 是计算机科学的一个领域，专注于**从大规模的信息资源集合（通常是非结构化的，如文本文档、网页、图像）中查找满足用户特定信息需求的资料**的过程。
 
-    与 [[../Models/GPT 模型系列|GPT]] 类似，Claude 模型也是**[[../开源 vs 闭源模型|闭源]]**的，主要通过 **[[../Infrastructure/API (应用程序接口)|API]]** 提供服务。
+    简单来说，IR 系统就是帮助用户**找到他们想要的信息**的系统。我们日常使用的**搜索引擎**（如 Google, Baidu）就是最典型的 IR 系统。
 
-    ## 核心理念：宪法 AI (Constitutional AI)
+    ## IR 系统的核心任务
 
-    Anthropic 在训练 Claude 时采用了一种称为“宪法 AI”的方法，旨在让 AI 的行为符合一套预先定义的原则（“宪法”），减少有害输出，提升 AI 的可靠性和可预测性。这套原则侧重于有益性 (Helpful)、诚实性 (Honest) 和无害性 (Harmless) (HHH)。
+    1.  **信息表示 (Representation)**: 如何将文档和用户查询表示成计算机可以处理的形式？
+        *   传统方法：[[词袋模型 (Bag-of-Words)]], [[TF-IDF]] 向量。
+        *   现代方法：[[../AI & ML/Core Technologies/嵌入 (Embedding)|嵌入向量 (Embeddings)]] (来自 [[../AI & ML/大型语言模型 (LLM)|LLM]] 或其他模型)。
+    2.  **索引 (Indexing)**: 如何组织和存储这些表示，以便能够快速查找？
+        *   传统方法：[[倒排索引 (Inverted Index)]] (用于关键词搜索)。
+        *   现代方法：[[../AI & ML/Core Technologies/向量数据库|向量数据库]] / [[../AI & ML/Information Retrieval/近似最近邻搜索 (ANN)|ANN 索引]] (用于语义搜索)。
+    3.  **查询处理 (Query Processing)**: 如何理解用户的查询意图，并将其转换为可用于检索的形式？
+        *   [[查询扩展]], [[查询重写]]。
+        *   将查询文本转换为[[../AI & ML/Core Technologies/嵌入 (Embedding)|嵌入向量]]。
+    4.  **匹配与排序 (Matching & Ranking)**: 如何根据查询找到相关的文档，并按照相关性对结果进行排序？
+        *   传统方法：基于关键词匹配度（如 BM25 算法）。
+        *   现代方法：基于[[../AI & ML/Information Retrieval/相似性搜索|向量相似度计算]]（如[[../AI & ML/Information Retrieval/余弦相似度|余弦相似度]]）。
+        *   通常会结合多种信号进行[[学习排序 (Learning to Rank)]]。
+    5.  **评估 (Evaluation)**: 如何衡量 IR 系统的性能？
+        *   常用指标：[[精确率 (Precision)]], [[召回率 (Recall)]], F1-Score, MAP (Mean Average Precision), NDCG (Normalized Discounted Cumulative Gain)。
 
-    ## 主要版本与特点
+    ```mermaid
+    graph TD
+        A[用户信息需求] --> B(用户查询 Query);
+        B --> C{查询处理};
+        C --> D{匹配与排序};
 
-    *   **Claude / Claude Instant**: 早期版本，提供了不同速度和成本的选择。
-    *   **Claude 2 / Claude 2.1**: 性能显著提升，尤其在**长上下文处理**方面表现突出（支持高达 200K token 的上下文窗口），适合处理长文档、编写代码等任务。
-    *   **Claude 3 系列**: 2024 年初发布，是 Anthropic 当前的旗舰系列，包含三个不同规模和能力等级的模型：
-        *   **Claude 3 Haiku**: **速度最快、成本最低**的模型，适用于需要快速响应的简单任务（如客服）。
-        *   **Claude 3 Sonnet**: **平衡模型**，在智能和速度之间取得良好平衡，适合大多数企业级工作负载（如 RAG、代码生成、数据处理）。
-        *   **Claude 3 Opus**: **能力最强**的模型，在复杂推理、数学、代码生成和多语言任务上表现顶尖，接近或在某些基准上超过 [[../Models/GPT 模型系列|GPT-4]]。支持[[多模态]]能力（图像理解）。
-        *   **共同特点**: Claude 3 系列普遍提升了准确性（减少[[../模型幻觉 (Hallucination)|幻觉]]）、增强了多语言能力，并具备了视觉理解能力。
+        E[信息资源集合<br/>(文档/网页/向量等)] --> F(信息表示);
+        F --> G{索引构建};
+        G -- 索引 --> D;
 
-    ## 优势
+        D -- 排序后的结果 --> H[呈现给用户];
 
-    *   **强大的长文本处理能力**: 特别是 Claude 2.1 和 Claude 3 系列，非常适合需要分析或生成长篇文档的应用。
-    *   **强调安全与伦理**: 通过“宪法 AI”等方法，致力于减少有害和带有偏见的输出。
-    *   **优秀的对话和写作能力**: 通常能进行自然流畅的对话，并生成高质量的文本内容。
-    *   **性能具有竞争力**: 尤其是 Claude 3 Opus，在许多[[../Evaluation/基准测试 (Benchmark)|基准测试]]上达到了顶级水平。
-    *   **多模态能力 (Claude 3)**: 支持图像输入。
+        subgraph IR 系统核心流程
+            direction LR
+            B --> C --> D --> H;
+            E --> F --> G;
+        end
 
-    ## 考量因素/潜在劣势
+        I(评估 Evaluation<br/>(Precision, Recall等)) -- 反馈优化 --> C & D & G;
 
-    *   **[[../开源 vs 闭源模型|闭源]]**: 同样存在闭源模型的通用限制（无法本地部署、定制化有限、数据隐私顾虑、供应商依赖）。
-    *   **[[../Infrastructure/API (应用程序接口)|API 成本]]**: 尤其是最强大的 Opus 模型，成本相对较高。
-    *   **可用区域限制**: 早期 API 的可用性可能受地理区域限制（情况可能变化）。
-    *   **生态系统相对较小**: 相比 OpenAI，Anthropic 的开发者生态和社区资源可能相对较少一些（但正在快速发展）。
+    ```
 
-    ## 对产品经理的意义
+    ## IR 与 [[../AI & ML/检索增强生成 (RAG)|RAG]] 的关系
 
-    *   **重要的技术选项**: Claude API 是 [[../Models/GPT 模型系列|GPT API]] 之外的一个重要高性能闭源 LLM 选择。
-    *   **关注长文本场景**: 如果产品需要处理大量文本（如文档问答、法律合同分析、长篇内容生成），Claude 可能是个有吸引力的选项。
-    *   **重视 AI 伦理与安全**: 如果产品的应用场景对安全性和可靠性要求极高，Anthropic 的理念和方法可能更具优势。
-    *   **[[../技术选型|技术选型]]权衡**: 需要在性能（不同版本）、成本、长文本能力、安全性、生态系统等因素间进行权衡。
+    [[../AI & ML/检索增强生成 (RAG)|RAG]] 中的“检索 (Retrieval)”步骤，本质上就是一个**信息检索**过程。它利用 IR 技术（特别是基于[[../AI & ML/Core Technologies/嵌入 (Embedding)|嵌入]]的[[../AI & ML/Information Retrieval/相似性搜索|相似性搜索]]和[[../AI & ML/Core Technologies/向量数据库|向量数据库]]）从外部知识库中找到与用户输入最相关的信息片段，作为[[../AI & ML/大型语言模型 (LLM)|LLM]] 生成回答的上下文。
 
-    ## 总结
-
-    Claude 系列是 Anthropic 公司推出的强调安全、伦理和长文本处理能力的闭源 LLM。其最新的 Claude 3 系列在性能上具有很强的竞争力。了解 Claude 的特点和优势，特别是在长文本和安全性方面的侧重，有助于产品经理在进行 LLM 选型时做出更全面的考虑。
-
-    ## 相关概念
-
-    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
-    *   [[../开源 vs 闭源模型|闭源模型]]
-    *   [[../Infrastructure/API (应用程序接口)|API (应用程序接口)]]
-    *   [[Anthropic]]
-    *   [[宪法 AI]]
-    *   [[AI 安全]]
-    *   [[AI 伦理]]
-    *   [[长上下文窗口]]
-    *   [[多模态 AI]]
-    *   [[主流 LLM 模型概览]]
-""")
-
-gemini_series_path = os.path.join(ai_models_folder, 'Gemini 模型系列.md')
-gemini_series_content = textwrap.dedent("""\
-    ---
-    tags: [topic/ai_ml, concept/llm, model/gemini, type/closed_source_model, concept/multimodal]
-    aliases: [Gemini, Google Gemini]
-    ---
-    # Gemini 模型系列 (Google)
-
-    [[主流 LLM 模型概览|返回 模型概览]] | [[../开源 vs 闭源模型|闭源模型]]
-
-    ## 概述
-
-    Gemini 是由 **Google DeepMind** 开发的新一代[[../大型语言模型 (LLM)|大型语言模型]]系列，旨在成为谷歌在 AI 领域的核心基础模型。Gemini 的一个关键特点是其**原生的多模态 (Natively Multimodal)** 能力，即模型从一开始就被设计用来同时理解和处理**文本、图像、音频、视频和代码**等多种类型的信息。
-
-    Gemini 模型主要通过 **Google AI Studio** 和 **Google Cloud Vertex AI** 平台提供 **[[../Infrastructure/API (应用程序接口)|API]]** 访问，属于**[[../开源 vs 闭源模型|闭源]]**模型（但 Google 也基于 Gemini 技术推出了[[../Models/Gemma 模型系列|开源的 Gemma 模型]]）。
-
-    ## 主要版本与特点
-
-    Google 对 Gemini 进行了不同规模和能力的优化，以适应不同场景：
-
-    *   **Gemini Ultra (后更名或整合入 Gemini Advanced/1.5 Pro 的最高能力层级)**:
-        *   **能力最强、规模最大**的模型，适用于高度复杂的任务。
-        *   在多项[[../Evaluation/基准测试 (Benchmark)|基准测试]]中展现出顶尖性能，特别是在多模态理解和推理方面。
-    *   **Gemini Pro / Gemini 1.0 Pro**:
-        *   **性能与成本的平衡点**，适用于广泛的任务。
-        *   是驱动 Google Bard（现已更名为 Gemini App）和许多 Google Cloud AI 功能的核心模型之一。
-        *   具备强大的文本和代码能力，以及一定的多模态理解能力。
-    *   **Gemini Flash / Gemini 1.5 Flash**:
-        *   **速度优化**的模型，适用于需要低延迟、高吞吐量的场景（如大规模聊天应用、实时摘要）。
-        *   成本相对更低。
-    *   **Gemini Nano**:
-        *   **最高效**的模型，设计用于**端侧设备 (On-device)** 运行（如 Pixel 手机），可在离线状态下执行任务。
-    *   **Gemini 1.5 Pro**:
-        *   **重大升级**，引入了**突破性的长上下文窗口**（实验性支持高达 100 万 Token，远超之前的模型），能够处理非常长的文档、代码库或视频。
-        *   在长文本理解、复杂推理和多模态能力上进一步提升。
-
-    ## 核心优势
-
-    *   **原生多模态**: 从底层设计就能理解和融合多种信息类型，在处理涉及图像、音频、视频的任务时可能更具优势。
-    *   **强大的推理能力**: 特别是 Ultra 和 1.5 Pro 版本，在复杂推理任务上表现出色。
-    *   **超长上下文窗口 (Gemini 1.5 Pro)**: 能够处理和理解前所未有长度的输入信息。
-    *   **与 Google 生态集成**: 紧密集成于 Google 搜索、Workspace、Cloud 等产品和服务中。
-    *   **针对速度/效率优化的版本 (Flash, Nano)**: 提供了满足不同场景需求的选项。
-
-    ## 考量因素/潜在劣势
-
-    *   **[[../开源 vs 闭源模型|闭源]]**: 与 GPT/Claude 类似，存在闭源模型的通用限制。
-    *   **API 生态和文档**: 相比 OpenAI 可能稍显复杂或仍在发展中。
-    *   **性能稳定性/一致性**: 作为较新的模型系列，某些版本或特定任务上的表现可能仍在优化中。
-    *   **[[../技术相关/数据隐私|数据隐私]]**: 同样需要关注 Google 的数据处理政策。
-    *   **实际多模态效果**: 原生多模态的实际应用效果和易用性仍需在具体产品中验证。
+    可以说，**高效、精准的 IR 是 RAG 系统成功的关键前提**。
 
     ## 对产品经理的意义
 
-    *   **多模态产品机遇**: Gemini 的原生多模态能力为设计能够理解和交互多种信息类型的新型 AI 产品提供了可能（例如：用户可以上传图片进行提问，或者让 AI 分析视频内容）。
-    *   **长上下文应用**: Gemini 1.5 Pro 的超长上下文能力解锁了处理海量信息的新场景（例如：对整本书进行问答，分析数小时的会议录音）。
-    *   **[[../技术选型|技术选型]]**: Gemini API 是闭源 LLM 的另一个重要选项，尤其在需要强大[[多模态 AI|多模态]]能力或希望利用 Google Cloud 生态时。
-    *   **关注 Google AI 战略**: Gemini 代表了 Google AI 的核心方向，了解其发展有助于判断未来技术趋势。
+    *   **理解搜索与问答基础**: 了解用户查找信息的基本过程和技术原理。
+    *   **评估 RAG 方案**: 明白 RAG 系统的效果很大程度上取决于其底层 IR 组件的性能（检索的准确性、召回率、速度）。
+    *   **定义搜索/问答需求**: 能够更清晰地描述对搜索结果相关性、排序逻辑、召回范围等方面的要求。
+    *   **关注评估指标**: 了解衡量搜索或问答系统好坏的关键指标（如精确率、召回率）。
 
     ## 总结
 
-    Gemini 是 Google 推出的以原生多模态和强大推理能力为特点的新一代旗舰 LLM 系列。其不同规模的版本和突破性的长上下文能力为 AI 应用带来了新的可能性。产品经理需要了解 Gemini 的核心特性、优势和应用场景，以便在产品创新和技术选型中加以考虑。
+    信息检索 (IR) 是查找相关信息的核心技术领域，是搜索引擎、问答系统、[[../AI & ML/检索增强生成 (RAG)|RAG]] 等应用的基础。理解 IR 的基本概念和流程，有助于产品经理更好地设计和评估需要信息查找功能的产品。
 
     ## 相关概念
 
-    *   [[../大型语言模型 (LLM)|大型语言模型 (LLM)]]
-    *   [[../开源 vs 闭源模型|闭源模型]]
-    *   [[../Infrastructure/API (应用程序接口)|API (应用程序接口)]]
-    *   [[Google DeepMind]]
-    *   [[多模态 AI]]
-    *   [[长上下文窗口]]
-    *   [[端侧 AI (On-device AI)]]
-    *   [[../Models/Gemma 模型系列|Gemma 模型系列]] (基于 Gemini 技术的开源模型)
-    *   [[主流 LLM 模型概览]]
+    *   [[搜索引擎]]
+    *   [[../AI & ML/检索增强生成 (RAG)|检索增强生成 (RAG)]]
+    *   [[../AI & ML/Information Retrieval/相似性搜索|相似性搜索]]
+    *   [[../AI & ML/Core Technologies/嵌入 (Embedding)|嵌入 (Embedding)]]
+    *   [[../AI & ML/Core Technologies/向量数据库|向量数据库]]
+    *   [[倒排索引]]
+    *   [[TF-IDF]]
+    *   [[BM25]]
+    *   [[精确率 (Precision)]]
+    *   [[召回率 (Recall)]]
+    *   [[学习排序 (Learning to Rank)]]
 """)
 
 
 # --- Main Script Logic ---
 def main():
-    print("Starting Obsidian Knowledge Base Generation (Part 8 - Models, Benchmarks, API, NLP)...")
+    print("Starting Obsidian Knowledge Base Generation (Part 9 - Foundational & IR Concepts)...")
     print(f"Target Root Directory: {os.path.abspath(TARGET_ROOT_DIRECTORY)}")
     print(f"Overwrite Existing Files: {OVERWRITE_EXISTING}")
 
-    # Files prioritized by user request
+    # Files prioritized by user request: Vector, Sim Search, ANN, IR, DB, ML, DL
     files_to_create = {
-        # Core Concepts
-        nlp_path: nlp_content,
-        # Infrastructure
-        api_path: api_content,
-        # Evaluation
-        benchmark_path: benchmark_content,
-        # Models
-        gpt_series_path: gpt_series_content,
-        claude_series_path: claude_series_content,
-        gemini_series_path: gemini_series_content,
-        # Note: PM LLM Depth and Llama were created in previous runs
+        # Fundamentals
+        vector_path: vector_content,
+        database_path: database_content,
+        ml_path: ml_content,
+        # AI Core Technologies (Moving DL here)
+        deep_learning_path: deep_learning_content,
+        # Information Retrieval Concepts
+        similarity_search_path: similarity_search_content,
+        ann_search_path: ann_search_content,
+        information_retrieval_path: information_retrieval_content,
     }
 
     # Create necessary base directories if they don't exist
-    os.makedirs(ai_core_tech_folder, exist_ok=True)
-    os.makedirs(ai_infra_folder, exist_ok=True)
-    os.makedirs(ai_evaluation_folder, exist_ok=True)
-    os.makedirs(ai_models_folder, exist_ok=True)
+    os.makedirs(fundamentals_folder, exist_ok=True)
+    os.makedirs(ai_core_tech_folder, exist_ok=True) # Already exists, but safe to call again
+    os.makedirs(ir_folder, exist_ok=True)
     print("Base directories ensured.")
 
     for filepath, content in files_to_create.items():
@@ -553,8 +639,8 @@ def main():
             continue
         write_file(filepath, content)
 
-    print("\nObsidian Knowledge Base Generation (Part 8) Complete.")
-    print("Focus was on NLP, API, Benchmarks, and specific LLM families (GPT, Claude, Gemini).")
+    print("\nObsidian Knowledge Base Generation (Part 9) Complete.")
+    print("Focus was on foundational concepts (Vector, DB, ML, DL) and Information Retrieval concepts (Sim Search, ANN, IR).")
 
 if __name__ == "__main__":
     main()

@@ -16,64 +16,39 @@ aliases: [Embedding, 词嵌入, 文本嵌入, 向量表示]
 想象一个巨大的多维空间（远超三维，下图仅为示意）。Embedding 技术就像给每个词（或句子、商品）在这个空间里找到一个坐标点。意思相近的词（比如“国王”和“女王”）它们的坐标点会很接近；而意思不同的词（比如“国王”和“香蕉”）坐标点会离得很远。
 
 ```tikz
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.16}
-
 \begin{document}
-\begin{tikzpicture}
-\begin{axis}[
-    title={词嵌入空间示意（二维）},
-    xlabel={$X_1$},
-    ylabel={$X_2$},
-    axis lines=middle,
-    xmin=-1.2, xmax=1.2,
-    ymin=-1.2, ymax=1.2,
-    xtick=\empty,
-    ytick=\empty,
-    width=10cm,
-    height=8cm,
-    legend style={at={(1.05,1)}, anchor=north west, font=\small},
-]
+\begin{tikzpicture}[scale=2]
 
-% 王室/性别相关 points
-\addplot[only marks, mark=*, mark size=3pt, blue] coordinates {
-    (0.8, 0.7) % 国王
-    (0.7, 0.8) % 女王
-    (0.9, 0.5) % 男人
-    (0.6, 0.9) % 女人
-};
-\addlegendentry{王室/性别相关}
+% Coordinate Axes (simple, abstract)
+\draw[->] (-1.2,0) -- (1.2,0) node[right, font=\small] {Embedding dim 1};
+\draw[->] (0,-1.2) -- (0,1.2) node[above, font=\small] {Embedding dim 2};
 
-% 水果 points
-\addplot[only marks, mark=square*, mark size=3pt, red] coordinates {
-    (-0.8,-0.9) % 苹果
-    (-0.9,-0.8) % 香蕉
-};
-\addlegendentry{水果}
+% Royalty/Gender cluster (close points)
+\fill[blue] (0.6,0.6) circle(0.04) node[above right, font=\small] {King};
+\fill[blue] (0.55,0.5) circle(0.04) node[below right, font=\small] {Queen};
+\fill[blue] (0.7,0.6) circle(0.04) node[right, font=\small] {Man};
+\fill[blue] (0.5,0.7) circle(0.04) node[above, font=\small] {Woman};
 
-% Labels without special formatting
-\node at (axis cs:0.8,0.7) [anchor=south west, font=\small, blue] {国王};
-\node at (axis cs:0.7,0.8) [anchor=south east, font=\small, blue] {女王};
-\node at (axis cs:0.9,0.5) [anchor=north west, font=\small, blue] {男人};
-\node at (axis cs:0.6,0.9) [anchor=south east, font=\small, blue] {女人};
+% Fruit cluster (far away from royalty)
+\fill[red] (-0.7,-0.6) rectangle ++(0.08,0.08) node[below left=2pt, font=\small] {Apple};
+\fill[red] (-0.6,-0.7) rectangle ++(0.08,0.08) node[below right=2pt, font=\small] {Banana};
 
-\node at (axis cs:-0.8,-0.9) [anchor=north east, font=\small, red] {苹果};
-\node at (axis cs:-0.9,-0.8) [anchor=south west, font=\small, red] {香蕉};
+% Visualizing closeness (royalty cluster)
+\draw[blue, dashed] (0.6,0.6) circle(0.25);
+\node[blue, font=\tiny] at (0.6,0.35) {Similar meanings};
 
-% Simple vector illustration (no math, arrows only)
-\draw[->, dashed, thick, orange] (axis cs:0.9,0.5) -- (axis cs:0.8,0.7);
-\draw[->, dashed, thick, cyan] (axis cs:0.8,0.7) -- (axis cs:0.5,1.1);
+% Visualizing distance (from fruits to royalty)
+\draw[red,<->,thin] (-0.6,-0.65)--(0.6,0.6);
+\node[font=\tiny, rotate=45] at (0,0) {Large distance};
 
-% Result point explicitly plotted
-\addplot[only marks, mark=*, green!60!black, mark size=3pt] coordinates {(0.5,1.1)};
-\node at (axis cs:0.5,1.1) [anchor=south west, font=\small, green!60!black] {女王（近似）};
+% Explaining the abstractness of dimensions
+\node[font=\tiny, gray] at (1.0,-1.1) {Many other dimensions...};
 
-\end{axis}
 \end{tikzpicture}
 \end{document}
 
 ```
-上图通过 3D 空间示意了词嵌入的概念。语义相关的词（如“国王”、“女王”、“男人”、“女人”）在空间中聚集，而与它们语义无关的词（如“苹果”、“香蕉”）则位于较远的位置。图中还用向量运算示意了“国王 - 男人 + 女人 ≈ 女王”这种通过嵌入向量捕捉到的语义关系。
+上图通过 2D 空间示意了词嵌入的概念。语义相关的词（如“国王”、“女王”、“男人”、“女人”）在空间中聚集，而与它们语义无关的词（如“苹果”、“香蕉”）则位于较远的位置。图中还用向量运算示意了“国王 - 男人 + 女人 ≈ 女王”这种通过嵌入向量捕捉到的语义关系。
 
 ## 为什么需要 Embedding？
 
