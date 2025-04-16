@@ -1,4 +1,76 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Interview]]></title><description><![CDATA[Obsidian digital garden]]></description><link>http://github.com/dylang/node-rss</link><image><url>lib/media/favicon.png</url><title>Interview</title><link></link></image><generator>Webpage HTML Export plugin for Obsidian</generator><lastBuildDate>Wed, 16 Apr 2025 19:14:18 GMT</lastBuildDate><atom:link href="lib/rss.xml" rel="self" type="application/rss+xml"/><pubDate>Wed, 16 Apr 2025 19:14:10 GMT</pubDate><ttl>60</ttl><dc:creator></dc:creator><item><title><![CDATA[Transformer 模型架构]]></title><description><![CDATA[ 
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Interview]]></title><description><![CDATA[Obsidian digital garden]]></description><link>http://github.com/dylang/node-rss</link><image><url>lib/media/favicon.png</url><title>Interview</title><link/></image><generator>Webpage HTML Export plugin for Obsidian</generator><lastBuildDate>Wed, 16 Apr 2025 19:51:24 GMT</lastBuildDate><atom:link href="lib/rss.xml" rel="self" type="application/rss+xml"/><pubDate>Wed, 16 Apr 2025 19:51:24 GMT</pubDate><ttl>60</ttl><dc:creator/><item><title><![CDATA[检索增强生成 (RAG)]]></title><description><![CDATA[ 
+ <br><br>   tags: [topic/ai_ml, concept/rag, type/technique, technology, concept/llm]<br>
+aliases: [RAG, Retrieval-Augmented Generation]<br><br><br>   <a data-tooltip-position="top" aria-label="大型语言模型 (LLM)" data-href="大型语言模型 (LLM)" href="interview/concepts/ai-&amp;-ml/大型语言模型-(llm).html" class="internal-link" target="_self" rel="noopener nofollow">返回 LLM</a><br><br>   检索增强生成 (Retrieval-Augmented Generation, RAG) 是一种将<a data-tooltip-position="top" aria-label="大型语言模型 (LLM)" data-href="大型语言模型 (LLM)" href="interview/concepts/ai-&amp;-ml/大型语言模型-(llm).html" class="internal-link" target="_self" rel="noopener nofollow">大型语言模型 (LLM)</a>的生成能力与外部知识库的检索能力相结合的技术框架。其核心思想是，在让 LLM 生成回答之前，先从一个相关的、通常是实时的、可信的知识源（如数据库、文档库、网站）中检索 (Retrieve) 出与用户<a data-tooltip-position="top" aria-label="提示工程 (Prompt Engineering)" data-href="提示工程 (Prompt Engineering)" href="interview/concepts/ai-&amp;-ml/提示工程-(prompt-engineering).html" class="internal-link" target="_self" rel="noopener nofollow">提示 (Prompt)</a> 相关的信息片段，然后将这些检索到的信息作为上下文 (Context) 连同原始提示一起输入给 LLM，让 LLM 在生成回答时参考这些外部信息。<br>   RAG 的主要目的是解决 LLM 的两大固有局限：<br>
+<br><a data-tooltip-position="top" aria-label="模型幻觉 (Hallucination)" data-href="模型幻觉 (Hallucination)" href="interview/concepts/ai-&amp;-ml/模型幻觉-(hallucination).html" class="internal-link" target="_self" rel="noopener nofollow">知识过时与幻觉</a>: LLM 的内部知识截止于其训练数据，无法获取最新信息，并且可能产生幻觉。RAG 通过引入外部实时知识源来缓解这个问题。
+<br>缺乏领域专业知识: 通用 LLM 可能缺乏特定领域的深入知识。RAG 可以接入特定领域的知识库，提升回答的专业性和准确性。
+<br><br><br>
+<br>接收用户输入 (Query/Prompt): 获取用户的提问或指令。
+<br>检索 (Retrieve):
+
+<br>使用用户的输入作为查询条件，在外部知识库中搜索最相关的信息片段。
+<br>常用的检索技术包括：<a data-href="向量数据库" href="interview/concepts/ai-&amp;-ml/core-technologies/向量数据库.html" class="internal-link" target="_self" rel="noopener nofollow">向量数据库</a> (Vector Database) + <a data-href="嵌入 (Embedding)" href="interview/concepts/ai-&amp;-ml/core-technologies/嵌入-(embedding).html" class="internal-link" target="_self" rel="noopener nofollow">嵌入 (Embedding)</a> 技术（将文本转换为向量，通过向量相似度查找相关内容）、传统的关键词搜索等。
+<br>知识库需要预先建立索引，以便快速检索。
+
+
+<br>增强 (Augment):<br>
+   将检索到的相关信息片段 (Context) 与用户的原始输入 (Prompt) 结合起来，构建一个新的、增强后的<a data-tooltip-position="top" aria-label="提示工程 (Prompt Engineering)" data-href="提示工程 (Prompt Engineering)" href="interview/concepts/ai-&amp;-ml/提示工程-(prompt-engineering).html" class="internal-link" target="_self" rel="noopener nofollow">提示</a>。<br>
+   这个增强提示通常会指示 LLM：“请根据以下信息回答用户的问题：[检索到的上下文]<br>
+用户问题：[原始问题]”。
+<br>生成 (Generate):
+
+<br>将增强后的提示输入给 <a data-tooltip-position="top" aria-label="大型语言模型 (LLM)" data-href="大型语言模型 (LLM)" href="interview/concepts/ai-&amp;-ml/大型语言模型-(llm).html" class="internal-link" target="_self" rel="noopener nofollow">LLM</a>。
+<br>LLM 基于其内部知识和提供的外部上下文信息，生成最终的回答。由于有了相关的、通常更准确的上下文，LLM 产生<a data-tooltip-position="top" aria-label="模型幻觉 (Hallucination)" data-href="模型幻觉 (Hallucination)" href="interview/concepts/ai-&amp;-ml/模型幻觉-(hallucination).html" class="internal-link" target="_self" rel="noopener nofollow">幻觉</a>的可能性会降低，回答的相关性和准确性会提高。
+
+
+<br><br>
+<br>提高准确性，减少<a data-tooltip-position="top" aria-label="模型幻觉 (Hallucination)" data-href="模型幻觉 (Hallucination)" href="interview/concepts/ai-&amp;-ml/模型幻觉-(hallucination).html" class="internal-link" target="_self" rel="noopener nofollow">幻觉</a>: 通过引入外部实时、可信的知识源，显著降低 LLM 胡说八道的概率。
+<br>知识可更新: 无需重新训练庞大的 LLM，只需更新外部知识库，即可让系统获取最新信息。成本远低于重新训练模型。
+<br>领域适应性: 可以方便地接入特定领域的专业知识库，让通用 LLM 也能在专业领域表现出色。
+<br>可解释性/可溯源: 可以追溯回答是基于哪些检索到的信息生成的，提高了透明度和可信度。用户甚至可以看到引用的来源。
+<br>成本效益: 相比于为特定领域从头训练或大规模微调 LLM，RAG 通常更具成本效益。
+<br><br>
+<br>检索质量: 检索器的效果至关重要。如果检索不到相关信息，或者检索到的信息不准确/有噪声，RAG 的效果会大打折扣（Garbage In, Garbage Out）。
+<br>知识库构建与维护: 需要构建高质量、结构化的知识库，并保持其更新。
+<br>检索与生成的平衡: 如何平衡依赖外部知识和利用 LLM 内部知识？
+<br>上下文长度限制: LLM 对输入上下文的长度有限制，如何有效地选择和组织检索到的信息片段？
+<br>延迟: 检索过程会增加额外的响应时间。
+<br>复杂性: 实现一个高效、鲁棒的 RAG 系统涉及多个组件（检索器、生成器、知识库管理），工程实现相对复杂。
+<br><br>   RAG 是实现像 Rufus 这样需要基于大量实时商品信息进行问答的 AI 助手的关键技术。<br>
+<br>知识库: 亚马逊庞大的商品目录、用户评论、卖家信息、订单系统、帮助文档等构成了 RAG 的外部知识库。
+<br>工作流程:
+
+<br>用户问：“这双鞋有 9 号的吗？”
+<br>检索器在商品数据库中查找该鞋款的库存信息。
+<br>检索到：“该鞋款 9 号目前有货 / 无货”。
+<br>将此信息和用户问题输入给 LLM：“根据以下库存信息回答用户问题：该鞋款 9 号目前有货。用户问题：这双鞋有 9 号的吗？”
+<br>LLM 生成回答：“是的，这双鞋目前有 9 号库存。” 或 “抱歉，这双鞋目前 9 号缺货。”
+
+
+<br>   通过 RAG，Rufus 可以提供比通用 LLM 更准确、更实时的购物相关信息，显著提升用户体验和信任度。<br><br>   RAG 是一种有效结合 LLM 与外部知识的技术，对于需要高准确性、实时性或特定领域知识的 AI 应用（如 AI 助手、企业知识库问答）至关重要。产品经理需要理解 RAG 的原理、优势和挑战，以便在产品设计中考虑如何利用它来提升 AI 能力，并评估相关的技术投入和风险。<br><br>
+<br><a data-tooltip-position="top" aria-label="大型语言模型 (LLM)" data-href="大型语言模型 (LLM)" href="interview/concepts/ai-&amp;-ml/大型语言模型-(llm).html" class="internal-link" target="_self" rel="noopener nofollow">大型语言模型 (LLM)</a>
+<br><a data-tooltip-position="top" aria-label="模型幻觉 (Hallucination)" data-href="模型幻觉 (Hallucination)" href="interview/concepts/ai-&amp;-ml/模型幻觉-(hallucination).html" class="internal-link" target="_self" rel="noopener nofollow">模型幻觉 (Hallucination)</a> (RAG 是主要缓解手段)
+<br><a data-href="检索 (Retrieval)" href="检索 (Retrieval)" class="internal-link" target="_self" rel="noopener nofollow">检索 (Retrieval)</a>
+<br><a data-href="生成 (Generation)" href="生成 (Generation)" class="internal-link" target="_self" rel="noopener nofollow">生成 (Generation)</a>
+<br><a data-href="外部知识库" href="外部知识库" class="internal-link" target="_self" rel="noopener nofollow">外部知识库</a>
+<br><a data-href="向量数据库" href="interview/concepts/ai-&amp;-ml/core-technologies/向量数据库.html" class="internal-link" target="_self" rel="noopener nofollow">向量数据库</a>
+<br><a data-href="嵌入 (Embedding)" href="interview/concepts/ai-&amp;-ml/core-technologies/嵌入-(embedding).html" class="internal-link" target="_self" rel="noopener nofollow">嵌入 (Embedding)</a>
+<br><a data-href="上下文学习 (In-Context Learning)" href="上下文学习 (In-Context Learning)" class="internal-link" target="_self" rel="noopener nofollow">上下文学习 (In-Context Learning)</a>
+<br><a data-href="知识图谱" href="知识图谱" class="internal-link" target="_self" rel="noopener nofollow">知识图谱</a> (有时也作为知识库)
+]]></description><link>interview/concepts/ai-&amp;-ml/检索增强生成-(rag).html</link><guid isPermaLink="false">Interview/Concepts/AI &amp; ML/检索增强生成 (RAG).md</guid><pubDate>Wed, 16 Apr 2025 19:38:37 GMT</pubDate></item><item><title><![CDATA[MVP 框架概览]]></title><description><![CDATA[ 
+ <br><br><a data-tooltip-position="top" aria-label="00 - 产品管理框架概览" data-href="00 - 产品管理框架概览" href="interview/concepts/product-management/00-产品管理框架概览.html" class="internal-link" target="_self" rel="noopener nofollow">返回 产品管理框架概览</a><br><br>MVP (Minimum Viable Product) 即 最小可行产品，是一种用于快速验证核心商业假设的产品开发策略。它包含刚好足够满足早期用户需求、并能提供反馈的核心功能集。<br>MVP 框架的核心思想是快速学习和迭代，避免在未经市场验证的功能上投入过多资源。这套思维框架尤其适用于面试准备，能够帮助你快速抓住产品经理思考问题的核心要点。<br>
+目标： 能够在最短时间内理解并运用基本的PM理念，回答面试官问题时突出要点。
+<br><br>
+<br><a data-tooltip-position="top" aria-label="01 - 用户痛点价值 (MVP)" data-href="01 - 用户痛点价值 (MVP)" href="interview/concepts/product-management/mvp-框架/01-用户痛点价值-(mvp).html" class="internal-link" target="_self" rel="noopener nofollow">用户 → 痛点 → 价值</a>
+<br><a data-tooltip-position="top" aria-label="02 - MVP 解决方案" data-href="02 - MVP 解决方案" href="interview/concepts/product-management/mvp-框架/02-mvp-解决方案.html" class="internal-link" target="_self" rel="noopener nofollow">解决方案 (MVP 版本)</a>
+<br><a data-tooltip-position="top" aria-label="03 - MVP 数据验证" data-href="03 - MVP 数据验证" href="interview/concepts/product-management/mvp-框架/03-mvp-数据验证.html" class="internal-link" target="_self" rel="noopener nofollow">数据指标 &amp; 验证</a>
+<br><a data-tooltip-position="top" aria-label="04 - MVP 迭代优化" data-href="04 - MVP 迭代优化" href="interview/concepts/product-management/mvp-框架/04-mvp-迭代优化.html" class="internal-link" target="_self" rel="noopener nofollow">迭代优化</a>
+<br><br><br>MVP 框架提供了一个在面试时最小可行的回答思路。当面试官让你谈谈如何设计一个产品（例如AI电商聊天机器人）时，这4步足以让你结构清晰、抓住关键。<br><br>
+<br><a data-tooltip-position="top" aria-label="00 - 完整产品管理框架概览" data-href="00 - 完整产品管理框架概览" href="interview/concepts/product-management/完整框架/00-完整产品管理框架概览.html" class="internal-link" target="_self" rel="noopener nofollow">完整产品管理框架</a>
+<br><a data-href="精益创业" href="精益创业" class="internal-link" target="_self" rel="noopener nofollow">精益创业</a> ([[Lean Startup]])
+<br><a data-href="用户访谈" href="interview/concepts/product-management/用户研究/用户访谈.html" class="internal-link" target="_self" rel="noopener nofollow">用户访谈</a>
+<br><a data-href="A/B 测试" href="A/B 测试" class="internal-link" target="_self" rel="noopener nofollow">A/B 测试</a>
+<br><a data-href="敏捷开发" href="interview/concepts/product-management/开发流程/敏捷开发.html" class="internal-link" target="_self" rel="noopener nofollow">敏捷开发</a>
+]]></description><link>interview/concepts/product-management/mvp-框架/00-mvp-框架概览.html</link><guid isPermaLink="false">Interview/Concepts/Product Management/MVP 框架/00 - MVP 框架概览.md</guid><pubDate>Wed, 16 Apr 2025 19:45:43 GMT</pubDate></item><item><title><![CDATA[Transformer 模型架构]]></title><description><![CDATA[ 
  <br><br><a data-tooltip-position="top" aria-label="00 - AI 与机器学习概览" data-href="00 - AI 与机器学习概览" href="interview/concepts/ai-&amp;-ml/00-ai-与机器学习概览.html" class="internal-link" target="_self" rel="noopener nofollow">返回 AI 概览</a> | <a data-tooltip-position="top" aria-label="大型语言模型 (LLM)" data-href="大型语言模型 (LLM)" href="interview/concepts/ai-&amp;-ml/大型语言模型-(llm).html" class="internal-link" target="_self" rel="noopener nofollow">LLM 基础</a><br><br>Transformer 是一种深度学习模型架构，由 Google 在 2017 年的论文《Attention Is All You Need》中提出。它最初用于机器翻译任务，但其核心机制——自注意力 (Self-Attention)——被证明在处理各种序列数据（尤其是自然语言文本）方面非常强大，从而彻底改变了<a data-tooltip-position="top" aria-label="大型语言模型 (LLM)" data-href="大型语言模型 (LLM)" href="interview/concepts/ai-&amp;-ml/大型语言模型-(llm).html" class="internal-link" target="_self" rel="noopener nofollow">自然语言处理 (NLP)</a>领域。<br>几乎所有现代的<a data-tooltip-position="top" aria-label="大型语言模型 (LLM)" data-href="大型语言模型 (LLM)" href="interview/concepts/ai-&amp;-ml/大型语言模型-(llm).html" class="internal-link" target="_self" rel="noopener nofollow">大型语言模型 (LLM)</a>（如 GPT、BERT、LLaMA、Claude 等）都是基于 Transformer 架构构建的。 理解 Transformer 的核心思想有助于理解 LLM 为何如此强大。<br><br>在 Transformer 出现之前，处理序列数据（如句子）的主流模型是 RNN (循环神经网络) 和 LSTM/GRU (长短期记忆网络/门控循环单元)。这些模型按顺序处理单词，难以捕捉句子中相距较远的词语之间的依赖关系（例如，“法律” 和 “规定” 在长句中的关联），并且难以并行计算（必须处理完前一个词才能处理下一个）。<br>Transformer 架构通过注意力机制 (Attention Mechanism)，特别是自注意力 (Self-Attention)，解决了这些问题：<br>
 <br>同时关注所有词: 对于句子中的每一个词，自注意力机制会计算它与句子中所有其他词（包括它自己）的相关性或“注意力权重”。
 <br>加权表示: 基于这些权重，模型为每个词生成一个新的表示 (Representation)，这个表示融合了句子中所有与之相关词语的信息。相关性越强的词，其信息对当前词新表示的贡献越大。
@@ -965,70 +1037,7 @@ Expecting 'SEMI', 'NEWLINE', 'SPACE', 'EOF', 'GRAPH', 'DIR', 'subgraph', 'SQS', 
 <br><a data-tooltip-position="top" aria-label="检索增强生成 (RAG)" data-href="检索增强生成 (RAG)" href="interview/concepts/ai-&amp;-ml/检索增强生成-(rag).html" class="internal-link" target="_self" rel="noopener nofollow">检索增强生成 (RAG)</a> (RAG 的结果通常用于增强 Prompt)
 <br><a data-tooltip-position="top" aria-label="模型幻觉 (Hallucination)" data-href="模型幻觉 (Hallucination)" href="interview/concepts/ai-&amp;-ml/模型幻觉-(hallucination).html" class="internal-link" target="_self" rel="noopener nofollow">模型幻觉 (Hallucination)</a> (好的 Prompt 有助于减少幻觉)
 <br><a data-tooltip-position="top" aria-label="03 - 产品设计与方案构思" data-href="03 - 产品设计与方案构思" href="interview/concepts/product-management/完整框架/03-产品设计与方案构思.html" class="internal-link" target="_self" rel="noopener nofollow">产品设计与方案构思</a> (需要考虑 Prompt 设计)
-]]></description><link>interview/concepts/ai-&amp;-ml/提示工程-(prompt-engineering).html</link><guid isPermaLink="false">Interview/Concepts/AI &amp; ML/提示工程 (Prompt Engineering).md</guid><pubDate>Wed, 16 Apr 2025 14:45:18 GMT</pubDate></item><item><title><![CDATA[检索增强生成 (RAG)]]></title><description><![CDATA[ 
- <br><br>   tags: [topic/ai_ml, concept/rag, type/technique, technology, concept/llm]<br>
-aliases: [RAG, Retrieval-Augmented Generation]<br><br><br>   <a data-tooltip-position="top" aria-label="大型语言模型 (LLM)" data-href="大型语言模型 (LLM)" href="interview/concepts/ai-&amp;-ml/大型语言模型-(llm).html" class="internal-link" target="_self" rel="noopener nofollow">返回 LLM</a><br><br>   检索增强生成 (Retrieval-Augmented Generation, RAG) 是一种将<a data-tooltip-position="top" aria-label="大型语言模型 (LLM)" data-href="大型语言模型 (LLM)" href="interview/concepts/ai-&amp;-ml/大型语言模型-(llm).html" class="internal-link" target="_self" rel="noopener nofollow">大型语言模型 (LLM)</a>的生成能力与外部知识库的检索能力相结合的技术框架。其核心思想是，在让 LLM 生成回答之前，先从一个相关的、通常是实时的、可信的知识源（如数据库、文档库、网站）中检索 (Retrieve) 出与用户<a data-tooltip-position="top" aria-label="提示工程 (Prompt Engineering)" data-href="提示工程 (Prompt Engineering)" href="interview/concepts/ai-&amp;-ml/提示工程-(prompt-engineering).html" class="internal-link" target="_self" rel="noopener nofollow">提示 (Prompt)</a> 相关的信息片段，然后将这些检索到的信息作为上下文 (Context) 连同原始提示一起输入给 LLM，让 LLM 在生成回答时参考这些外部信息。<br>   RAG 的主要目的是解决 LLM 的两大固有局限：<br>
-<br><a data-tooltip-position="top" aria-label="模型幻觉 (Hallucination)" data-href="模型幻觉 (Hallucination)" href="interview/concepts/ai-&amp;-ml/模型幻觉-(hallucination).html" class="internal-link" target="_self" rel="noopener nofollow">知识过时与幻觉</a>: LLM 的内部知识截止于其训练数据，无法获取最新信息，并且可能产生幻觉。RAG 通过引入外部实时知识源来缓解这个问题。
-<br>缺乏领域专业知识: 通用 LLM 可能缺乏特定领域的深入知识。RAG 可以接入特定领域的知识库，提升回答的专业性和准确性。
-<br><br>Error parsing Mermaid diagram!
-
-Parse error on line 2:
-graph TD    A[用户输入 (Query/Prompt)] --&gt; 
--------------------^
-Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'PS'<br>
-<br>接收用户输入 (Query/Prompt): 获取用户的提问或指令。
-<br>检索 (Retrieve):
-
-<br>使用用户的输入作为查询条件，在外部知识库中搜索最相关的信息片段。
-<br>常用的检索技术包括：<a data-href="向量数据库" href="interview/concepts/ai-&amp;-ml/core-technologies/向量数据库.html" class="internal-link" target="_self" rel="noopener nofollow">向量数据库</a> (Vector Database) + <a data-href="嵌入 (Embedding)" href="interview/concepts/ai-&amp;-ml/core-technologies/嵌入-(embedding).html" class="internal-link" target="_self" rel="noopener nofollow">嵌入 (Embedding)</a> 技术（将文本转换为向量，通过向量相似度查找相关内容）、传统的关键词搜索等。
-<br>知识库需要预先建立索引，以便快速检索。
-
-
-<br>增强 (Augment):<br>
-   将检索到的相关信息片段 (Context) 与用户的原始输入 (Prompt) 结合起来，构建一个新的、增强后的<a data-tooltip-position="top" aria-label="提示工程 (Prompt Engineering)" data-href="提示工程 (Prompt Engineering)" href="interview/concepts/ai-&amp;-ml/提示工程-(prompt-engineering).html" class="internal-link" target="_self" rel="noopener nofollow">提示</a>。<br>
-   这个增强提示通常会指示 LLM：“请根据以下信息回答用户的问题：[检索到的上下文]<br>
-用户问题：[原始问题]”。
-<br>生成 (Generate):
-
-<br>将增强后的提示输入给 <a data-tooltip-position="top" aria-label="大型语言模型 (LLM)" data-href="大型语言模型 (LLM)" href="interview/concepts/ai-&amp;-ml/大型语言模型-(llm).html" class="internal-link" target="_self" rel="noopener nofollow">LLM</a>。
-<br>LLM 基于其内部知识和提供的外部上下文信息，生成最终的回答。由于有了相关的、通常更准确的上下文，LLM 产生<a data-tooltip-position="top" aria-label="模型幻觉 (Hallucination)" data-href="模型幻觉 (Hallucination)" href="interview/concepts/ai-&amp;-ml/模型幻觉-(hallucination).html" class="internal-link" target="_self" rel="noopener nofollow">幻觉</a>的可能性会降低，回答的相关性和准确性会提高。
-
-
-<br><br>
-<br>提高准确性，减少<a data-tooltip-position="top" aria-label="模型幻觉 (Hallucination)" data-href="模型幻觉 (Hallucination)" href="interview/concepts/ai-&amp;-ml/模型幻觉-(hallucination).html" class="internal-link" target="_self" rel="noopener nofollow">幻觉</a>: 通过引入外部实时、可信的知识源，显著降低 LLM 胡说八道的概率。
-<br>知识可更新: 无需重新训练庞大的 LLM，只需更新外部知识库，即可让系统获取最新信息。成本远低于重新训练模型。
-<br>领域适应性: 可以方便地接入特定领域的专业知识库，让通用 LLM 也能在专业领域表现出色。
-<br>可解释性/可溯源: 可以追溯回答是基于哪些检索到的信息生成的，提高了透明度和可信度。用户甚至可以看到引用的来源。
-<br>成本效益: 相比于为特定领域从头训练或大规模微调 LLM，RAG 通常更具成本效益。
-<br><br>
-<br>检索质量: 检索器的效果至关重要。如果检索不到相关信息，或者检索到的信息不准确/有噪声，RAG 的效果会大打折扣（Garbage In, Garbage Out）。
-<br>知识库构建与维护: 需要构建高质量、结构化的知识库，并保持其更新。
-<br>检索与生成的平衡: 如何平衡依赖外部知识和利用 LLM 内部知识？
-<br>上下文长度限制: LLM 对输入上下文的长度有限制，如何有效地选择和组织检索到的信息片段？
-<br>延迟: 检索过程会增加额外的响应时间。
-<br>复杂性: 实现一个高效、鲁棒的 RAG 系统涉及多个组件（检索器、生成器、知识库管理），工程实现相对复杂。
-<br><br>   RAG 是实现像 Rufus 这样需要基于大量实时商品信息进行问答的 AI 助手的关键技术。<br>
-<br>知识库: 亚马逊庞大的商品目录、用户评论、卖家信息、订单系统、帮助文档等构成了 RAG 的外部知识库。
-<br>工作流程:
-
-<br>用户问：“这双鞋有 9 号的吗？”
-<br>检索器在商品数据库中查找该鞋款的库存信息。
-<br>检索到：“该鞋款 9 号目前有货 / 无货”。
-<br>将此信息和用户问题输入给 LLM：“根据以下库存信息回答用户问题：该鞋款 9 号目前有货。用户问题：这双鞋有 9 号的吗？”
-<br>LLM 生成回答：“是的，这双鞋目前有 9 号库存。” 或 “抱歉，这双鞋目前 9 号缺货。”
-
-
-<br>   通过 RAG，Rufus 可以提供比通用 LLM 更准确、更实时的购物相关信息，显著提升用户体验和信任度。<br><br>   RAG 是一种有效结合 LLM 与外部知识的技术，对于需要高准确性、实时性或特定领域知识的 AI 应用（如 AI 助手、企业知识库问答）至关重要。产品经理需要理解 RAG 的原理、优势和挑战，以便在产品设计中考虑如何利用它来提升 AI 能力，并评估相关的技术投入和风险。<br><br>
-<br><a data-tooltip-position="top" aria-label="大型语言模型 (LLM)" data-href="大型语言模型 (LLM)" href="interview/concepts/ai-&amp;-ml/大型语言模型-(llm).html" class="internal-link" target="_self" rel="noopener nofollow">大型语言模型 (LLM)</a>
-<br><a data-tooltip-position="top" aria-label="模型幻觉 (Hallucination)" data-href="模型幻觉 (Hallucination)" href="interview/concepts/ai-&amp;-ml/模型幻觉-(hallucination).html" class="internal-link" target="_self" rel="noopener nofollow">模型幻觉 (Hallucination)</a> (RAG 是主要缓解手段)
-<br><a data-href="检索 (Retrieval)" href="检索 (Retrieval)" class="internal-link" target="_self" rel="noopener nofollow">检索 (Retrieval)</a>
-<br><a data-href="生成 (Generation)" href="生成 (Generation)" class="internal-link" target="_self" rel="noopener nofollow">生成 (Generation)</a>
-<br><a data-href="外部知识库" href="外部知识库" class="internal-link" target="_self" rel="noopener nofollow">外部知识库</a>
-<br><a data-href="向量数据库" href="interview/concepts/ai-&amp;-ml/core-technologies/向量数据库.html" class="internal-link" target="_self" rel="noopener nofollow">向量数据库</a>
-<br><a data-href="嵌入 (Embedding)" href="interview/concepts/ai-&amp;-ml/core-technologies/嵌入-(embedding).html" class="internal-link" target="_self" rel="noopener nofollow">嵌入 (Embedding)</a>
-<br><a data-href="上下文学习 (In-Context Learning)" href="上下文学习 (In-Context Learning)" class="internal-link" target="_self" rel="noopener nofollow">上下文学习 (In-Context Learning)</a>
-<br><a data-href="知识图谱" href="知识图谱" class="internal-link" target="_self" rel="noopener nofollow">知识图谱</a> (有时也作为知识库)
-]]></description><link>interview/concepts/ai-&amp;-ml/检索增强生成-(rag).html</link><guid isPermaLink="false">Interview/Concepts/AI &amp; ML/检索增强生成 (RAG).md</guid><pubDate>Wed, 16 Apr 2025 12:38:19 GMT</pubDate></item><item><title><![CDATA[模型幻觉 (Hallucination)]]></title><description><![CDATA[ 
+]]></description><link>interview/concepts/ai-&amp;-ml/提示工程-(prompt-engineering).html</link><guid isPermaLink="false">Interview/Concepts/AI &amp; ML/提示工程 (Prompt Engineering).md</guid><pubDate>Wed, 16 Apr 2025 14:45:18 GMT</pubDate></item><item><title><![CDATA[模型幻觉 (Hallucination)]]></title><description><![CDATA[ 
  <br><br><a data-tooltip-position="top" aria-label="大型语言模型 (LLM)" data-href="大型语言模型 (LLM)" href="interview/concepts/ai-&amp;-ml/大型语言模型-(llm).html" class="internal-link" target="_self" rel="noopener nofollow">返回 LLM</a><br><br>模型幻觉 (Hallucination) 是指<a data-tooltip-position="top" aria-label="大型语言模型 (LLM)" data-href="大型语言模型 (LLM)" href="interview/concepts/ai-&amp;-ml/大型语言模型-(llm).html" class="internal-link" target="_self" rel="noopener nofollow">大型语言模型 (LLM)</a> 或其他生成式 AI 模型产生看似合理、流畅自然，但实际上是错误的、与事实不符、或在给定上下文中无依据的信息的现象。通俗地说，就是模型“一本正经地胡说八道”。<br>幻觉是当前 LLM 应用面临的核心挑战之一，尤其是在需要高准确性和可靠性的场景（如医疗咨询、金融建议、以及提供精确商品信息的 AI 购物助手）中，幻觉可能导致严重后果。<br><br>幻觉的产生机制很复杂，可能涉及多种因素：<br>
 <br>训练数据的偏差和噪声: 模型在训练过程中学习了数据中错误或矛盾的信息。
 <br>知识截止: 模型的知识仅限于其训练数据，对于训练之后发生的事情或数据中未包含的信息，模型可能会“编造”答案。
@@ -1215,21 +1224,7 @@ Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', '
 <br><a data-href="JSON" href="JSON" class="internal-link" target="_self" rel="noopener nofollow">JSON</a>
 <br><a data-tooltip-position="top" aria-label="向量数据库" data-href="向量数据库" href="interview/concepts/ai-&amp;-ml/core-technologies/向量数据库.html" class="internal-link" target="_self" rel="noopener nofollow">向量数据库</a>
 <br><a data-href="技术架构" href="技术架构" class="internal-link" target="_self" rel="noopener nofollow">技术架构</a>
-]]></description><link>interview/concepts/fundamentals/数据库.html</link><guid isPermaLink="false">Interview/Concepts/Fundamentals/数据库.md</guid><pubDate>Wed, 16 Apr 2025 14:55:37 GMT</pubDate></item><item><title><![CDATA[MVP 框架概览]]></title><description><![CDATA[ 
- <br><br><a data-tooltip-position="top" aria-label="00 - 产品管理框架概览" data-href="00 - 产品管理框架概览" href="interview/concepts/product-management/00-产品管理框架概览.html" class="internal-link" target="_self" rel="noopener nofollow">返回 产品管理框架概览</a><br><br>MVP (Minimum Viable Product) 即 最小可行产品，是一种用于快速验证核心商业假设的产品开发策略。它包含刚好足够满足早期用户需求、并能提供反馈的核心功能集。<br>MVP 框架的核心思想是快速学习和迭代，避免在未经市场验证的功能上投入过多资源。这套思维框架尤其适用于面试准备，能够帮助你快速抓住产品经理思考问题的核心要点。<br>
-目标： 能够在最短时间内理解并运用基本的PM理念，回答面试官问题时突出要点。
-<br><br>
-<br><a data-tooltip-position="top" aria-label="01 - 用户痛点价值 (MVP)" data-href="01 - 用户痛点价值 (MVP)" href="interview/concepts/product-management/mvp-框架/01-用户痛点价值-(mvp).html" class="internal-link" target="_self" rel="noopener nofollow">用户 → 痛点 → 价值</a>
-<br><a data-tooltip-position="top" aria-label="02 - MVP 解决方案" data-href="02 - MVP 解决方案" href="interview/concepts/product-management/mvp-框架/02-mvp-解决方案.html" class="internal-link" target="_self" rel="noopener nofollow">解决方案 (MVP 版本)</a>
-<br><a data-tooltip-position="top" aria-label="03 - MVP 数据验证" data-href="03 - MVP 数据验证" href="interview/concepts/product-management/mvp-框架/03-mvp-数据验证.html" class="internal-link" target="_self" rel="noopener nofollow">数据指标 &amp; 验证</a>
-<br><a data-tooltip-position="top" aria-label="04 - MVP 迭代优化" data-href="04 - MVP 迭代优化" href="interview/concepts/product-management/mvp-框架/04-mvp-迭代优化.html" class="internal-link" target="_self" rel="noopener nofollow">迭代优化</a>
-<br><br><br>MVP 框架提供了一个在面试时最小可行的回答思路。当面试官让你谈谈如何设计一个产品（例如AI电商聊天机器人）时，这4步足以让你结构清晰、抓住关键。<br><br>
-<br><a data-tooltip-position="top" aria-label="00 - 完整产品管理框架概览" data-href="00 - 完整产品管理框架概览" href="interview/concepts/product-management/完整框架/00-完整产品管理框架概览.html" class="internal-link" target="_self" rel="noopener nofollow">完整产品管理框架</a>
-<br><a data-href="精益创业" href="精益创业" class="internal-link" target="_self" rel="noopener nofollow">精益创业</a> ([[Lean Startup]])
-<br><a data-href="用户访谈" href="interview/concepts/product-management/用户研究/用户访谈.html" class="internal-link" target="_self" rel="noopener nofollow">用户访谈</a>
-<br><a data-href="A/B 测试" href="A/B 测试" class="internal-link" target="_self" rel="noopener nofollow">A/B 测试</a>
-<br><a data-href="敏捷开发" href="interview/concepts/product-management/开发流程/敏捷开发.html" class="internal-link" target="_self" rel="noopener nofollow">敏捷开发</a>
-]]></description><link>interview/concepts/product-management/mvp-框架/00-mvp-框架概览.html</link><guid isPermaLink="false">Interview/Concepts/Product Management/MVP 框架/00 - MVP 框架概览.md</guid><pubDate>Wed, 16 Apr 2025 14:45:19 GMT</pubDate></item><item><title><![CDATA[1. 用户 → 痛点 → 价值 (MVP 框架)]]></title><description><![CDATA[ 
+]]></description><link>interview/concepts/fundamentals/数据库.html</link><guid isPermaLink="false">Interview/Concepts/Fundamentals/数据库.md</guid><pubDate>Wed, 16 Apr 2025 14:55:37 GMT</pubDate></item><item><title><![CDATA[1. 用户 → 痛点 → 价值 (MVP 框架)]]></title><description><![CDATA[ 
  <br><br><a data-tooltip-position="top" aria-label="00 - MVP 框架概览" data-href="00 - MVP 框架概览" href="interview/concepts/product-management/mvp-框架/00-mvp-框架概览.html" class="internal-link" target="_self" rel="noopener nofollow">返回 MVP 框架概览</a> | <a data-tooltip-position="top" aria-label="02 - MVP 解决方案" data-href="02 - MVP 解决方案" href="interview/concepts/product-management/mvp-框架/02-mvp-解决方案.html" class="internal-link" target="_self" rel="noopener nofollow">下一步: MVP 解决方案</a><br><br>这是 MVP 思考框架的第一步，也是所有产品设计的起点：明确你的产品是为谁服务，解决了他们的什么核心问题，以及带来的核心价值是什么。<br><br>
 <br>用户是谁？
 
