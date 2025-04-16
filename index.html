@@ -1,12 +1,42 @@
-<!-- root index.html -->
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="refresh" content="0; url=interview/index.html" />
-    <title>Redirecting...</title>
-  </head>
-  <body>
-    <p>If you are not redirected, <a href="interview/index.html">click here</a>.</p>
-  </body>
-</html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interview Homepage</title>
 
+  <!-- Dynamic base path support for GitHub Pages -->
+  <base href="./" id="dynamic-base">
+  <script>
+    (function () {
+      const isGithub = location.hostname.includes("github.io");
+      const repo = location.pathname.split("/")[1]; // e.g., "my-repo"
+      const subdir = "interview"; // this folder name, adjust if renamed
+      if (isGithub) {
+        document.getElementById("dynamic-base").href = `/${repo}/${subdir}/`;
+      }
+    })();
+  </script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="lib/styles/main-styles.css">
+  <link rel="stylesheet" href="lib/styles/theme.css">
+  <link rel="stylesheet" href="lib/styles/obsidian.css">
+  <!-- Add more if needed -->
+
+</head>
+<body>
+  <h1>Welcome to the Interview Site</h1>
+  <p>This is the homepage of your exported Obsidian vault.</p>
+
+  <ul>
+    <li><a href="concepts/ai-&-ml/00-ai-与机器学习概览.html">AI & ML Overview</a></li>
+    <li><a href="interview-simulation/product-manager-interview/00-面试准备指南与行动计划.html">PM Interview Guide</a></li>
+    <!-- Add more navigation links as needed -->
+  </ul>
+
+  <!-- Scripts -->
+  <script src="lib/scripts/webpage.js"></script>
+  <!-- Add graph rendering, minisearch, etc. if needed -->
+</body>
+</html>
